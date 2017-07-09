@@ -5,6 +5,6 @@ false && source _config.sh # never executes, this is here just for IntelliJ Bash
 
 pushd "$DOCKER_DIR"
 
-docker build -t "canary" .
+docker build -t "$DOCKER_IMAGE_NAME" .
 
 popd
