@@ -10,13 +10,13 @@ The goal is to detect issues early before releasing new ClojureScript version.
 
 ```bash
 ./scripts/docker-build.sh
-./scripts/docker-run.sh job -i 1.3.3.7
+./scripts/docker-run.sh job -c HEAD -v
 ```
 
 ### directly
 
 ```bash
-./runner/run.sh job -i 5.6.7.8
+./runner/run.sh job -v
 ```
     
 ### travis entry point
@@ -33,8 +33,9 @@ This is just a proposal. Inspired by ideas of [@deraen](https://gist.github.com/
 
 * this repo is called `canary`, the tool is caller `runner` (or `canary runner`)
 * ClojureScript compiler is simply referred to as `compiler`
-* list of relevant libraries is called `libraries`
-* a single request for complete round of testing is called a `job` (or `canary job`)
+* list of relevant projects/libraries is called `projects`
+* a single request for complete round of tests is called a `job` (or `canary job`)
+* a single test is called a `task`
 
 ## Main ideas
 
@@ -42,45 +43,48 @@ This is just a proposal. Inspired by ideas of [@deraen](https://gist.github.com/
 
 Instead of maintaining multiple git repos, let's have just a single mono-repo `canary` with following branches:
 
-1. `master` where the source code for the tool lives
-2. `jobs` where anyone with commit rights can trigger a new job (as a new commit)
-3. `results` where the tool will produce one commit per job
+1. `master` where the source code for the `runner` lives
+2. `jobs` where anyone with commit rights can trigger a new `job` (as a new commit)
+3. `results` where the `runner` will produce one commit per `job`
 
-All collaborators will get write access to this repo and can collaborate on the `master` branch.
+All project authors will get commit access to this repo and can collaborate on the `master` branch.
 
 ### job workflow
 
-When a job is triggered. Runner goes through following steps:
+When a `job` is triggered. The `runner` goes through following steps:
 
-1. prepares compiler's jar according to requested parameters (version)
-2. runs tests for all `libraries` instructing them to use the `compiler` and collects results
-3. commits resulting report into `results` branch 
+1. prepares `compiler`'s jar according to requested parameters (version/git SHA)
+1. determines which tasks should be part of the job based on request parameters
+1. spawns all tasks (in parallel) instructing them to use the `compiler`
+1. waits for task results and collects them 
+1. commits resulting report into `results` branch 
 
 ### implemented in Clojure
 
-The `runner` is implemented in Clojure for convenience. Each `library` author gets own place (function or namespace)
-for implementing steps specific for their `library`. Authors are expected to trigger test builds on their own repos 
+The `runner` is implemented in Clojure for convenience. Each `project` author gets own place (function or namespace)
+for implementing functionality specific for their `project`. Authors are expected to trigger test builds on their own repos 
 (e.g. via travis) and simply collect results back. But anyone can use an escape hatch to invoke shell and do whatever 
-they want. For example cloning their repo and running tests directly in the context of `runner`.
+they need. For example cloning their repo and running tests directly in the context of `runner`.
 
 ### docker
 
-We wrap running runner in a docker container to provide well-controlled environment for runner and possible shell scripts.
+We wrap `runner` in a docker container to provide well-controlled environment for `runner` `tasks` (possibly shell scripts).
 
 ### no need for fancy publishing 
 
-We are developers and we have github. Travis alone will provide some trace of a job (depending on what `runner` script will output to stdout)
-but ultimately a commit into `results` branch will distil all interesting results. Then anyone can use their git-fu to follow
-those or process them further.
+We are developers and we have github. Travis alone will provide some trace of a `job` (depending on what `runner` script and 
+individual `tasks` will output to stdout). But ultimately a commit into `results` branch will distil all interesting results
+also for archivation purposes. Then anyone can use their git-fu to follow those or process them further.
 
-## Technical notes
+## Notes
 
-* we will (ab)use travis to run `runner` jobs for us, this travis will be setup on the `canary` repo and will be triggered
+* we will (ab)use travis to run `runner` `jobs` for us, this travis will be setup on the `canary` repo and will be triggered
 by commits in `jobs` branch (or alternatively via travis API)
 * secrets like API tokens will be stored using [travis mechanism for hiding secrets](https://docs.travis-ci.com/user/environment-variables/#Defining-encrypted-variables-in-.travis.yml)
 * in first iteration `results` will be simple textual report embedded in a commit message, maybe using [shields.io badges](http://shields.io) but later it could produce
 whole tree of files committed into results branch for each job, git(hub) should be always a good interface for viewing/diffing it
+* tasks should be spawned in parallel, also timing should be provided on runner's level
 
 ---
 
-You can discuss this in #cljs-dev channel on [clojurians.net](http://clojurians.net) Slack.
+You might discuss this in #cljs-dev channel on [clojurians.net](http://clojurians.net) Slack.
