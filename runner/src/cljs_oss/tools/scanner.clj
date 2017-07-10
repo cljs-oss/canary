@@ -11,8 +11,8 @@
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 
-(defn task-name [kind namespace name]
-  (str kind "|" namespace "/" name))
+(defn task-name [_kind namespace name]
+  (str namespace "/" name))
 
 ; -- clojure tasks ----------------------------------------------------------------------------------------------------------
 
@@ -23,7 +23,7 @@
   (let [var-meta (meta task-var)
         name (:name var-meta)
         last-ns-segment (last (string/split (str (ns-name (:ns var-meta))) #"\."))]
-    (task-name "clj" last-ns-segment name)))
+    (task-name :clj last-ns-segment name)))
 
 (defn make-clojure-task [task-var]
   {:id (task-name-from-var task-var)
@@ -48,7 +48,7 @@
        (filter shell-project?)))
 
 (defn shell-tasks-for-file [options file]
-  [{:id (task-name "sh" (cuerdas/kebab (utils/remove-extension (.getName file))) "script")
+  [{:id (task-name :sh (cuerdas/kebab (utils/remove-extension (.getName file))) "shell")
     :fn (shell/make-shell-launcher file)}])
 
 (defn collect-all-shell-tasks [options dir-path]
