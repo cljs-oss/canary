@@ -4,6 +4,7 @@
             [clojure.tools.cli :as cli]
             [cljs-oss.tools.jobs :as jobs]
             [cljs-oss.tools.utils :as utils]
+            [cljs-oss.tools.cli :refer [timeout-cli-option normal-cli-option]]
             [cljs-oss.tools.output :as output])
   (:gen-class))
 
@@ -13,19 +14,20 @@
 (def default-polling-interval (utils/seconds-to-msec 1))
 
 (def cli-options
-  [["-c" "--compiler SHA" "Pin ClojureScript compiler git SHA"
-    :default default-compiler-sha]
-   ["-p" "--projects DIR" "Path to projects directory"
-    :default default-projects-dir]
-   [nil "--job-id ID" "Optional job id"]
-   (utils/timeout-option
-     [nil "--polling-interval SECONDS" "Polling interval for job status check (in seconds)"
-      :default default-polling-interval])
-   (utils/timeout-option
-     ["-t" "--timeout SECONDS" "Total timeout for job to complete (in seconds)"
-      :default default-timeout])
-   ["-v" "--verbose"]
-   ["-h" "--help"]])
+  [(normal-cli-option
+     ["-c" "--compiler SHA" "Pin ClojureScript compiler git SHA" :default default-compiler-sha])
+   (normal-cli-option
+     ["-p" "--projects DIR" "Path to projects directory" :default default-projects-dir])
+   (normal-cli-option
+     [nil "--job-id ID" "Optional job id"])
+   (timeout-cli-option
+     [nil "--polling-interval SECONDS" "Polling interval for job status (in seconds)" :default default-polling-interval])
+   (timeout-cli-option
+     ["-t" "--timeout SECONDS" "Total timeout for job to complete (in seconds)" :default default-timeout])
+   (normal-cli-option
+     ["-v" "--verbose"])
+   (normal-cli-option
+     ["-h" "--help"])])
 
 (defn usage [options-summary]
   (string/join \newline ["Exercises ClojureScript libraries with pinned ClojureScript version."
