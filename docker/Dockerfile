@@ -25,6 +25,9 @@ RUN cd /usr/bin \
     && lein
 RUN yes y | lein upgrade
 
+VOLUME ["/root"]
+VOLUME ["/var/cache"]
 VOLUME ["/runner"]
+
 WORKDIR "/runner"
 ENTRYPOINT ["/runner/run.sh"]

@@ -7,8 +7,8 @@ pushd "$DOCKER_DIR"
 
 set +e
 
-docker volume rm -f "$DOCKER_VOLUME_ROOT"
-docker volume rm -f "$DOCKER_VOLUME_APT_CACHE"
+rm -rf "$DOCKER_VOLUMES_DIR"
+
 docker rmi -f "$DOCKER_IMAGE_NAME"
 
 set -e

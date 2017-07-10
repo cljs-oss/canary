@@ -5,13 +5,13 @@ false && source _config.sh # never executes, this is here just for IntelliJ Bash
 
 pushd "$DOCKER_DIR"
 
-docker volume create --name "$DOCKER_VOLUME_ROOT" > /dev/null
-docker volume create --name "$DOCKER_VOLUME_APT_CACHE" > /dev/null
+mkdir -p "$DOCKER_VOLUMES_DIR/var/cache"
+mkdir -p "$DOCKER_VOLUMES_DIR/root"
 
 docker run \
   --name "$DOCKER_CONTAINER_NAME" \
-  -v "$DOCKER_VOLUME_ROOT:/root" \
-  -v "$DOCKER_VOLUME_APT_CACHE:/var/cache/apt" \
+  -v "$DOCKER_VOLUMES_DIR/root:/root" \
+  -v "$DOCKER_VOLUMES_DIR/var/cache:/var/cache" \
   -v "$RUNNER_DIR:/runner" \
   --rm \
   -it "$DOCKER_IMAGE_NAME" \
