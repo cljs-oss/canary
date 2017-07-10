@@ -1,5 +1,8 @@
 sudo: required
 
+cache:
+  apt: true
+  
 services:
   - docker
 
