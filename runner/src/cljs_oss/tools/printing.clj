@@ -36,6 +36,9 @@
   ; TODO: introduce verbosity levels
   (apply output/synchronized-println args))
 
+(defn task-name [task]
+  (clansi/style (:name task) (:color task)))
+
 ; -- job printing -----------------------------------------------------------------------------------------------------------
 
 (defn format-job-line [time label style content]

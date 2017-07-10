@@ -13,7 +13,7 @@
 
 (defn run-task! [task options]
   (when (:verbose options)
-    (announce "running task" (:name task)))
+    (announce "running task" (printing/task-name task)))
   (with-task-printing task options
     (let [task-fn (:fn task)]
       (task-fn (with-meta options task)))))
@@ -47,7 +47,7 @@
                   new-completed-tasks (conj completed-tasks (assoc completed-task
                                                               :result result
                                                               :running false))]
-              (announce "completed task" (:name completed-task))
+              (announce "completed task" (printing/task-name completed-task))
               (recur (inc iteration) new-running-tasks new-completed-tasks))))))))
 
 (defn spawn-runner! [tasks options]
