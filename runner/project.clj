@@ -5,6 +5,8 @@
                  [org.clojure/core.async "0.3.442"]
                  [org.clojure/tools.cli "0.3.5"]
                  [org.clojure/tools.namespace "0.2.11"]
+                 [me.raynes/conch "0.8.0"]
+                 [clansi "1.0.0"]
                  [funcool/cuerdas "2.0.3"]]
   :source-paths ["src"]
   :main cljs-oss.runner)

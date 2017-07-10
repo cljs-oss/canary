@@ -1,7 +1,9 @@
 (ns cljs-oss.projects.binaryage
   (:import (java.util.concurrent TimeUnit)))
 
-(defn some-helper [x])
+(defn some-helper [x]
+  (binding [*out* *err*]
+    (println "some error")))
 
 (defn ^:task check-cljs-devtools [options]
   (println "TODO: check-cljs-devtools")

@@ -5,16 +5,6 @@
             [clojure.core.async :as async])
   (:import (java.util.concurrent TimeUnit)))
 
-(def ^:private printing-lock (Object.))
-
-(defn synchronized-println [& args]
-  (locking printing-lock
-    (apply println args)))
-
-(defn announce [& args]
-  ; TODO: make this pretty, maybe use some ansi colors
-  (apply synchronized-println args))
-
 (defn pp [data & [level length]]
   (with-out-str
     (binding [*print-level* (or level 5)                                                                                      ; we have to be careful here, data might contain circular references
