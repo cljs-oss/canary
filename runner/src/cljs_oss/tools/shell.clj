@@ -22,8 +22,6 @@
         name (.getName file)]
     (fn [options]
       (let [task (meta options)]
-        (when (:verbose options)
-          (announce (str "launching a shell task " name " at '" path "'")))
         ; TODO: run it in a sandboxed workdir
         ; TODO: pass some environment?
         (let [proc (sh/proc path :verbose (:verbose options))]

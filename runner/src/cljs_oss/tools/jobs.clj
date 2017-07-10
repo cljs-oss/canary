@@ -13,7 +13,7 @@
 
 (defn run-task! [task options]
   (when (:verbose options)
-    (announce "running task" (printing/task-name task)))
+    (announce (str "running task " (printing/task-name task) " " (printing/task-description task))))
   (with-task-printing task options
     (let [task-fn (:fn task)]
       (task-fn (with-meta options task)))))
@@ -72,4 +72,5 @@
           (when (:verbose options)
             (announce "the job completed:\n" (utils/pp result)))
           ; TODO: process results
+          ; TODO: add timing info
           0)))))

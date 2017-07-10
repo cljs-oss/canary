@@ -39,6 +39,9 @@
 (defn task-name [task]
   (clansi/style (:name task) (:color task)))
 
+(defn task-description [task]
+  (clansi/style (:description task) :black))
+
 (defn job-name [options]
   (string/trim (str "job " (:job-id options))))
 
