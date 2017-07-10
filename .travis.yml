@@ -1,9 +1,15 @@
 sudo: required
 
+env:
+  global:
+    - DOCKER_VOLUMES_DIR=$HOME/docker-volumes
+    - DOCKER_CACHE_DIR=$HOME/docker-cache
+
 cache:
   apt: true
   directories:
-    - $HOME/docker
+    - $DOCKER_CACHE_DIR
+    - $DOCKER_VOLUMES_DIR
 
 services:
   - docker
@@ -11,15 +17,16 @@ services:
 before_cache:
    # Save tagged docker images
    - >
-     mkdir -p $HOME/docker && docker images -a --filter='dangling=false' --format '{{.Repository}}:{{.Tag}} {{.ID}}'
-     | xargs -n 2 -t sh -c 'test -e $HOME/docker/$1.tar.gz || docker save $0 | gzip -2 > $HOME/docker/$1.tar.gz'
+     mkdir -p "$DOCKER_CACHE_DIR" && docker images -a --filter='dangling=false' --format '{{.Repository}}:{{.Tag}} {{.ID}}'
+     | xargs -n 2 -t sh -c 'test -e "$DOCKER_CACHE_DIR/$1.tar.gz" || docker save "$0" | gzip -2 > "$DOCKER_CACHE_DIR/$1.tar.gz"'
 
 before_install:
   - sudo apt-get update
   - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
   # Load cached docker images
-  - echo "cached docker images:" && if [[ -d $HOME/docker ]]; then ls $HOME/docker/*.tar.gz || :; fi
-  - if [[ -d $HOME/docker ]]; then ls $HOME/docker/*.tar.gz | xargs -I {file} sh -c "zcat {file} | docker load"; fi
+  - echo "cached docker images:" && if [[ -d $DOCKER_CACHE_DIR ]]; then ls -l $DOCKER_CACHE_DIR/* || :; fi
+  - if [[ -d $DOCKER_CACHE_DIR ]]; then ls $DOCKER_CACHE_DIR/*.tar.gz | xargs -I {file} sh -c "zcat {file} | docker load"; fi
+  - docker images
   - git remote add x https://github.com/cljs-oss/canary.git
   - git fetch x master
   - git checkout x/master
