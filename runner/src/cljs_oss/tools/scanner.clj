@@ -26,8 +26,8 @@
     (task-name :clj last-ns-segment name)))
 
 (defn make-clojure-task [task-var]
-  {:id (task-name-from-var task-var)
-   :fn (var-get task-var)})
+  {:name (task-name-from-var task-var)
+   :fn   (var-get task-var)})
 
 (defn collect-clojure-tasks-for-namespace! [options namespace]
   (when (:verbose options)
@@ -48,8 +48,8 @@
        (filter shell-project?)))
 
 (defn shell-tasks-for-file [options file]
-  [{:id (task-name :sh (cuerdas/kebab (utils/remove-extension (.getName file))) "shell")
-    :fn (shell/make-shell-launcher file)}])
+  [{:name (task-name :sh (cuerdas/kebab (utils/remove-extension (.getName file))) "shell")
+    :fn   (shell/make-shell-launcher file)}])
 
 (defn collect-all-shell-tasks [options dir-path]
   (mapcat (partial shell-tasks-for-file options) (scan-for-shell-projects dir-path)))
