@@ -1,7 +1,9 @@
 (ns cljs-oss.projects.binaryage
+  (:require [clansi])
   (:import (java.util.concurrent TimeUnit)))
 
 (defn some-helper [x]
+  (println (clansi/style "test cyan output from a clj task" :cyan))
   (binding [*out* *err*]
     (println "some error")))
 
