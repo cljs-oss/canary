@@ -1,7 +1,19 @@
 (ns cljs-oss.tools.utils
   "Shared utility functions."
   (:require [clojure.pprint :refer [pprint]]
-            [clojure.string :as string]))
+            [clojure.string :as string]
+            [clojure.core.async :as async])
+  (:import (java.util.concurrent TimeUnit)))
+
+(def ^:private printing-lock (Object.))
+
+(defn synchronized-println [& args]
+  (locking printing-lock
+    (apply println args)))
+
+(defn announce [& args]
+  ; TODO: make this pretty, maybe use some ansi colors
+  (apply synchronized-println args))
 
 (defn pp [data & [level length]]
   (with-out-str
@@ -14,6 +26,23 @@
 
 (defn remove-extension [path]
   (string/replace-first path #"\.[^.]+$" ""))
+
+(defn seconds-to-msec [seconds]
+  (.toMillis TimeUnit/SECONDS seconds))
+
+(defn timeout-cli-parser [str-val]
+  (assert (string? str-val))
+  (seconds-to-msec (Long/parseLong str-val)))
+
+(def timeout-cli-validator [#(not (neg? %)) "Timeout must be a positive number or zero (to disable it)."])
+
+(defn timeout-option [cli-spec]
+  (concat cli-spec [:parse-fn timeout-cli-parser :validate timeout-cli-validator]))
+
+(defn timeout [msec]
+  (if (zero? msec)
+    (async/chan)                                                                                                              ; channel which never closes
+    (async/timeout msec)))
 
 ; -- tests ------------------------------------------------------------------------------------------------------------------
 

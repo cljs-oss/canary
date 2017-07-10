@@ -6,9 +6,22 @@
             [cljs-oss.tools.utils :as utils])
   (:gen-class))
 
+(def default-compiler-sha "HEAD")
+(def default-projects-dir "src/cljs_oss/projects")
+(def default-timeout (utils/seconds-to-msec (* 60 10)))
+(def default-polling-interval (utils/seconds-to-msec 1))
+
 (def cli-options
-  [["-c" "--compiler" "Pin ClojureScript compiler git SHA" :default "HEAD"]
-   ["-p" "--projects" "Path to projects directory" :default "src/cljs_oss/projects"]
+  [["-c" "--compiler SHA" "Pin ClojureScript compiler git SHA"
+    :default default-compiler-sha]
+   ["-p" "--projects DIR" "Path to projects directory"
+    :default default-projects-dir]
+   (utils/timeout-option
+     [nil "--polling-interval SECONDS" "Polling interval for job status check (in seconds)"
+      :default default-polling-interval])
+   (utils/timeout-option
+     ["-t" "--timeout SECONDS" "Total timeout for job to complete (in seconds)"
+      :default default-timeout])
    ["-v" "--verbose"]
    ["-h" "--help"]])
 
@@ -34,8 +47,9 @@
     :projects (utils/canonical-path (:projects options))))
 
 (defn run-job! [options]
-  (let [sanitized-options (sanitize-options options)]
-    (jobs/run! sanitized-options)))
+  (let [sanitized-options (sanitize-options options)
+        status (jobs/run! sanitized-options)]
+    status))
 
 ; -- main entry point -------------------------------------------------------------------------------------------------------
 
@@ -44,5 +58,4 @@
     (cond
       errors (exit 1 (error-msg errors))
       (:help options) (exit 0 (usage summary))
-      :else (run-job! options)))
-  (exit 0))
+      :else (exit (run-job! options)))))

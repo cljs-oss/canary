@@ -30,7 +30,7 @@
 
 (defn collect-clojure-tasks-for-namespace! [options namespace]
   (when (:verbose options)
-    (println (str "requiring '" namespace "'")))
+    (utils/announce (str "requiring '" namespace "'")))
   (require namespace)
   (map make-clojure-task (tasks/scan-tasks namespace)))
 
@@ -51,12 +51,12 @@
         name (.getName file)]
     (fn [options]
       (when (:verbose options)
-        (println (str "launching a shell task " name " at '" path "'")))
+        (utils/announce (str "launching a shell task " name " at '" path "'")))
       ; TODO: run it in a sandboxed workdir
       ; TODO: pass some environment
       (let [result (shell/sh path)]
         (when (:verbose options)
-          (println (str "shell task " name " result: " (utils/pp result))))
+          (utils/announce (str "shell task " name " result: " (utils/pp result))))
         ; TODO: we should stream stdout
         (print (:out result))
         (flush)
