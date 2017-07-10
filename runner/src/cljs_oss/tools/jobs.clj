@@ -29,7 +29,6 @@
 (with-out-str)
 
 (defn run-tasks! [tasks options]
-  ; TODO: present output in a nice way, like lein-cooper
   (loop [iteration 0
          running-tasks (launch-tasks! tasks options)                                                                          ; channel -> task mappings
          completed-tasks []]
