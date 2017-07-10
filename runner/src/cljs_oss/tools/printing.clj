@@ -39,7 +39,8 @@
 ; -- job printing -----------------------------------------------------------------------------------------------------------
 
 (defn format-job-line [time label style content]
-  (let [padded-label (cuerdas/pad label {:length job-label-padding})
+  (let [padded-label (cuerdas/pad label {:length job-label-padding
+                                         :type :right})
         prefix (str "[" time "] " padded-label " |")
         styles (if (sequential? style) style [style])]
     (str (apply clansi/style prefix styles) content)))
@@ -61,7 +62,8 @@
 ; -- task printing ----------------------------------------------------------------------------------------------------------
 
 (defn format-task-line [label style content]
-  (let [padded-label (cuerdas/pad label {:length task-label-padding})
+  (let [padded-label (cuerdas/pad label {:length task-label-padding
+                                         :type :right})
         prefix (str padded-label " |")
         styles (if (sequential? style) style [style])]
     (str (apply clansi/style prefix styles) content)))
