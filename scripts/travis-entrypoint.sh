@@ -27,6 +27,7 @@ if [[ ! ${JOB_ARGS} == job* ]]; then
 fi
 
 travis_fold start docker-build
+echo "Building docker image"
 ./scripts/docker-build.sh
 travis_fold end docker-build
 
