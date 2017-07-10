@@ -18,7 +18,7 @@ before_install:
   - sudo apt-get update
   - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
   # Load cached docker images
-  - echo "cached docker images:" && if [[ -d $HOME/docker ]]; then ls $HOME/docker/*.tar.gz; fi
+  - echo "cached docker images:" && if [[ -d $HOME/docker ]]; then ls $HOME/docker/*.tar.gz || :; fi
   - if [[ -d $HOME/docker ]]; then ls $HOME/docker/*.tar.gz | xargs -I {file} sh -c "zcat {file} | docker load"; fi
   - git remote add x https://github.com/cljs-oss/canary.git
   - git fetch x master
