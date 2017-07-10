@@ -23,7 +23,11 @@
    (timeout-cli-option
      [nil "--polling-interval SECONDS" "Polling interval for job status (in seconds)" :default default-polling-interval])
    (timeout-cli-option
-     ["-t" "--timeout SECONDS" "Total timeout for job to complete (in seconds)" :default default-timeout])
+     [nil "--timeout SECONDS" "Total timeout for job to complete (in seconds)" :default default-timeout])
+   (normal-cli-option
+     ["-d" "--dry" "Dry run. Will not commit into results branch" :default true])
+   (normal-cli-option
+     ["-t" "--test" "Do not launch any tasks. Useful for testing which task will be executed."])
    (normal-cli-option
      ["-v" "--verbose"])
    (normal-cli-option

@@ -11,12 +11,21 @@
 (defn assign-task-colors [tasks]
   (map #(assoc %1 :color %2) tasks printing/palette))
 
+(defn just-test-task [task options]
+  (announce "[test mode] not executing, just providing a dummy test report")
+  {:report (str "test report from task " (printing/task-name task))})
+
+(defn execute-task! [task options]
+  (let [task-fn (:fn task)]
+    (task-fn (with-meta options task))))
+
 (defn run-task! [task options]
   (when (:verbose options)
     (announce (str "running task " (printing/task-name task) " " (printing/task-description task))))
   (with-task-printing task options
-    (let [task-fn (:fn task)]
-      (task-fn (with-meta options task)))))
+    (if (:test options)
+      (just-test-task task options)
+      (execute-task! task options))))
 
 (defn spawn-task! [task options]
   (async/thread (run-task! task options)))
@@ -46,7 +55,8 @@
                   new-completed-tasks (conj completed-tasks (assoc completed-task
                                                               :result result
                                                               :running false))]
-              (announce "completed task" (printing/task-name completed-task))
+              (when (:verbose options)
+                (announce "completed task" (printing/task-name completed-task)))
               (recur (inc iteration) new-running-tasks new-completed-tasks))))))))
 
 (defn spawn-runner! [tasks options]
