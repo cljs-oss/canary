@@ -1,5 +1,6 @@
 (ns cljs-oss.tools.output
-  (:require [clojure.java.io :as io]))
+  (:require [clojure.java.io :as io])
+  (:import (java.util.concurrent TimeUnit)))
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 
@@ -17,3 +18,9 @@
           (when (some? out)
             (printer out))
           (recur))))))
+
+(defn flush-outputs! []
+  ; TODO: how to make sure our piped writers get properly flushed?
+  (.flush *out*)
+  (.flush *err*)
+  (.sleep TimeUnit/SECONDS 1))

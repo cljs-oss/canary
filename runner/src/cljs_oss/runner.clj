@@ -3,7 +3,8 @@
   (:require [clojure.string :as string]
             [clojure.tools.cli :as cli]
             [cljs-oss.tools.jobs :as jobs]
-            [cljs-oss.tools.utils :as utils])
+            [cljs-oss.tools.utils :as utils]
+            [cljs-oss.tools.output :as output])
   (:gen-class))
 
 (def default-compiler-sha "HEAD")
@@ -40,6 +41,7 @@
 (defn exit [status & [msg]]
   (if (some? msg)
     (println msg))
+  (output/flush-outputs!)
   (System/exit status))
 
 (defn sanitize-options [options]
