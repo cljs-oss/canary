@@ -17,6 +17,7 @@
     :default default-compiler-sha]
    ["-p" "--projects DIR" "Path to projects directory"
     :default default-projects-dir]
+   [nil "--job-id ID" "Optional job id"]
    (utils/timeout-option
      [nil "--polling-interval SECONDS" "Polling interval for job status check (in seconds)"
       :default default-polling-interval])

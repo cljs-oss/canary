@@ -39,6 +39,9 @@
 (defn task-name [task]
   (clansi/style (:name task) (:color task)))
 
+(defn job-name [options]
+  (string/trim (str "job " (:job-id options))))
+
 ; -- job printing -----------------------------------------------------------------------------------------------------------
 
 (defn format-job-line [time label style content]
@@ -50,7 +53,7 @@
 
 (defn job-printer [target kind options content]
   (bind-target target kind
-    (let [line (format-job-line (current-time) "job" :default (mark-errors kind content))]
+    (let [line (format-job-line (current-time) (job-name options) :default (mark-errors kind content))]
       (output/synchronized-println line))))
 
 (defn make-job-print-writer! [target kind options]
