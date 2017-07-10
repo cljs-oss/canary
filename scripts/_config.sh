@@ -20,7 +20,7 @@ RUNNER_DIR="$ROOT/runner"
 
 DOCKER_VOLUME_ROOT="canary-data-root"
 DOCKER_VOLUME_APT_CACHE="canary-data-apt-cache"
-DOCKER_IMAGE_NAME="canary"
-DOCKER_CONTAINER_NAME="canary-job"
+DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-"canary"}
+DOCKER_CONTAINER_NAME=${DOCKER_CONTAINER_NAME:-"canary-job"}
 
 popd
