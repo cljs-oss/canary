@@ -24,8 +24,18 @@
       (just-test-task task options)
       (execute-task! task options))))
 
+(defn try-run-task! [task options]
+  (try
+    (run-task! task options)
+    (catch Exception e
+      ; convert exceptions to task results in production
+      (if (:production options)
+        {:status    :exception
+         :exception (.getMessage e)}
+        (throw e)))))
+
 (defn spawn-task! [task options]
-  (async/thread (run-task! task options)))
+  (async/thread (try-run-task! task options)))
 
 (defn launch-tasks! [tasks options]
   (let [enabled-tasks (filter :enabled tasks)
