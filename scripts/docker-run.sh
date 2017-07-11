@@ -6,11 +6,11 @@ false && source _config.sh # never executes, this is here just for IntelliJ Bash
 pushd "$DOCKER_DIR"
 
 mkdir -p "$DOCKER_VOLUMES_DIR/var/cache"
-mkdir -p "$DOCKER_VOLUMES_DIR/root"
+mkdir -p "$DOCKER_VOLUMES_DIR/root/.m2"
 
 docker run \
   --name "$DOCKER_CONTAINER_NAME" \
-  -v "$DOCKER_VOLUMES_DIR/root:/root" \
+  -v "$DOCKER_VOLUMES_DIR/root/.m2:/root/.m2" \
   -v "$DOCKER_VOLUMES_DIR/var/cache:/var/cache" \
   -v "$RUNNER_DIR:/runner" \
   --rm \

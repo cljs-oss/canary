@@ -25,7 +25,7 @@ RUN cd /usr/bin \
     && lein
 RUN yes y | lein upgrade
 
-VOLUME ["/root"]
+VOLUME ["/root/.m2"]
 VOLUME ["/var/cache"]
 VOLUME ["/runner"]
 
