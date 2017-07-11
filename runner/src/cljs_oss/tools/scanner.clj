@@ -21,7 +21,7 @@
 
 (defn task-name-from-var [task-var]
   (let [var-meta (meta task-var)
-        name (:name var-meta)
+        name (str (:name var-meta))
         last-ns-segment (last (string/split (str (ns-name (:ns var-meta))) #"\."))]
     (task-name :clj last-ns-segment name)))
 
