@@ -22,16 +22,27 @@
   ; TODO: we will have to query travis API to get list of builds triggered by this request id
   (str "https://travis-ci.org/" slug "/builds/"))
 
+(defn parse-response [content]
+  (try
+    (json/read-str content)
+    (catch Throwable e
+      (throw (ex-info (str "travis API responded with invalid JSON: " (.getMessage e)) {:response content
+                                                                                        :reason   (.getMessage e)})))))
+
 (defn interpret-travis-response [out err]
-  ; TODO: check err here as well?
-  (let [response (json/read-str out)
-        repo-slug (get-in response ["repository" "slug"])
-        request-id (get-in response ["request" "repository" "id"])
-        build-url (make-travis-build-url repo-slug request-id)
-        report (str "triggered a build of " repo-slug " => request id " request-id)]
-    {:status          :ok
-     :travis-response response
-     :report          report}))
+  ; TODO: handle special case (= out "access denied")
+  (if-not (empty? err)
+    {:status          :error
+     :travis-response err
+     :report          "triggering build on travis failed"}
+    (let [response (parse-response out)
+          repo-slug (get-in response ["repository" "slug"])
+          request-id (get-in response ["request" "repository" "id"])
+          build-url (make-travis-build-url repo-slug request-id)
+          report (str "triggered a build of " repo-slug " => request id " request-id)]
+      {:status          :ok
+       :travis-response response
+       :report          report})))
 
 (defn trigger-travis-build-with-token! [slug token options]
   (let [api-slug (URLEncoder/encode slug)
