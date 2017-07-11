@@ -20,15 +20,6 @@
 (defn seconds-to-msec [seconds]
   (.toMillis TimeUnit/SECONDS seconds))
 
-(defn timeout-cli-parser [str-val]
-  (assert (string? str-val))
-  (seconds-to-msec (Long/parseLong str-val)))
-
-(def timeout-cli-validator [#(not (neg? %)) "Timeout must be a positive number or zero (to disable it)."])
-
-(defn timeout-option [cli-spec]
-  (concat cli-spec [:parse-fn timeout-cli-parser :validate timeout-cli-validator]))
-
 (defn timeout [msec]
   (if (zero? msec)
     (async/chan)                                                                                                              ; channel which never closes
