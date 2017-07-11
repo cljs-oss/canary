@@ -1,29 +1,23 @@
 sudo: required
-
 env:
   global:
-    - DOCKER_VOLUMES_DIR=$HOME/docker-volumes
-    - DOCKER_CACHE_DIR=$HOME/docker-cache
-
+  - DOCKER_VOLUMES_DIR=$HOME/docker-volumes
+  - DOCKER_CACHE_DIR=$HOME/docker-cache
 cache:
   apt: true
   directories:
-    - $DOCKER_CACHE_DIR
-    - $DOCKER_VOLUMES_DIR
-
+  - "$DOCKER_CACHE_DIR"
+  - "$DOCKER_VOLUMES_DIR"
 services:
-  - docker
-
+- docker
 before_cache:
-   - ./scripts/docker-save.sh
-
+- "./scripts/docker-save.sh"
 before_install:
-  - sudo apt-get update
-  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
-  - git remote add x https://github.com/cljs-oss/canary.git
-  - git fetch x master
-  - git checkout x/master
-  - ./scripts/docker-load.sh
-
+- sudo apt-get update
+- sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+- git remote add x https://github.com/cljs-oss/canary.git
+- git fetch x master
+- git checkout x/master
+- "./scripts/docker-load.sh"
 script:
-  - ./scripts/travis-entrypoint.sh
+- "./scripts/travis-entrypoint.sh"
