@@ -11,7 +11,7 @@
 (def default-compiler-sha "HEAD")
 (def default-projects-dir "src/cljs_oss/projects")
 (def default-timeout (utils/seconds-to-msec (* 60 10)))
-(def default-polling-interval (utils/seconds-to-msec 1))
+(def default-polling-interval (utils/seconds-to-msec 5))
 
 (def cli-options
   [(normal-cli-option
