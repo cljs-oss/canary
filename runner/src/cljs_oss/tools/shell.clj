@@ -50,3 +50,18 @@
             (when (:verbose options)
               (announce (str "shell task " name " exit-code: " status)))
             {:exit-code status}))))))
+
+(defn extract-outputs-if-needed [result proc options]
+  (if (:stream-output options)
+    result
+    (assoc result
+      :out (sh/stream-to-string proc :out)
+      :err (sh/stream-to-string proc :err))))
+
+(defn launch! [cmd args & [options]]
+  (let [proc (apply sh/proc cmd args)]
+    (when (:stream-output options)
+      (stream-proc-output! proc))
+    (let [status (sh/exit-code proc)]
+      (-> {:exit-code status}
+          (extract-outputs-if-needed proc options)))))
