@@ -30,7 +30,7 @@
    (timeout-cli-option
      [nil "--timeout SECONDS" "Total timeout for job to complete (in seconds)" :default default-timeout])
    (normal-cli-option
-     [nil "--production" "Will not commit into results branch" :default true])
+     [nil "--production" "Will not commit into results branch"])
    (normal-cli-option
      ["-t" "--test" "Do not launch any tasks. Useful for testing which task will be executed."])
    (normal-cli-option
