@@ -1,8 +1,11 @@
 (ns cljs-oss.tools.shell
   "High-level utils for working with shell."
   (:require [me.raynes.conch.low-level :as sh]
+            [me.raynes.fs :as fs]
             [cljs-oss.tools.output :as output]
-            [cljs-oss.tools.printing :refer [announce]]))
+            [cljs-oss.tools.printing :refer [announce]]
+            [cljs-oss.tools.utils :as utils]
+            [clojure.java.io :as io]))
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 
@@ -17,14 +20,31 @@
   (output/print-stream-as-lines! (:out proc) out-printer)
   (output/print-stream-as-lines! (:err proc) err-printer))
 
+(defn determine-workdir-for-task [task options]
+  (let [job-slug (utils/sanitize-as-filename (or (:job-id options) "_local-job"))
+        task-slug (utils/sanitize-as-filename (:name task))
+        task-workdir (str (:workdir options) "/" job-slug "/" task-slug)]
+    task-workdir))
+
+(defn ensure-clean-workdir! [path]
+  (when (fs/exists? path)
+    (assert (fs/directory? path))
+    (fs/delete-dir path))
+  (fs/mkdirs path))
+
+(defn prepare-workdir! [task options]
+  (let [workdir-path (determine-workdir-for-task task options)]
+    (ensure-clean-workdir! workdir-path)
+    workdir-path))
+
 (defn make-shell-launcher [file]
   (let [path (str file)
         name (.getName file)]
     (fn [options]
       (let [task (meta options)]
-        ; TODO: run it in a sandboxed workdir
         ; TODO: pass some environment?
-        (let [proc (sh/proc path :verbose (:verbose options))]
+        (let [workdir (prepare-workdir! task options)
+              proc (sh/proc path :verbose false :dir workdir)]
           (stream-proc-output! proc)
           (let [status (sh/exit-code proc)]
             (when (:verbose options)

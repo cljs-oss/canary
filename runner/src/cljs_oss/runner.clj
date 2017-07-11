@@ -12,12 +12,15 @@
 (def default-projects-dir "src/cljs_oss/projects")
 (def default-timeout (utils/seconds-to-msec (* 60 10)))
 (def default-polling-interval (utils/seconds-to-msec 5))
+(def default-work-dir ".workdir")
 
 (def cli-options
   [(normal-cli-option
      ["-c" "--compiler SHA" "Pin ClojureScript compiler git SHA" :default default-compiler-sha])
    (normal-cli-option
      ["-p" "--projects DIR" "Path to projects directory" :default default-projects-dir])
+   (normal-cli-option
+     [nil "--workdir DIR" "Path to working directory" :default default-work-dir])
    (normal-cli-option
      [nil "--only SUBSTR" "Run only tasks matching a substring"])
    (normal-cli-option
@@ -55,7 +58,8 @@
 
 (defn sanitize-options [options]
   (assoc options
-    :projects (utils/canonical-path (:projects options))))
+    :projects (utils/canonical-path (:projects options))
+    :workdir (utils/canonical-path (:workdir options))))
 
 (defn run-job! [options]
   (let [sanitized-options (sanitize-options options)

@@ -25,10 +25,17 @@
     (async/chan)                                                                                                              ; channel which never closes
     (async/timeout msec)))
 
+(defn sanitize-as-filename [name]
+  (-> name
+      (string/replace #"[^a-zA-Z0-9]" "_")
+      (string/replace #"_+" "_")))
+
 ; -- tests ------------------------------------------------------------------------------------------------------------------
 
 (comment
   (pp {:infinite (iterate inc 0)})
 
   (canonical-path ".")
-  (canonical-path "src/cljs_oss"))
+  (canonical-path "src/cljs_oss")
+
+  (sanitize-as-filename "!@#$%^&*abc  xxx"))

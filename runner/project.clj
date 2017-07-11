@@ -6,6 +6,7 @@
                  [org.clojure/tools.cli "0.3.5"]
                  [org.clojure/tools.namespace "0.2.11"]
                  [me.raynes/conch "0.8.0"]
+                 [me.raynes/fs "1.4.6"]
                  [clansi "1.0.0"]
                  [funcool/cuerdas "2.0.3"]]
   :source-paths ["src"]
