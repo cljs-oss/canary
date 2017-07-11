@@ -8,8 +8,12 @@ pushd "$DOCKER_DIR"
 mkdir -p "$DOCKER_VOLUMES_DIR/var/cache"
 mkdir -p "$DOCKER_VOLUMES_DIR/root/.m2"
 
+# generate list of inherited env vars
+env | grep "^CANARY_" > "$DOCKER_ENV_FILE"
+
 docker run \
   --name "$DOCKER_CONTAINER_NAME" \
+  --env-file "$DOCKER_ENV_FILE" \
   -v "$DOCKER_VOLUMES_DIR/root/.m2:/root/.m2" \
   -v "$DOCKER_VOLUMES_DIR/var/cache:/var/cache" \
   -v "$RUNNER_DIR:/runner" \
