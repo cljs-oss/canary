@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 source "$(dirname "${BASH_SOURCE[0]}")/_config.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/lib/travis.sh"

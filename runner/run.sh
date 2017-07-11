@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
+# a simple wrapper for lein run
 # this is the entry-point of our docker container, see docker/Dockerfile
-# this also can be called directly for debugging purposes
+# this also can be called directly during development
 
 set -e -o pipefail
 
