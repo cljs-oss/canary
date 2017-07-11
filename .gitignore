@@ -1,5 +1,6 @@
 /.docker-volumes
 /.docker-cache
 /runner/.workdir
+/runner/.env
 /runner/target
 /runner/.nrepl-port
