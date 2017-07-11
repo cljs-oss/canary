@@ -23,10 +23,12 @@
     (output/print-stream-as-lines! stream printer)
     (PrintWriter. writer)))
 
-(defn mark-errors [kind content]
-  (let [prefix (if (= kind :err) "!" " ")
-        style (if (= kind :err) :red :default)]
-    (clansi/style (str prefix content) style)))
+(defn mark-errors [kind options content]
+  (if (:mark-errors options)
+    (let [prefix (if (= kind :err) "!" " ")
+          style (if (= kind :err) :red :default)]
+      (clansi/style (str prefix content) style))
+    (str " " content)))
 
 (defmacro bind-target [target kind & body]
   `(binding [~(if (= kind :err) '*err* '*out*) ~target]
@@ -56,7 +58,7 @@
 
 (defn job-printer [target kind options content]
   (bind-target target kind
-    (let [line (format-job-line (current-time) (job-name options) :default (mark-errors kind content))]
+    (let [line (format-job-line (current-time) (job-name options) :default (mark-errors kind options content))]
       (output/synchronized-println line))))
 
 (defn make-job-print-writer! [target kind options]
@@ -79,7 +81,7 @@
 
 (defn task-printer [target kind task options content]
   (binding [*out* target]
-    (let [line (format-task-line (:name task) (:color task) (mark-errors kind content))]
+    (let [line (format-task-line (:name task) (:color task) (mark-errors kind options content))]
       (output/synchronized-println line))))
 
 (defn make-task-print-writer! [target kind task options]
