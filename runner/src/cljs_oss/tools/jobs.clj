@@ -8,9 +8,6 @@
             [cljs-oss.tools.utils :as utils]
             [cljs-oss.tools.printing :as printing :refer [announce with-job-printing with-task-printing]]))
 
-(defn assign-task-colors [tasks]
-  (map #(assoc %1 :color %2) tasks printing/palette))
-
 (defn just-test-task [task options]
   (announce "[test mode] not executing, just providing a dummy test report")
   {:report (str "test report from task " (printing/task-name task))})
@@ -31,13 +28,18 @@
   (async/thread (run-task! task options)))
 
 (defn launch-tasks! [tasks options]
-  (let [* (fn [task]
-            [(spawn-task! task options) (assoc task :running true)])]
-    (doall (into {} (map * tasks)))))
+  (let [enabled-tasks (filter :enabled tasks)
+        * (fn [tasks task] (assoc tasks (spawn-task! task options) (assoc task :running true)))]
+    (doall (reduce * {} enabled-tasks))))
 
-(with-out-str)
+(defn report-disabled-tasks [tasks]
+  (let [disabled-tasks (remove :enabled tasks)]
+    (doseq [task disabled-tasks]
+      (announce (str "not running task " (printing/task-name task) " (" (:reason task) ")")))))
 
 (defn run-tasks! [tasks options]
+  (when (:verbose options)
+    (report-disabled-tasks tasks))
   (loop [iteration 0
          running-tasks (launch-tasks! tasks options)                                                                          ; channel -> task mappings
          completed-tasks []]
@@ -69,9 +71,8 @@
   (with-job-printing options
     (when (:verbose options)
       (announce "running a job with options:\n" (pp options)))
-    (let [effective-tasks (scanner/collect-effective-tasks! options)
-          colored-tasks (assign-task-colors effective-tasks)
-          running-runner (spawn-runner! colored-tasks options)
+    (let [analyzed-tasks (scanner/collect-analyzed-tasks! options)
+          running-runner (spawn-runner! analyzed-tasks options)
           timeout-channel (utils/timeout (:timeout options))
           [result completed-channel] (async/alts!! [timeout-channel running-runner])]
       (if (= completed-channel timeout-channel)

@@ -19,6 +19,8 @@
    (normal-cli-option
      ["-p" "--projects DIR" "Path to projects directory" :default default-projects-dir])
    (normal-cli-option
+     [nil "--only SUBSTR" "Run only tasks matching a substring"])
+   (normal-cli-option
      [nil "--job-id ID" "Optional job id"])
    (timeout-cli-option
      [nil "--polling-interval SECONDS" "Polling interval for job status (in seconds)" :default default-polling-interval])
