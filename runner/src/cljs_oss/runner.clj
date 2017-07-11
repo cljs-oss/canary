@@ -10,9 +10,9 @@
 
 (def default-compiler-sha "HEAD")
 (def default-projects-dir "src/cljs_oss/projects")
-(def default-timeout (utils/seconds-to-msec (* 60 10)))
-(def default-polling-interval (utils/seconds-to-msec 5))
 (def default-work-dir ".workdir")
+(def default-timeout (utils/seconds-to-msec (* 60 60)))                                                                       ; 60min
+(def default-polling-interval (utils/seconds-to-msec (* 60 5)))                                                               ; 5min, travis kills a job when no output is presented in last 10min
 
 (def cli-options
   [(normal-cli-option
