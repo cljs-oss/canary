@@ -1,6 +1,5 @@
 (ns cljs-oss.projects.binaryage
-  (:require [clansi]))
+  (:require [cljs-oss.tools.support :refer [trigger-travis-build!]]))
 
 (defn ^:task cljs-devtools [options]
-  "some result")
-
+  (trigger-travis-build! "binaryage/cljs-devtools" "CLJS_DEVTOOLS_TRAVIS_TOKEN" options))
