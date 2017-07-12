@@ -9,16 +9,14 @@
             [cljs-oss.tools.printing :as printing :refer [announce with-job-printing with-task-printing]]))
 
 (defn just-test-task [task options]
-  (announce "[test mode] not executing, just providing a dummy test report")
-  {:report (str "test report from task " (printing/task-name task))})
+  (announce "[test mode] not executing, just providing a dummy report")
+  {:report (str "test report from task " (:name task))})
 
 (defn execute-task! [task options]
   (let [task-fn (:fn task)]
     (task-fn (with-meta options task))))
 
 (defn run-task! [task options]
-  (when (:verbose options)
-    (announce (str (printing/emphasize "running") " task " (printing/task-name task) " " (printing/task-description task))))
   (with-task-printing task options
     (if (:test options)
       (just-test-task task options)
@@ -37,19 +35,27 @@
 (defn spawn-task! [task options]
   (async/thread (try-run-task! task options)))
 
+(defn launch-task! [task options]
+  (let [details (str " " (printing/task-description task))
+        announcement (str (printing/emphasize "running") " task " (printing/task-name task))]
+    (announce (str announcement (if (:verbose options) details))))
+  (spawn-task! task options))
+
 (defn launch-tasks! [tasks options]
   (let [enabled-tasks (filter :enabled tasks)
-        * (fn [tasks task] (assoc tasks (spawn-task! task options) (assoc task :running true)))]
+        * (fn [tasks task]
+            (assoc tasks (launch-task! task options) (assoc task :running true)))]
     (doall (reduce * {} enabled-tasks))))
 
-(defn report-disabled-tasks [tasks]
+(defn report-disabled-tasks [tasks options]
   (let [disabled-tasks (remove :enabled tasks)]
     (doseq [task disabled-tasks]
-      (announce (str (printing/emphasize "skipping") " task " (printing/task-name task) " (" (:reason task) ")")))))
+      (let [reason (str " (" (:reason task) ")")
+            announcement (str (printing/emphasize "skipping") " task " (printing/task-name task))]
+        (announce (str announcement (if (:verbose options) reason)))))))
 
 (defn run-tasks! [tasks options]
-  (when (:verbose options)
-    (report-disabled-tasks tasks))
+  (report-disabled-tasks tasks options)
   (loop [iteration 0
          running-tasks (launch-tasks! tasks options)                                                                          ; channel -> task mappings
          completed-tasks []]
