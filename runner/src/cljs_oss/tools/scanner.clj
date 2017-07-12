@@ -70,7 +70,7 @@
     (concat (collect-all-clojure-tasks! options dir-path)
             (collect-all-shell-tasks options dir-path))))
 
-(defn collect-analyzed-tasks! [options]
+(defn collect-and-analyze-all-tasks! [options]
   (let [all-tasks (collect-all-tasks! options)]
     (tasks/analyze-tasks all-tasks options)))
 

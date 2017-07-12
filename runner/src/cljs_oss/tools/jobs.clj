@@ -92,7 +92,7 @@
   (with-job-printing options
     (when (:verbose options)
       (announce "running a job with options:\n" (pp options)))
-    (let [analyzed-tasks (scanner/collect-analyzed-tasks! options)
+    (let [analyzed-tasks (scanner/collect-and-analyze-all-tasks! options)
           running-runner (spawn-runner! analyzed-tasks options)
           timeout-channel (utils/timeout (:timeout options))
           [result completed-channel] (async/alts!! [timeout-channel running-runner])]
