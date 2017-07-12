@@ -27,6 +27,10 @@ RUN yes y | lein upgrade
 # for planck
 RUN apt-get -y install clang cmake pkg-config javascriptcoregtk-3.0 libglib2.0-dev libzip-dev libcurl4-gnutls-dev libicu-dev
 
+# for clojurescript build script
+RUN apt-get -y install maven
+RUN mvn --version
+
 VOLUME ["/root/.m2"]
 VOLUME ["/var/cache"]
 VOLUME ["/runner"]
