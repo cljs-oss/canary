@@ -78,9 +78,8 @@
 (defn format-task-line [label style content]
   (let [padded-label (cuerdas/pad label {:length task-label-padding
                                          :type   :right})
-        prefix (str padded-label " |")
         styles (if (sequential? style) style [style])]
-    (str (apply clansi/style prefix styles) content)))
+    (str (apply clansi/style padded-label styles) " |" content)))
 
 (defn task-printer [target kind task options content]
   (binding [*out* target]
