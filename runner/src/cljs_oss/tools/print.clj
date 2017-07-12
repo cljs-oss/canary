@@ -16,7 +16,7 @@
 
 (defn announce [message & [verbosity options]]
   (when (or (nil? verbosity) (<= verbosity (:verbosity options)))
-    (output/synchronized-println message)))
+    (println message)))
 
 ; -- styling wrappers -------------------------------------------------------------------------------------------------------
 
@@ -66,7 +66,7 @@
 (defn job-printer [target kind options content]
   (bind-target target kind
     (let [line (format-job-line (format-current-time) (job-name options) :default (mark-errors kind options content))]
-      (output/synchronized-println line))))
+      (println line))))
 
 (defn make-job-print-writer! [target kind options]
   (make-print-writer! (partial job-printer target kind options)))
@@ -88,7 +88,7 @@
 (defn task-printer [target kind task options content]
   (binding [*out* target]
     (let [line (format-task-line (:name task) (:color task) (mark-errors kind options content))]
-      (output/synchronized-println line))))
+      (println line))))
 
 (defn make-task-print-writer! [target kind task options]
   (make-print-writer! (partial task-printer target kind task options)))

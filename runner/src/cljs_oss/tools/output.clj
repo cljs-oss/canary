@@ -3,14 +3,6 @@
   (:import (java.util.concurrent TimeUnit)
            (java.io BufferedReader)))
 
-; -- synchronized printing --------------------------------------------------------------------------------------------------
-
-(def printing-lock (Object.))
-
-(defn synchronized-println [& args]
-  (locking printing-lock
-    (apply println args)))
-
 ; -- line-based streaming ---------------------------------------------------------------------------------------------------
 
 (defn print-stream-as-lines! [stream printer]
