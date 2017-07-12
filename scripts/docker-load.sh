@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
 
-source "$(dirname "${BASH_SOURCE[0]}")/_config.sh"
-source "$(dirname "${BASH_SOURCE[0]}")/lib/travis.sh"
-# never executes, this is here just for IntelliJ Bash support to understand our sourcing
-false && source _config.sh
-false && source lib/travis.sh
+source "$(dirname "${BASH_SOURCE[0]}")/_config.sh" || true || source _config.sh # this is here just for IntelliJ Bash support to understand our sourcing
+source "$(dirname "${BASH_SOURCE[0]}")/lib/travis.sh" || true || source lib/travis.sh # this is here just for IntelliJ Bash support to understand our sourcing
 
 travis_fold start docker-load
 echo "Load docker image from cache"
