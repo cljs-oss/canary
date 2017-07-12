@@ -23,7 +23,7 @@
 (defn determine-workdir-for-task [task options]
   (let [job-slug (utils/sanitize-as-filename (or (:job-id options) "_local-job"))
         task-slug (utils/sanitize-as-filename (:name task))
-        task-workdir (str (:workdir options) "/" job-slug "/" task-slug)]
+        task-workdir (str (:workdir options) "/" "jobs" "/" job-slug "/" "tasks" "/" task-slug)]
     task-workdir))
 
 (defn ensure-clean-workdir! [path]
