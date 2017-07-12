@@ -18,7 +18,7 @@
 
 (defn run-task! [task options]
   (when (:verbose options)
-    (announce (str "running task " (printing/task-name task) " " (printing/task-description task))))
+    (announce (str (printing/emphasize "running") " task " (printing/task-name task) " " (printing/task-description task))))
   (with-task-printing task options
     (if (:test options)
       (just-test-task task options)
@@ -45,7 +45,7 @@
 (defn report-disabled-tasks [tasks]
   (let [disabled-tasks (remove :enabled tasks)]
     (doseq [task disabled-tasks]
-      (announce (str "not running task " (printing/task-name task) " (" (:reason task) ")")))))
+      (announce (str (printing/emphasize "skipping") " task " (printing/task-name task) " (" (:reason task) ")")))))
 
 (defn run-tasks! [tasks options]
   (when (:verbose options)

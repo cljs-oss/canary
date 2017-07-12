@@ -47,6 +47,9 @@
 (defn job-name [options]
   (string/trim (str "job " (:job-id options))))
 
+(defn emphasize [text]
+  (clansi/style text :bright))
+
 ; -- job printing -----------------------------------------------------------------------------------------------------------
 
 (defn format-job-line [time label style content]
