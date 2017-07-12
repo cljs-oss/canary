@@ -17,9 +17,8 @@
   (future
     (let [output (io/reader stream)]
       (loop []
-        (let [out (.readLine ^BufferedReader output)]
-          (when (some? out)
-            (printer out))
+        (when-some [out (.readLine ^BufferedReader output)]
+          (printer out)
           (recur))))))
 
 ; -- flushing ---------------------------------------------------------------------------------------------------------------
