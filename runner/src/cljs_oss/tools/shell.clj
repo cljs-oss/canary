@@ -47,8 +47,7 @@
               proc (sh/proc path :verbose false :dir workdir)]
           (stream-proc-output! proc)
           (let [status (sh/exit-code proc)]
-            (when (:verbose options)
-              (announce (str "shell task " name " exit-code: " status)))
+            (announce (str "shell task " name " exit-code: " status) 1 options)
             {:exit-code status}))))))
 
 (defn extract-outputs-if-needed [result proc options]

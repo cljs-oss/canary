@@ -4,7 +4,7 @@
             [clojure.tools.cli :as cli]
             [cljs-oss.tools.jobs :as jobs]
             [cljs-oss.tools.utils :as utils]
-            [cljs-oss.tools.cli :refer [timeout-cli-option normal-cli-option]]
+            [cljs-oss.tools.cli :refer [timeout-cli-option normal-cli-option verbosity-cli-option]]
             [cljs-oss.tools.output :as output])
   (:gen-class))
 
@@ -33,8 +33,8 @@
      [nil "--production" "Will not commit into results branch"])
    (normal-cli-option
      ["-t" "--test" "Do not launch any tasks. Useful for testing which task will be executed."])
-   (normal-cli-option
-     ["-v" "--verbose"])
+   (verbosity-cli-option
+     ["-v" nil "Verbosity level; may be specified multiple times"])
    (normal-cli-option
      ["-h" "--help"])])
 

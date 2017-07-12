@@ -2,8 +2,9 @@
   "Supporting Travis functionality for tasks."
   (:require [me.raynes.conch.low-level :as sh]
             [clojure.data.json :as json]
-            [cljs-oss.tools.shell :as shell]
             [clojure.string :as string]
+            [cljs-oss.tools.shell :as shell]
+            [cljs-oss.tools.printing :refer [announce]]
             [cljs-oss.tools.env :as env]
             [cljs-oss.tools.utils :as utils])
   (:import (java.net URLEncoder)))
@@ -55,8 +56,7 @@
                    "-H" (str "Authorization: token " token)
                    "-d" (json/write-str request-body)
                    api-endpoint]]
-    (when (:verbose options)
-      (println "> curl" (blind-secrets curl-args)))
+    (announce "> curl" (blind-secrets curl-args) 1 options)
     (let [result (shell/launch! "curl" curl-args)]
       (if (= (:exit-code result) 0)
         (interpret-response (:out result) (:err result))

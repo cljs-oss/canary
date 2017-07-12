@@ -37,8 +37,7 @@
    :fn          (var-get task-var)})
 
 (defn collect-clojure-tasks-for-namespace! [options namespace]
-  (when (:verbose options)
-    (announce (str "requiring '" namespace "'")))
+  (announce (str "requiring '" namespace "'") 2 options)
   (require namespace)
   (map make-clojure-task (tasks/scan-tasks namespace)))
 

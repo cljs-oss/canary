@@ -34,9 +34,9 @@
   `(binding [~(if (= kind :err) '*err* '*out*) ~target]
      ~@body))
 
-(defn announce [& args]
-  ; TODO: introduce verbosity levels
-  (apply output/synchronized-println args))
+(defn announce [message & [verbosity options]]
+  (when (or (nil? verbosity) (<= verbosity (:verbosity options)))
+    (output/synchronized-println message)))
 
 (defn task-name [task]
   (clansi/style (:name task) (:color task)))

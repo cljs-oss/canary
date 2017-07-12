@@ -38,7 +38,7 @@
 (defn launch-task! [task options]
   (let [details (str " " (printing/task-description task))
         announcement (str (printing/emphasize "running") " task " (printing/task-name task))]
-    (announce (str announcement (if (:verbose options) details))))
+    (announce (str announcement (if (>= (:verbosity options) 1) details))))
   (spawn-task! task options))
 
 (defn launch-tasks! [tasks options]
@@ -52,7 +52,7 @@
     (doseq [task disabled-tasks]
       (let [reason (str " (" (:reason task) ")")
             announcement (str (printing/emphasize "skipping") " task " (printing/task-name task))]
-        (announce (str announcement (if (:verbose options) reason)))))))
+        (announce (str announcement (if (>= (:verbosity options) 1) reason)))))))
 
 (defn run-tasks! [tasks options]
   (report-disabled-tasks tasks options)
@@ -66,15 +66,14 @@
         (let [[result completed-channel] (async/alts!! all-channels)]
           (if (= completed-channel timeout-channel)
             (do
-              (announce "still waiting ..." iteration)
+              (announce (str "still waiting ... #" iteration))
               (recur (inc iteration) running-tasks completed-tasks))
             (let [completed-task (get running-tasks completed-channel)
                   new-running-tasks (dissoc running-tasks completed-channel)
                   new-completed-tasks (conj completed-tasks (assoc completed-task
                                                               :result result
                                                               :running false))]
-              (when (:verbose options)
-                (announce "completed task" (printing/task-name completed-task)))
+              (announce (str "completed task " (printing/task-name completed-task)) 1 options)
               (recur (inc iteration) new-running-tasks new-completed-tasks))))))))
 
 (defn spawn-runner! [tasks options]
@@ -90,8 +89,7 @@
 
 (defn run! [options]
   (with-job-printing options
-    (when (:verbose options)
-      (announce "running a job with options:\n" (pp options)))
+    (announce (str "running a job with options:\n" (pp options)) 1 options)
     (let [analyzed-tasks (scanner/collect-and-analyze-all-tasks! options)
           running-runner (spawn-runner! analyzed-tasks options)
           timeout-channel (utils/timeout (:timeout options))
@@ -101,8 +99,7 @@
           (announce (timeout-error-message options))
           2)
         (let [result-tasks (preprocess-result-tasks result)]
-          (when (:verbose options)
-            (announce "the job completed:\n" (utils/pp result-tasks)))
+          (announce (str "the job completed:\n" (utils/pp result-tasks)) 1 options)
           ; TODO: process results
           ; TODO: add timing info
           0)))))
