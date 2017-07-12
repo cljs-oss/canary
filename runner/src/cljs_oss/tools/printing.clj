@@ -12,9 +12,29 @@
 (def task-label-padding 20)
 (def time-formatter (SimpleDateFormat. "HH:mm:ss"))
 
+; -- announcement printing --------------------------------------------------------------------------------------------------
+
+(defn announce [message & [verbosity options]]
+  (when (or (nil? verbosity) (<= verbosity (:verbosity options)))
+    (output/synchronized-println message)))
+
+; -- styling wrappers -------------------------------------------------------------------------------------------------------
+
+(defn task-name [task]
+  (clansi/style (:name task) (:color task)))
+
+(defn task-description [task]
+  (clansi/style (:description task) :black))
+
+(defn job-name [options]
+  (string/trim (str "job " (:job-id options))))
+
+(defn emphasize [text]
+  (clansi/style text :bright))
+
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 
-(defn current-time []
+(defn format-current-time []
   (.format time-formatter (Date.)))
 
 (defn make-print-writer! [printer]
@@ -34,22 +54,6 @@
   `(binding [~(if (= kind :err) '*err* '*out*) ~target]
      ~@body))
 
-(defn announce [message & [verbosity options]]
-  (when (or (nil? verbosity) (<= verbosity (:verbosity options)))
-    (output/synchronized-println message)))
-
-(defn task-name [task]
-  (clansi/style (:name task) (:color task)))
-
-(defn task-description [task]
-  (clansi/style (:description task) :black))
-
-(defn job-name [options]
-  (string/trim (str "job " (:job-id options))))
-
-(defn emphasize [text]
-  (clansi/style text :bright))
-
 ; -- job printing -----------------------------------------------------------------------------------------------------------
 
 (defn format-job-line [time label style content]
@@ -61,7 +65,7 @@
 
 (defn job-printer [target kind options content]
   (bind-target target kind
-    (let [line (format-job-line (current-time) (job-name options) :default (mark-errors kind options content))]
+    (let [line (format-job-line (format-current-time) (job-name options) :default (mark-errors kind options content))]
       (output/synchronized-println line))))
 
 (defn make-job-print-writer! [target kind options]
