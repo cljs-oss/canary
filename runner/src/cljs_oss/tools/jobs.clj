@@ -83,6 +83,11 @@
 (defn timeout-error-message [options]
   (str "the job timeouted (after " (:timeout options) "ms)"))
 
+(defn preprocess-result-tasks [tasks]
+  (let [* (fn [task]
+            (dissoc task :fn))]
+    (map * tasks)))
+
 (defn run! [options]
   (with-job-printing options
     (when (:verbose options)
@@ -95,9 +100,9 @@
         (do
           (announce (timeout-error-message options))
           2)
-        (do
+        (let [result-tasks (preprocess-result-tasks result)]
           (when (:verbose options)
-            (announce "the job completed:\n" (utils/pp result)))
+            (announce "the job completed:\n" (utils/pp result-tasks)))
           ; TODO: process results
           ; TODO: add timing info
           0)))))
