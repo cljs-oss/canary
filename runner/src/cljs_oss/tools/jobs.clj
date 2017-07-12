@@ -25,7 +25,7 @@
 (defn try-run-task! [task options]
   (try
     (run-task! task options)
-    (catch Exception e
+    (catch Throwable e
       ; convert exceptions to task results in production
       (if (:production options)
         {:status    :exception
