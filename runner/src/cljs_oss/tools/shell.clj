@@ -37,14 +37,13 @@
     (ensure-clean-workdir! workdir-path)
     workdir-path))
 
-(defn make-shell-launcher [file]
+(defn make-shell-launcher [file & [env]]
   (let [path (str file)
         name (.getName file)]
     (fn [options]
       (let [task (meta options)]
-        ; TODO: pass some environment?
         (let [workdir (prepare-workdir! task options)
-              proc (sh/proc path :verbose false :dir workdir)]
+              proc (sh/proc path :verbose false :dir workdir :env env)]
           (stream-proc-output! proc)
           (let [status (sh/exit-code proc)]
             (announce (str "shell task " name " exit-code: " status) 1 options)
