@@ -58,7 +58,7 @@
   (report-disabled-tasks tasks options)
   (loop [iteration 0
          running-tasks (launch-tasks! tasks options)                                                                          ; channel -> task mappings
-         completed-tasks []]
+         completed-tasks (vec (remove :enabled tasks))]                                                                       ; disabled tasks are considered instantly completed
     (if (empty? running-tasks)
       completed-tasks
       (let [timeout-channel (utils/timeout (:polling-interval options))
