@@ -24,7 +24,7 @@
    (normal-cli-option
      [nil "--only SUBSTR" "Run only tasks matching a substring"])
    (normal-cli-option
-     [nil "--job-id ID" "Optional job id"])
+     [nil "--job-id ID" "Optional job id" :default "test"])
    (timeout-cli-option
      [nil "--polling-interval SECONDS" "Polling interval for job status (in seconds)" :default default-polling-interval])
    (timeout-cli-option
