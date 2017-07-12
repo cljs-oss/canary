@@ -8,7 +8,7 @@ mkdir -p "$DOCKER_VOLUMES_DIR/var/cache"
 mkdir -p "$DOCKER_VOLUMES_DIR/root/.m2"
 
 # generate list of inherited env vars
-env | grep "^CANARY_" > "$DOCKER_ENV_FILE"
+env | grep "^CANARY_" > "$DOCKER_ENV_FILE" || :
 
 docker run \
   --name "$DOCKER_CONTAINER_NAME" \
