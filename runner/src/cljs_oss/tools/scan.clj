@@ -7,7 +7,7 @@
             [cljs-oss.tools.utils :as utils]
             [cljs-oss.tools.tasks :as tasks]
             [cljs-oss.tools.shell :as shell]
-            [cljs-oss.tools.printing :refer [announce]]))
+            [cljs-oss.tools.print :refer [announce]]))
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 

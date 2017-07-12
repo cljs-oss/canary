@@ -2,7 +2,7 @@
   "Tools for working with clojure tasks."
   (:require [cljs-oss.tools.utils :as utils]
             [clojure.string :as string]
-            [cljs-oss.tools.printing :as printing]))
+            [cljs-oss.tools.print :as print]))
 
 (defn var-task? [var]
   (assert (var? var))
@@ -40,7 +40,7 @@
       :else (filter-default task))))
 
 (defn assign-task-colors [tasks]
-  (map #(assoc %1 :color %2) tasks printing/palette))
+  (map #(assoc %1 :color %2) tasks print/palette))
 
 (defn activate-tasks-based-on-options [tasks options]
   (map (partial task-filter options) tasks))

@@ -4,7 +4,7 @@
             [clojure.data.json :as json]
             [clojure.string :as string]
             [cljs-oss.tools.shell :as shell]
-            [cljs-oss.tools.printing :refer [announce]]
+            [cljs-oss.tools.print :refer [announce]]
             [cljs-oss.tools.env :as env]
             [cljs-oss.tools.utils :as utils])
   (:import (java.net URLEncoder)))

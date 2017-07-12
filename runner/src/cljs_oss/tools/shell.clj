@@ -3,7 +3,7 @@
   (:require [me.raynes.conch.low-level :as sh]
             [me.raynes.fs :as fs]
             [cljs-oss.tools.output :as output]
-            [cljs-oss.tools.printing :refer [announce]]
+            [cljs-oss.tools.print :refer [announce]]
             [cljs-oss.tools.utils :as utils]
             [clojure.java.io :as io]))
 

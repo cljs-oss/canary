@@ -1,4 +1,4 @@
-(ns cljs-oss.tools.printing
+(ns cljs-oss.tools.print
   (:require [clojure.string :as string]
             [cljs-oss.tools.output :as output]
             [cuerdas.core :as cuerdas]

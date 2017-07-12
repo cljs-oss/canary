@@ -6,7 +6,7 @@
             [cljs-oss.tools.scan :as scan]
             [cljs-oss.tools.tasks :as tasks]
             [cljs-oss.tools.utils :as utils]
-            [cljs-oss.tools.printing :as printing :refer [announce with-job-printing with-task-printing]]))
+            [cljs-oss.tools.print :as print :refer [announce with-job-printing with-task-printing]]))
 
 (defn just-test-task [task options]
   (announce "[test mode] not executing, just providing a dummy report")
@@ -36,8 +36,8 @@
   (async/thread (try-run-task! task options)))
 
 (defn launch-task! [task options]
-  (let [details (str " " (printing/task-description task))
-        announcement (str (printing/emphasize "running") " task " (printing/task-name task))]
+  (let [details (str " " (print/task-description task))
+        announcement (str (print/emphasize "running") " task " (print/task-name task))]
     (announce (str announcement (if (>= (:verbosity options) 1) details))))
   (spawn-task! task options))
 
@@ -51,7 +51,7 @@
   (let [disabled-tasks (remove :enabled tasks)]
     (doseq [task disabled-tasks]
       (let [reason (str " (" (:reason task) ")")
-            announcement (str (printing/emphasize "skipping") " task " (printing/task-name task))]
+            announcement (str (print/emphasize "skipping") " task " (print/task-name task))]
         (announce (str announcement (if (>= (:verbosity options) 1) reason)))))))
 
 (defn run-tasks! [tasks options]
@@ -73,7 +73,7 @@
                   new-completed-tasks (conj completed-tasks (assoc completed-task
                                                               :result result
                                                               :running false))]
-              (announce (str "completed task " (printing/task-name completed-task)) 1 options)
+              (announce (str "completed task " (print/task-name completed-task)) 1 options)
               (recur (inc iteration) new-running-tasks new-completed-tasks))))))))
 
 (defn spawn-runner! [tasks options]
