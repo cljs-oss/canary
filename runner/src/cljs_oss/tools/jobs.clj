@@ -6,6 +6,7 @@
             [cljs-oss.tools.scan :as scan]
             [cljs-oss.tools.tasks :as tasks]
             [cljs-oss.tools.utils :as utils]
+            [cljs-oss.tools.build :as build]
             [cljs-oss.tools.print :as print :refer [announce with-job-printing with-task-printing]]))
 
 (defn just-test-task [task options]
@@ -90,6 +91,7 @@
 (defn run! [options]
   (with-job-printing options
     (announce (str "running a job with options:\n" (pp options)) 1 options)
+    (build/prepare-compiler! options)
     (let [analyzed-tasks (scan/collect-and-analyze-all-tasks! options)
           running-runner (spawn-runner! analyzed-tasks options)
           timeout-channel (utils/timeout (:timeout options))

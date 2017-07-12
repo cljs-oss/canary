@@ -8,7 +8,7 @@
             [cljs-oss.tools.output :as output])
   (:gen-class))
 
-(def default-compiler-sha "HEAD")
+(def default-compiler-rev "master")
 (def default-projects-dir "src/cljs_oss/projects")
 (def default-work-dir ".workdir")
 (def default-timeout (utils/seconds-to-msec (* 60 60)))                                                                       ; 60min
@@ -16,7 +16,7 @@
 
 (def cli-options
   [(normal-cli-option
-     ["-c" "--compiler SHA" "Pin ClojureScript compiler git SHA" :default default-compiler-sha])
+     ["-c" "--compiler SHA" "Pin ClojureScript compiler to specific revision" :default default-compiler-rev])
    (normal-cli-option
      ["-p" "--projects DIR" "Path to projects directory" :default default-projects-dir])
    (normal-cli-option
