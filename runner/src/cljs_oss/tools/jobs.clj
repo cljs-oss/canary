@@ -3,7 +3,7 @@
   (:refer-clojure :exclude [run!])
   (:require [clojure.core.async :as async]
             [cljs-oss.tools.utils :refer [pp]]
-            [cljs-oss.tools.scanner :as scanner]
+            [cljs-oss.tools.scan :as scan]
             [cljs-oss.tools.tasks :as tasks]
             [cljs-oss.tools.utils :as utils]
             [cljs-oss.tools.printing :as printing :refer [announce with-job-printing with-task-printing]]))
@@ -90,7 +90,7 @@
 (defn run! [options]
   (with-job-printing options
     (announce (str "running a job with options:\n" (pp options)) 1 options)
-    (let [analyzed-tasks (scanner/collect-and-analyze-all-tasks! options)
+    (let [analyzed-tasks (scan/collect-and-analyze-all-tasks! options)
           running-runner (spawn-runner! analyzed-tasks options)
           timeout-channel (utils/timeout (:timeout options))
           [result completed-channel] (async/alts!! [timeout-channel running-runner])]

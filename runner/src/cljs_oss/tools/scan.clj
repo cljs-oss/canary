@@ -1,4 +1,4 @@
-(ns cljs-oss.tools.scanner
+(ns cljs-oss.tools.scan
   "Tools for scanning for available tasks. We want to require them dynamically and sometimes selectively."
   (:require [clojure.string :as string]
             [clojure.java.io :as io]
