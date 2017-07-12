@@ -42,7 +42,10 @@ if [[ "$CANARY_VERBOSITY" -gt 2 ]]; then
   export MAVEN_OPTS=-Dorg.slf4j.simpleLogger.defaultLogLevel=debug
 fi
 
-env
+if [[ "$CANARY_VERBOSITY" -gt 2 ]]; then
+  echo "effective environment before compiler build:"
+  env
+fi
 
 ./script/build
 
