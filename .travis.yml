@@ -10,6 +10,9 @@ cache:
   directories:
   - "$DOCKER_CACHE_DIR"
   - "$DOCKER_VOLUMES_DIR"
+branches:
+  only:
+  - jobs
 services:
 - docker
 before_cache:
