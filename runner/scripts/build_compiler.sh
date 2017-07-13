@@ -23,6 +23,7 @@ CLOJURESCRIPT_MAVEN_ARTIFACT=${CLOJURESCRIPT_MAVEN_ARTIFACT:-"clojurescript"}
 CANARY_JOB_COMMIT=${CANARY_JOB_COMMIT:-"jobs"}
 CANARY_REPO_TOKEN=${CANARY_REPO_TOKEN}
 TRAVIS_BUILD_ID=${TRAVIS_BUILD_ID}
+LOCAL_MAVEN_REPO=${LOCAL_MAVEN_REPO:-`mvn help:evaluate -Dexpression=settings.localRepository | grep -v '[INFO]'`}
 
 echo "going to build $COMPILER_REV from $COMPILER_REPO"
 
@@ -81,8 +82,8 @@ fi
 ./script/build
 travis_fold end clojurescript-build
 
-# purge clojurescript jars from maven, .m2 is cached by travis
-mvn dependency:purge-local-repository -DmanualInclude=${CLOJURESCRIPT_MAVEN_GROUP}:${CLOJURESCRIPT_MAVEN_ARTIFACT} > /dev/null
+# purge clojurescript jars from maven, .m2 is cached by travis and that would lead to cache invalidation
+rm -rf "$LOCAL_MAVEN_REPO/org/clojure/clojurescript"
 
 BUILD_JAR=`ls -1 ./target/${CLOJURESCRIPT_MAVEN_ARTIFACT}-*.jar | grep -v aot`
 
