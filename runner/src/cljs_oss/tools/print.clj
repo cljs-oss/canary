@@ -64,18 +64,25 @@
 
 ; -- job printing -----------------------------------------------------------------------------------------------------------
 
-(defn format-job-line [time label style content]
+(defn format-job-line [time label style content verbosity]
   (let [padded-label (cuerdas/pad label {:length job-label-padding
                                          :type   :right})
-        prefix (str "[" time "] " padded-label " |")
-        styles (if (sequential? style) style [style])]
+        prefix (case verbosity
+                 0 "*"
+                 1 (str "[" time "]")
+                 (str "[" time "] " padded-label " |"))
+        styles (if (sequential? style) (or style :default) [style])]
     (str (apply clansi/style prefix styles) content)))
 
 (defn job-printer [target kind options content]
   (bind-target target kind
     (let [printable-content (process-passthrough-content content)
-          line (format-job-line (format-current-time) (job-name options) :default
-                                (mark-errors kind options printable-content))]
+          line (format-job-line (format-current-time)
+                                (job-name options)
+                                nil
+                                (mark-errors kind options printable-content)
+                                (:verbosity options))]
+      ; TODO: implement line wrapping for travis web ui?
       (println line))))
 
 (defn make-job-print-writer! [target kind options]
