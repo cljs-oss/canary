@@ -90,7 +90,8 @@
 
 (defn run! [options]
   (with-job-printing options
-    (announce (str "running a job with options:\n" (pp options)) 1 options)
+    (announce (str (print/emphasize "running") " " (print/job-name options)))
+    (announce (str "job options:\n" (pp options)) 1 options)
     (build/prepare-compiler! options)
     (let [analyzed-tasks (scan/collect-and-analyze-all-tasks! options)
           running-runner (spawn-runner! analyzed-tasks options)
