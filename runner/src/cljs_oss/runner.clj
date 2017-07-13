@@ -17,7 +17,7 @@
 
 (def cli-options
   [(normal-cli-option
-     ["-c" "--compiler REV" "Pin ClojureScript compiler to specific revision" :default default-compiler-rev])
+     ["-r" "--compiler-rev REV" "Pin ClojureScript compiler to specific revision" :default default-compiler-rev])
    (normal-cli-option
      [nil "--compiler-repo URL" "Git repo to fetch compiler sources from" :default default-compiler-repo])
    (normal-cli-option
