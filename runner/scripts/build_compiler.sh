@@ -23,7 +23,7 @@ CLOJURESCRIPT_MAVEN_ARTIFACT=${CLOJURESCRIPT_MAVEN_ARTIFACT:-"clojurescript"}
 CANARY_JOB_COMMIT=${CANARY_JOB_COMMIT:-"jobs"}
 CANARY_REPO_TOKEN=${CANARY_REPO_TOKEN}
 TRAVIS_BUILD_ID=${TRAVIS_BUILD_ID}
-LOCAL_MAVEN_REPO=${LOCAL_MAVEN_REPO:-`mvn help:evaluate -Dexpression=settings.localRepository | grep -v '[INFO]'`}
+LOCAL_MAVEN_REPO=${LOCAL_MAVEN_REPO:-`mvn help:evaluate -Dexpression=settings.localRepository | grep -v '[INFO]' | tr -d '\n'`}
 
 echo "going to build $COMPILER_REV from $COMPILER_REPO"
 
