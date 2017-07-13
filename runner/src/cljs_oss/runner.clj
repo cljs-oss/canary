@@ -59,10 +59,23 @@
   (output/flush-outputs!)
   (System/exit status))
 
-(defn sanitize-options [options]
+(defn expand-paths [options]
   (assoc options
     :projects (utils/canonical-path (:projects options))
     :workdir (utils/canonical-path (:workdir options))))
+
+(defn prevent-verbose-mode-in-production [options]
+  (if (and (:production options) (pos? (:verbosity options)))
+    (do
+      (println (str "Note: Verbose mode is not allowed in production because it could leak secret env variables. "
+                    "Using non-verbose mode instead."))
+      (assoc options :verbosity 0))
+    options))
+
+(defn sanitize-options [options]
+  (-> options
+      (expand-paths)
+      (prevent-verbose-mode-in-production)))
 
 (defn run-job! [options]
   (let [sanitized-options (sanitize-options options)
