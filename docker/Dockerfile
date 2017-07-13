@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # install basic deps
 RUN apt-get -y update
 RUN apt-get -y upgrade
-RUN apt-get -y install software-properties-common wget curl git sudo unzip python net-tools
+RUN apt-get -y install software-properties-common wget curl git sudo
 
 # install Java 8: http://www.webupd8.org/2012/09/install-oracle-java-8-in-ubuntu-via-ppa.html
 RUN add-apt-repository ppa:webupd8team/java
