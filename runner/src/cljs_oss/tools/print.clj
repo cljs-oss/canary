@@ -54,6 +54,14 @@
   `(binding [~(if (= kind :err) '*err* '*out*) ~target]
      ~@body))
 
+(defn process-passthrough-content [content]
+  ; we want to handle travis folding command gracefully
+  (if-some [m (re-matches #"^(travis_.*\r\033\[0K)(.*)" content)]
+    (do
+      (print (nth m 1))
+      (nth m 2))
+    content))
+
 ; -- job printing -----------------------------------------------------------------------------------------------------------
 
 (defn format-job-line [time label style content]
@@ -65,7 +73,9 @@
 
 (defn job-printer [target kind options content]
   (bind-target target kind
-    (let [line (format-job-line (format-current-time) (job-name options) :default (mark-errors kind options content))]
+    (let [printable-content (process-passthrough-content content)
+          line (format-job-line (format-current-time) (job-name options) :default
+                                (mark-errors kind options printable-content))]
       (println line))))
 
 (defn make-job-print-writer! [target kind options]
@@ -87,7 +97,8 @@
 
 (defn task-printer [target kind task options content]
   (binding [*out* target]
-    (let [line (format-task-line (:name task) (:color task) (mark-errors kind options content))]
+    (let [printable-content (process-passthrough-content content)
+          line (format-task-line (:name task) (:color task) (mark-errors kind options printable-content))]
       (println line))))
 
 (defn make-task-print-writer! [target kind task options]
