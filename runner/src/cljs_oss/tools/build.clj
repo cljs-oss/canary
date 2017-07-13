@@ -23,6 +23,6 @@
   (let [{:keys [compiler-rev compiler-repo]} options]
     (announce (str (print/emphasize "building") " compiler rev " compiler-rev " from " compiler-repo))
     (let [build-task {:name  "compiler build"
-                      :color :bright}]
+                      :color :cyan}]
       (with-task-printing build-task options
         (build-compiler! build-task compiler-rev compiler-repo options)))))
