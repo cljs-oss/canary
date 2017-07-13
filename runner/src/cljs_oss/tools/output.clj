@@ -1,17 +1,17 @@
 (ns cljs-oss.tools.output
   (:require [clojure.java.io :as io])
   (:import (java.util.concurrent TimeUnit)
-           (java.io BufferedReader)))
+           (java.util Scanner)))
 
 ; -- line-based streaming ---------------------------------------------------------------------------------------------------
 
 (defn print-stream-as-lines! [stream printer]
   (future
-    (let [output (io/reader stream)]
+    (let [output (io/reader stream)
+          scanner (.useDelimiter (Scanner. output) "\n")]
       (loop []
-        (when-some [out (.readLine ^BufferedReader output)]
-          (printer out)
-          (recur))))))
+        (printer (.next scanner))
+        (recur)))))
 
 ; -- flushing ---------------------------------------------------------------------------------------------------------------
 
