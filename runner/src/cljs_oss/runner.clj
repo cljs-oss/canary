@@ -9,6 +9,7 @@
   (:gen-class))
 
 (def default-compiler-rev "master")
+(def default-compiler-repo "https://github.com/clojure/clojurescript.git")
 (def default-projects-dir "src/cljs_oss/projects")
 (def default-work-dir ".workdir")
 (def default-timeout (utils/seconds-to-msec (* 60 60)))                                                                       ; 60min
@@ -16,7 +17,9 @@
 
 (def cli-options
   [(normal-cli-option
-     ["-c" "--compiler SHA" "Pin ClojureScript compiler to specific revision" :default default-compiler-rev])
+     ["-c" "--compiler REV" "Pin ClojureScript compiler to specific revision" :default default-compiler-rev])
+   (normal-cli-option
+     [nil "--compiler-repo URL" "Git repo to fetch compiler sources from" :default default-compiler-repo])
    (normal-cli-option
      ["-p" "--projects DIR" "Path to projects directory" :default default-projects-dir])
    (normal-cli-option
