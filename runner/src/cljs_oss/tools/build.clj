@@ -19,7 +19,7 @@
         result (build-launcher (with-meta options build-task))]
     (if (= (:exit-code result) 0)
       (println "success!")
-      (println "fail!"))))
+      (throw (ex-info "compiler build failed" {})))))
 
 (defn prepare-compiler! [options]
   (let [{:keys [compiler-rev compiler-repo]} options]
