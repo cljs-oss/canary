@@ -3,16 +3,18 @@
   (:require [cljs-oss.tools.print :as print :refer [announce with-task-printing]]
             [cljs-oss.tools.utils :as utils]
             [cljs-oss.tools.shell :as shell]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io]
+            [cljs-oss.tools.env :as env]))
 
 (def build-script-path "scripts/build_compiler.sh")
 
 (defn build-compiler! [build-task compiler-rev compiler-repo options]
   ; note it seemed to be easier to resort to shell for building the compiler
   (let [script (io/file (utils/canonical-path build-script-path))
-        env {"COMPILER_REPO"    compiler-repo
-             "COMPILER_REV"     compiler-rev
-             "CANARY_VERBOSITY" (str (:verbosity options))}
+        env {"COMPILER_REPO"     compiler-repo
+             "COMPILER_REV"      compiler-rev
+             "CANARY_VERBOSITY"  (str (:verbosity options))
+             "CANARY_REPO_TOKEN" (env/get "CANARY_REPO_TOKEN")}                                                               ; we want to get advantage of .env files
         build-launcher (shell/make-shell-launcher script env)
         result (build-launcher (with-meta options build-task))]
     (if (= (:exit-code result) 0)
