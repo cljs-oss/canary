@@ -56,8 +56,8 @@ git remote add origin "$COMPILER_REPO"
 # we have to fetch whole clojurescript repo, clojurescript's build script depends on it
 # TODO: we probably want to setup sharing of git objects persisted by travis to speed this up
 git fetch ${GIT_VERBOSITY} --tags origin
-git checkout "$COMPILER_REV"
-git checkout -b canary-build
+git checkout ${GIT_VERBOSITY} "$COMPILER_REV"
+git checkout ${GIT_VERBOSITY} -b canary-build
 
 echo "Effective ClojureScript SHA to be built:"
 git log -1 --pretty=format:"%C(magenta)%h%C(reset) | %C(yellow)%s%C(reset) | %C(blue)%an%C(reset) | %ad" --date=rfc
