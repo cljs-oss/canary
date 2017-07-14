@@ -20,9 +20,7 @@ before_cache:
 before_install:
 - sudo apt-get update
 - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
-- git remote add x https://github.com/cljs-oss/canary.git
-- git fetch x master
-- git checkout x/master
+- git remote add x https://github.com/cljs-oss/canary.git && git fetch x master && git checkout x/master
 - "./scripts/docker-load.sh"
 script:
 - "./scripts/travis-entrypoint.sh"
