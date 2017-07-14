@@ -59,7 +59,7 @@
         build-result (:build-result options)
         config {:config
                 {:merge_mode "deep_merge"
-                 :env        (prepare-build-env options)}}
+                 :env        {:global (prepare-build-env options)}}}
         default-body {:request
                       {:branch  branch
                        :message (str "canary build with ClojureScript " (:build-id build-result))
