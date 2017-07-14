@@ -1,8 +1,8 @@
-(ns cljs-oss.tools.tasks
+(ns canary.tools.tasks
   "Tools for working with clojure tasks."
-  (:require [cljs-oss.tools.utils :as utils]
+  (:require [canary.tools.utils :as utils]
             [clojure.string :as string]
-            [cljs-oss.tools.print :as print]))
+            [canary.tools.print :as print]))
 
 (defn var-task? [var]
   (assert (var? var))
@@ -59,5 +59,5 @@
 
 (comment
   (do
-    (require 'cljs-oss.projects.binaryage)
-    (scan-tasks 'cljs-oss.projects.binaryage)))
+    (require 'canary.projects.binaryage)
+    (scan-tasks 'canary.projects.binaryage)))

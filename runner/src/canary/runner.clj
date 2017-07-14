@@ -1,16 +1,16 @@
-(ns cljs-oss.runner
+(ns canary.runner
   "Command-line interface and the main entry point."
   (:require [clojure.string :as string]
             [clojure.tools.cli :as cli]
-            [cljs-oss.tools.jobs :as jobs]
-            [cljs-oss.tools.utils :as utils]
-            [cljs-oss.tools.cli :refer [timeout-cli-option normal-cli-option verbosity-cli-option]]
-            [cljs-oss.tools.output :as output])
+            [canary.tools.jobs :as jobs]
+            [canary.tools.utils :as utils]
+            [canary.tools.cli :refer [timeout-cli-option normal-cli-option verbosity-cli-option]]
+            [canary.tools.output :as output])
   (:gen-class))
 
 (def default-compiler-rev "master")
 (def default-compiler-repo "https://github.com/clojure/clojurescript.git")
-(def default-projects-dir "src/cljs_oss/projects")
+(def default-projects-dir "src/canary/projects")
 (def default-work-dir ".workdir")
 (def default-timeout (utils/seconds-to-msec (* 60 60)))                                                                       ; 60min
 (def default-polling-interval (utils/seconds-to-msec (* 60 5)))                                                               ; 5min, travis kills a job when no output is presented in last 10min

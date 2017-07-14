@@ -1,13 +1,13 @@
-(ns cljs-oss.tools.scan
+(ns canary.tools.scan
   "Tools for scanning for available tasks. We want to require them dynamically and sometimes selectively."
   (:require [clojure.string :as string]
             [clojure.java.io :as io]
             [clojure.tools.namespace.find :as find]
             [cuerdas.core :as cuerdas]
-            [cljs-oss.tools.utils :as utils]
-            [cljs-oss.tools.tasks :as tasks]
-            [cljs-oss.tools.shell :as shell]
-            [cljs-oss.tools.print :refer [announce]]))
+            [canary.tools.utils :as utils]
+            [canary.tools.tasks :as tasks]
+            [canary.tools.shell :as shell]
+            [canary.tools.print :refer [announce]]))
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 
@@ -76,7 +76,7 @@
 ; -- tests ------------------------------------------------------------------------------------------------------------------
 
 (comment
-  (scan-for-project-namespaces (utils/canonical-path "src/cljs_oss/projects"))
-  (scan-for-shell-projects (utils/canonical-path "src/cljs_oss/projects"))
-  (collect-all-tasks! {:projects (utils/canonical-path "src/cljs_oss/projects")
+  (scan-for-project-namespaces (utils/canonical-path "src/canary/projects"))
+  (scan-for-shell-projects (utils/canonical-path "src/canary/projects"))
+  (collect-all-tasks! {:projects (utils/canonical-path "src/canary/projects")
                        :verbose  true}))

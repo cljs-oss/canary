@@ -1,6 +1,6 @@
-(ns cljs-oss.tools.cli
+(ns canary.tools.cli
   "Command-line interface helpers."
-  (:require [cljs-oss.tools.utils :as utils]))
+  (:require [canary.tools.utils :as utils]))
 
 ; -- parsers & validators ---------------------------------------------------------------------------------------------------
 

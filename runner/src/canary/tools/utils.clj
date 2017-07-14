@@ -1,4 +1,4 @@
-(ns cljs-oss.tools.utils
+(ns canary.tools.utils
   "Shared utility functions."
   (:require [clojure.pprint :refer [pprint]]
             [clojure.string :as string]
@@ -36,6 +36,6 @@
   (pp {:infinite (iterate inc 0)})
 
   (canonical-path ".")
-  (canonical-path "src/cljs_oss")
+  (canonical-path "src/canary")
 
   (sanitize-as-filename "!@#$%^&*abc  xxx"))

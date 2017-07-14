@@ -1,6 +1,6 @@
-(ns cljs-oss.tools.print
+(ns canary.tools.print
   (:require [clojure.string :as string]
-            [cljs-oss.tools.output :as output]
+            [canary.tools.output :as output]
             [cuerdas.core :as cuerdas]
             [clansi])
   (:import (java.text SimpleDateFormat)

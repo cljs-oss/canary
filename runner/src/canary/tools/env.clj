@@ -1,8 +1,8 @@
-(ns cljs-oss.tools.env
+(ns canary.tools.env
   (:refer-clojure :exclude [get])
   (:require [clojure.java.io :as io]
             [clojure.edn :as edn]
-            [cljs-oss.tools.utils :as utils]))
+            [canary.tools.utils :as utils]))
 
 (def default-env-file ".env")
 

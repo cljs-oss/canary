@@ -1,12 +1,12 @@
-(ns cljs-oss.tools.travis
+(ns canary.tools.travis
   "Supporting Travis functionality for tasks."
   (:require [me.raynes.conch.low-level :as sh]
             [clojure.data.json :as json]
             [clojure.string :as string]
-            [cljs-oss.tools.shell :as shell]
-            [cljs-oss.tools.print :refer [announce]]
-            [cljs-oss.tools.env :as env]
-            [cljs-oss.tools.utils :as utils])
+            [canary.tools.shell :as shell]
+            [canary.tools.print :refer [announce]]
+            [canary.tools.env :as env]
+            [canary.tools.utils :as utils])
   (:import (java.net URLEncoder)))
 
 (defn blind-secrets [args]

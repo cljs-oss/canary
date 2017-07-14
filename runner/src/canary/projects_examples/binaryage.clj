@@ -1,4 +1,4 @@
-(ns cljs-oss.projects-examples.binaryage
+(ns canary.projects-examples.binaryage
   (:require [clansi])
   (:import (java.util.concurrent TimeUnit)))
 
