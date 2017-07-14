@@ -57,14 +57,12 @@
   (let [api-slug (URLEncoder/encode slug)
         api-endpoint (str "https://api.travis-ci.org/repo/" api-slug "/requests")
         build-result (:build-result options)
-        config {:config
-                {:merge_mode "deep_merge"
-                 :env        {:global (prepare-build-env options)}}}
-        default-body {:request
-                      {:branch  branch
-                       :message (str "canary build with ClojureScript " (:build-id build-result))
-                       :config  config}}
-        request-body (merge default-body (:travis-body options))
+        body {:request
+              {:branch  branch
+               :message (str "canary build with ClojureScript " (:build-id build-result))
+               :config  {:merge_mode "deep_merge"
+                         :env        (prepare-build-env options)}}}
+        request-body (merge body (:travis-body options))
         response (post-to-travis-api! api-endpoint token request-body options)
         repo-slug (get-in response ["repository" "slug"])
         request-id (get-in response ["request" "repository" "id"])
