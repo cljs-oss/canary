@@ -14,7 +14,7 @@ function json-val () {
   python -c "import json,sys;sys.stdout.write(json.dumps(json.load(sys.stdin)$1))";
 }
 
-# expected environment
+# parametrization via environment
 COMPILER_REV=${COMPILER_REV:-"master"} # https://git-scm.com/book/tr/v2/Git-Tools-Revision-Selection
 COMPILER_REPO=${COMPILER_REPO:-"https://github.com/clojure/clojurescript.git"}
 CANARY_VERBOSITY=${CANARY_VERBOSITY:-0}
@@ -25,8 +25,12 @@ CANARY_REPO_TOKEN=${CANARY_REPO_TOKEN}
 TRAVIS_BUILD_ID=${TRAVIS_BUILD_ID}
 LOCAL_MAVEN_REPO=${LOCAL_MAVEN_REPO:-`mvn help:evaluate -Dexpression=settings.localRepository | grep -v '[INFO]' | tr -d '\n'`}
 CANARY_EXTRA_CURL_OPTS=${CANARY_EXTRA_CURL_OPTS:-"-sS"}
+RESULT_DIR=${RESULT_DIR:-`pwd`}
 
-echo "going to build $COMPILER_REV from $COMPILER_REPO"
+CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
+COMPILER_REV_URL="${COMPILER_REPO/.git/\/commit}/${COMPILER_REV}"
+
+echo "going to build $COMPILER_REV_URL"
 
 if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
   mvn --version
@@ -64,7 +68,9 @@ echo "Effective ClojureScript SHA to be built:"
 git log -1 --pretty=format:"%C(magenta)%h%C(reset) | %C(yellow)%s%C(reset) | %C(blue)%an%C(reset) | %ad" --date=rfc
 echo
 
-SHORT_REV=`git rev-parse --short HEAD`
+BUILD_SHORT_REV=`git rev-parse --short HEAD`
+
+# TODO: determine clojurescript version and check if release already exists
 
 if [[ "$CANARY_VERBOSITY" -eq 0 ]]; then
   export CLJS_SCRIPT_QUIET=1
@@ -104,18 +110,28 @@ else
   exit 3
 fi
 
+BUILD_ID="${BUILD_VERSION}-${BUILD_SHORT_REV}"
+
+TRAVIS_BUILD_URL="https://travis-ci.org/cljs-oss/canary/builds/$TRAVIS_BUILD_ID"
+
 if [[ -n "$TRAVIS_BUILD_ID" ]]; then
-  TRAVIS_BUILD_INFO=" Travis log: https://travis-ci.org/cljs-oss/canary/builds/$TRAVIS_BUILD_ID."
+  TRAVIS_BUILD_INFO=" Travis log: $TRAVIS_BUILD_URL."
 else
   TRAVIS_BUILD_INFO=""
 fi
 
+RELEASE_BODY=`cat <<MARKDOWN
+A test build of ${COMPILER_REV_URL} via ${CANARY_JOB_COMMIT_URL}.
+${TRAVIS_BUILD_INFO}
+MARKDOWN
+`
+
 DATA=`cat <<JSON
 {
-  "tag_name": "r${BUILD_VERSION}-${SHORT_REV}",
+  "tag_name": "r${BUILD_ID}",
   "target_commitish": "${CANARY_JOB_COMMIT}",
-  "name": "ClojureScript ${BUILD_VERSION}-${SHORT_REV}",
-  "body": "A test build of ${COMPILER_REPO/.git/\/commit}/${COMPILER_REV} via https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}.\n${TRAVIS_BUILD_INFO}",
+  "name": "ClojureScript ${BUILD_ID}",
+  "body": "${RELEASE_BODY}",
   "draft": false,
   "prerelease": true
 }
@@ -147,15 +163,15 @@ UPLOAD_URL=`json-val [\"upload_url\"] <<< "$RELEASE_RESPONSE" | sed -e 's/^"//' 
 set -e
 
 if [[ "$UPLOAD_URL" =~ ^https://uploads\.github\.com/repos/cljs-oss/canary/releases/(.*)/assets.*$ ]]; then
-  RELEASE_ID="${BASH_REMATCH[1]}"
+  GITHUB_RELEASE_ID="${BASH_REMATCH[1]}"
 else
   echo "ERROR!"
   echo -e "Invalid upload_url returned from github api\n$RELEASE_RESPONSE"
   exit 5
 fi
 
-RAW_UPLOAD_URL="https://uploads.github.com/repos/cljs-oss/canary/releases/$RELEASE_ID/assets"
-COMPLETE_UPLOAD_URL="$RAW_UPLOAD_URL?name=clojurescript-$BUILD_VERSION-$SHORT_REV.jar"
+RAW_UPLOAD_URL="https://uploads.github.com/repos/cljs-oss/canary/releases/$GITHUB_RELEASE_ID/assets"
+COMPLETE_UPLOAD_URL="$RAW_UPLOAD_URL?name=clojurescript-$BUILD_ID.jar"
 
 UPLOAD_RESPONSE=`curl ${CANARY_EXTRA_CURL_OPTS} \
                       -H "Content-Type: application/java-archive" \
@@ -169,13 +185,32 @@ if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
 fi
 
 set +e
-BROWSER_DOWNLOAD_URL=`json-val [\"browser_download_url\"] <<< "$UPLOAD_RESPONSE" | sed -e 's/^"//' -e 's/"$//'`
+BUILD_DOWNLOAD_URL=`json-val [\"browser_download_url\"] <<< "$UPLOAD_RESPONSE" | sed -e 's/^"//' -e 's/"$//'`
 set -e
 
-if [[ ! "$BROWSER_DOWNLOAD_URL" =~ ^https://github\.com/cljs-oss/canary/releases/download.*$ ]]; then
+if [[ ! "$BUILD_DOWNLOAD_URL" =~ ^https://github\.com/cljs-oss/canary/releases/download.*$ ]]; then
   echo "ERROR!"
   echo -e "Invalid browser_download_url returned from github api\n$UPLOAD_RESPONSE"
   exit 6
 fi
 
-echo "$BROWSER_DOWNLOAD_URL"
+echo "Download URL: $BUILD_DOWNLOAD_URL"
+
+RESULT_JAR_PATH="$RESULT_DIR/clojurescript-${BUILD_ID}.jar"
+cp "$BUILD_JAR" "$RESULT_JAR_PATH"
+
+# we pass results to the caller by producing an edn file on agreed path in RESULT_DIR
+RESULT=`cat <<EDN
+{
+  :build-id "${BUILD_ID}"
+  :build-jar-path "${RESULT_JAR_PATH}"
+  :build-download-url "${BUILD_DOWNLOAD_URL}"
+  :github-release-id "${GITHUB_RELEASE_ID}"
+  :canary-job-commit-url "${CANARY_JOB_COMMIT_URL}"
+  :travis-job-url "${TRAVIS_BUILD_URL}"
+}
+EDN
+`
+mkdir -p "$RESULT_DIR"
+echo "$RESULT" > "$RESULT_DIR/result.edn"
+
