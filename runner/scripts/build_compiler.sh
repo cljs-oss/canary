@@ -115,7 +115,7 @@ DATA=`cat <<JSON
   "tag_name": "r${BUILD_VERSION}-${SHORT_REV}",
   "target_commitish": "${CANARY_JOB_COMMIT}",
   "name": "ClojureScript ${BUILD_VERSION}-${SHORT_REV}",
-  "body": "A test build of ${COMPILER_REPO/.git/\/commit}/${COMPILER_REV} via job https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}.\n${TRAVIS_BUILD_INFO}",
+  "body": "A test build of ${COMPILER_REPO/.git/\/commit}/${COMPILER_REV} via https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}.\n${TRAVIS_BUILD_INFO}",
   "draft": false,
   "prerelease": true
 }
