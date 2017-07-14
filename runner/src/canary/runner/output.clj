@@ -1,4 +1,4 @@
-(ns canary.tools.output
+(ns canary.runner.output
   (:require [clojure.java.io :as io])
   (:import (java.util.concurrent TimeUnit)
            (java.util Scanner)))

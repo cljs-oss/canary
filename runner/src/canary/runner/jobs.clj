@@ -1,13 +1,13 @@
-(ns canary.tools.jobs
+(ns canary.runner.jobs
   "Interface for working with canary jobs."
   (:refer-clojure :exclude [run!])
   (:require [clojure.core.async :as async]
-            [canary.tools.utils :refer [pp]]
-            [canary.tools.scan :as scan]
-            [canary.tools.tasks :as tasks]
-            [canary.tools.utils :as utils]
-            [canary.tools.build :as build]
-            [canary.tools.print :as print :refer [announce with-job-printing with-task-printing]]))
+            [canary.runner.utils :refer [pp]]
+            [canary.runner.scan :as scan]
+            [canary.runner.tasks :as tasks]
+            [canary.runner.utils :as utils]
+            [canary.runner.build :as build]
+            [canary.runner.print :as print :refer [announce with-job-printing with-task-printing]]))
 
 (defn just-test-task [task options]
   (announce "[test mode] not executing, just providing a dummy report")

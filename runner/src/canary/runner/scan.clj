@@ -1,13 +1,13 @@
-(ns canary.tools.scan
+(ns canary.runner.scan
   "Tools for scanning for available tasks. We want to require them dynamically and sometimes selectively."
   (:require [clojure.string :as string]
             [clojure.java.io :as io]
             [clojure.tools.namespace.find :as find]
             [cuerdas.core :as cuerdas]
-            [canary.tools.utils :as utils]
-            [canary.tools.tasks :as tasks]
-            [canary.tools.shell :as shell]
-            [canary.tools.print :refer [announce]]))
+            [canary.runner.utils :as utils]
+            [canary.runner.tasks :as tasks]
+            [canary.runner.shell :as shell]
+            [canary.runner.print :refer [announce]]))
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 

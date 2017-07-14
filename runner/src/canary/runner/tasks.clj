@@ -1,8 +1,8 @@
-(ns canary.tools.tasks
+(ns canary.runner.tasks
   "Tools for working with clojure tasks."
-  (:require [canary.tools.utils :as utils]
+  (:require [canary.runner.utils :as utils]
             [clojure.string :as string]
-            [canary.tools.print :as print]))
+            [canary.runner.print :as print]))
 
 (defn var-task? [var]
   (assert (var? var))

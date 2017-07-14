@@ -1,10 +1,10 @@
-(ns canary.tools.shell
+(ns canary.runner.shell
   "High-level utils for working with shell."
   (:require [me.raynes.conch.low-level :as sh]
             [me.raynes.fs :as fs]
-            [canary.tools.output :as output]
-            [canary.tools.print :refer [announce]]
-            [canary.tools.utils :as utils]
+            [canary.runner.output :as output]
+            [canary.runner.print :refer [announce]]
+            [canary.runner.utils :as utils]
             [clojure.java.io :as io]))
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------

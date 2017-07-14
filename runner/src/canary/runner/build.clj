@@ -1,10 +1,10 @@
-(ns canary.tools.build
+(ns canary.runner.build
   "Special task for building ClojureScript compiler."
-  (:require [canary.tools.print :as print :refer [announce with-task-printing]]
-            [canary.tools.utils :as utils]
-            [canary.tools.shell :as shell]
+  (:require [canary.runner.print :as print :refer [announce with-task-printing]]
+            [canary.runner.utils :as utils]
+            [canary.runner.shell :as shell]
             [clojure.java.io :as io]
-            [canary.tools.env :as env]
+            [canary.runner.env :as env]
             [clojure.edn :as edn]))
 
 (def build-script-path "scripts/build_compiler.sh")

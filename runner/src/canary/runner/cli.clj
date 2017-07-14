@@ -1,6 +1,6 @@
-(ns canary.tools.cli
+(ns canary.runner.cli
   "Command-line interface helpers."
-  (:require [canary.tools.utils :as utils]))
+  (:require [canary.runner.utils :as utils]))
 
 ; -- parsers & validators ---------------------------------------------------------------------------------------------------
 

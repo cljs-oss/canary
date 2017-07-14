@@ -2,10 +2,10 @@
   "Command-line interface and the main entry point."
   (:require [clojure.string :as string]
             [clojure.tools.cli :as cli]
-            [canary.tools.jobs :as jobs]
-            [canary.tools.utils :as utils]
-            [canary.tools.cli :refer [timeout-cli-option normal-cli-option verbosity-cli-option]]
-            [canary.tools.output :as output])
+            [canary.runner.jobs :as jobs]
+            [canary.runner.utils :as utils]
+            [canary.runner.cli :refer [timeout-cli-option normal-cli-option verbosity-cli-option]]
+            [canary.runner.output :as output])
   (:gen-class))
 
 (def default-compiler-rev "master")

@@ -1,8 +1,8 @@
-(ns canary.tools.env
+(ns canary.runner.env
   (:refer-clojure :exclude [get])
   (:require [clojure.java.io :as io]
             [clojure.edn :as edn]
-            [canary.tools.utils :as utils]))
+            [canary.runner.utils :as utils]))
 
 (def default-env-file ".env")
 

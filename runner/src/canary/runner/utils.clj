@@ -1,4 +1,4 @@
-(ns canary.tools.utils
+(ns canary.runner.utils
   "Shared utility functions."
   (:require [clojure.pprint :refer [pprint]]
             [clojure.string :as string]
