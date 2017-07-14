@@ -199,6 +199,10 @@ echo "Download URL: $BUILD_DOWNLOAD_URL"
 RESULT_JAR_PATH="$RESULT_DIR/clojurescript-${BUILD_ID}.jar"
 cp "$BUILD_JAR" "$RESULT_JAR_PATH"
 
+if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
+  echo -e "Copied result jar into '$RESULT_JAR_PATH'"
+fi
+
 # we pass results to the caller by producing an edn file on agreed path in RESULT_DIR
 RESULT=`cat <<EDN
 {
@@ -211,6 +215,12 @@ RESULT=`cat <<EDN
 }
 EDN
 `
-mkdir -p "$RESULT_DIR"
-echo "$RESULT" > "$RESULT_DIR/result.edn"
 
+RESULT_EDN_PATH="$RESULT_DIR/result.edn"
+mkdir -p "$RESULT_DIR"
+echo "$RESULT" > "$RESULT_EDN_PATH"
+
+if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
+  echo -e "Generated result.edn at '$RESULT_JAR_PATH':"
+  cat "$RESULT_EDN_PATH"
+fi
