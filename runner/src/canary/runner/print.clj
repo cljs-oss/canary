@@ -50,7 +50,7 @@
       (clansi/style (str prefix content) style))
     (str " " content)))
 
-(defmacro bind-target [target kind & body]
+(defmacro with-bound-target [target kind & body]
   `(binding [~(if (= kind :err) '*err* '*out*) ~target]
      ~@body))
 
@@ -75,7 +75,7 @@
     (str (apply clansi/style prefix styles) content)))
 
 (defn job-printer [target kind options content]
-  (bind-target target kind
+  (with-bound-target target kind
     (let [printable-content (process-passthrough-content content)
           line (format-job-line (format-current-time)
                                 (job-name options)
