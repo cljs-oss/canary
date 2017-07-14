@@ -24,6 +24,7 @@ CANARY_JOB_COMMIT=${CANARY_JOB_COMMIT:-"jobs"}
 CANARY_REPO_TOKEN=${CANARY_REPO_TOKEN}
 TRAVIS_BUILD_ID=${TRAVIS_BUILD_ID}
 LOCAL_MAVEN_REPO=${LOCAL_MAVEN_REPO:-`mvn help:evaluate -Dexpression=settings.localRepository | grep -v '[INFO]' | tr -d '\n'`}
+CANARY_EXTRA_CURL_OPTS=${CANARY_EXTRA_CURL_OPTS:-"-sS"}
 
 echo "going to build $COMPILER_REV from $COMPILER_REPO"
 
@@ -130,11 +131,12 @@ if [[ -z "$CANARY_REPO_TOKEN" ]]; then
   exit 4
 fi
 
-RELEASE_RESPONSE=`curl -H "Content-Type: application/json" \
-                            -H "Authorization: token $CANARY_REPO_TOKEN" \
-                            -X POST \
-                            --data "$DATA" \
-                            https://api.github.com/repos/cljs-oss/canary/releases`
+RELEASE_RESPONSE=`curl ${CANARY_EXTRA_CURL_OPTS} \
+                       -H "Content-Type: application/json" \
+                       -H "Authorization: token $CANARY_REPO_TOKEN" \
+                       -X POST \
+                       --data "$DATA" \
+                       https://api.github.com/repos/cljs-oss/canary/releases`
 
 if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
   echo -e "GitHub API response:\n$RELEASE_RESPONSE"
@@ -155,11 +157,12 @@ fi
 RAW_UPLOAD_URL="https://uploads.github.com/repos/cljs-oss/canary/releases/$RELEASE_ID/assets"
 COMPLETE_UPLOAD_URL="$RAW_UPLOAD_URL?name=clojurescript-$BUILD_VERSION-$SHORT_REV.jar"
 
-UPLOAD_RESPONSE=`curl -H "Content-Type: application/java-archive" \
-     -H "Authorization: token $CANARY_REPO_TOKEN" \
-     -X POST \
-     --data-binary "@$BUILD_JAR" \
-     "$COMPLETE_UPLOAD_URL"`
+UPLOAD_RESPONSE=`curl ${CANARY_EXTRA_CURL_OPTS} \
+                      -H "Content-Type: application/java-archive" \
+                      -H "Authorization: token $CANARY_REPO_TOKEN" \
+                      -X POST \
+                      --data-binary "@$BUILD_JAR" \
+                      "$COMPLETE_UPLOAD_URL"`
 
 if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
   echo -e "GitHub API response:\n$UPLOAD_RESPONSE"
