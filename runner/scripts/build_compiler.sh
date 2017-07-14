@@ -14,6 +14,14 @@ function json-val () {
   python -c "import json,sys;sys.stdout.write(json.dumps(json.load(sys.stdin)$1))";
 }
 
+function string-encode () {
+  local content=$1
+  # see https://stackoverflow.com/a/38283242/84283
+  content=${content//'"'/'\"'}
+  content=${content//$'\n'/'\n'}
+  echo "$content"
+}
+
 # parametrization via environment
 COMPILER_REV=${COMPILER_REV:-"master"} # https://git-scm.com/book/tr/v2/Git-Tools-Revision-Selection
 COMPILER_REPO=${COMPILER_REPO:-"https://github.com/clojure/clojurescript.git"}
@@ -133,13 +141,14 @@ A test build of ${COMPILER_REV_URL} via ${CANARY_JOB_COMMIT_URL}.
 ${TRAVIS_BUILD_INFO}
 MARKDOWN
 `
+RELEASE_BODY_ENCODED=`string-encode "${RELEASE_BODY}"`
 
 DATA=`cat <<JSON
 {
   "tag_name": "r${BUILD_ID}",
   "target_commitish": "${CANARY_JOB_COMMIT}",
   "name": "ClojureScript ${BUILD_ID}",
-  "body": "${RELEASE_BODY}",
+  "body": "${RELEASE_BODY_ENCODED}",
   "draft": false,
   "prerelease": true
 }
