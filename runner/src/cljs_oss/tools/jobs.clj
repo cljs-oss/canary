@@ -92,17 +92,19 @@
   (with-job-printing options
     (announce (str (print/emphasize "running") " " (print/job-name options)))
     (announce (str "job options:\n" (pp options)) 1 options)
-    (build/prepare-compiler! options)
-    (let [analyzed-tasks (scan/collect-and-analyze-all-tasks! options)
-          running-runner (spawn-runner! analyzed-tasks options)
-          timeout-channel (utils/timeout (:timeout options))
-          [result completed-channel] (async/alts!! [timeout-channel running-runner])]
-      (if (= completed-channel timeout-channel)
-        (do
-          (announce (timeout-error-message options))
-          2)
-        (let [result-tasks (preprocess-result-tasks result)]
-          (announce (str "the job completed:\n" (utils/pp result-tasks)) 1 options)
-          ; TODO: process results
-          ; TODO: add timing info
-          0)))))
+    (if-some [build-result (build/prepare-compiler! options)]
+      (let [options (assoc options :build-result build-result)
+            analyzed-tasks (scan/collect-and-analyze-all-tasks! options)
+            running-runner (spawn-runner! analyzed-tasks options)
+            timeout-channel (utils/timeout (:timeout options))
+            [result completed-channel] (async/alts!! [timeout-channel running-runner])]
+        (if (= completed-channel timeout-channel)
+          (do
+            (announce (timeout-error-message options))
+            2)
+          (let [result-tasks (preprocess-result-tasks result)]
+            (announce (str "the job completed:\n" (utils/pp result-tasks)) 1 options)
+            ; TODO: process results
+            ; TODO: add timing info
+            0)))
+      3)))
