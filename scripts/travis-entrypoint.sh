@@ -15,7 +15,7 @@ pushd "$ROOT"
 
 JOB_ARGS=$(git show -s --format=%B "jobs" | head -n 1)
 
-# TODO: do some better sanitization of JOB_ARGS
+# TODO: do some better sanitation of JOB_ARGS
 if [[ ! ${JOB_ARGS} == job* ]]; then
   echoerr "The commit message to jobs must begin with 'job' and follow by job arguments."
   echoerr "I see a commit message '$JOB_ARGS'."
