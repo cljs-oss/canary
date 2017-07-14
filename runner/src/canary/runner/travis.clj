@@ -14,7 +14,7 @@
             (if (re-matches #"^Authorization:.*" arg)
               "Authorization: <secret>"
               arg))]
-    (doall (map * args))))
+    (vec (map * args))))
 
 (defn make-build-url [slug request-id]
   ; TODO: we will have to query travis API to get list of builds triggered by this request id
