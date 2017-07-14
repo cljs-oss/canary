@@ -123,7 +123,7 @@ jar -uf "$BUILD_JAR" "$POM_PATH"
 TRAVIS_BUILD_URL="https://travis-ci.org/cljs-oss/canary/builds/$TRAVIS_BUILD_ID"
 
 if [[ -n "$TRAVIS_BUILD_ID" ]]; then
-  TRAVIS_BUILD_INFO=" Travis log: $TRAVIS_BUILD_URL."
+  TRAVIS_BUILD_INFO="Travis log: $TRAVIS_BUILD_URL."
 else
   TRAVIS_BUILD_INFO=""
 fi
@@ -174,7 +174,7 @@ if [[ "$UPLOAD_URL" =~ ^https://uploads\.github\.com/repos/cljs-oss/canary/relea
   GITHUB_RELEASE_ID="${BASH_REMATCH[1]}"
 else
   echo "ERROR!"
-  echo -e "Invalid upload_url returned from github api\n$RELEASE_RESPONSE"
+  echo -e "Invalid upload_url returned from github api\n$RELEASE_RESPONSE\n\ninput data:\n$DATA"
   exit 5
 fi
 
