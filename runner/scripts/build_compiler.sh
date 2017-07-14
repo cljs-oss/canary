@@ -26,6 +26,7 @@ TRAVIS_BUILD_ID=${TRAVIS_BUILD_ID}
 LOCAL_MAVEN_REPO=${LOCAL_MAVEN_REPO:-`mvn help:evaluate -Dexpression=settings.localRepository | grep -v '[INFO]' | tr -d '\n'`}
 CANARY_EXTRA_CURL_OPTS=${CANARY_EXTRA_CURL_OPTS:-"-sS"}
 RESULT_DIR=${RESULT_DIR:-`pwd`}
+POM_PATH=${POM_PATH:-"META-INF/maven/org.clojure/clojurescript/pom.xml"}
 
 CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
 COMPILER_REV_URL="${COMPILER_REPO/.git/\/commit}/${COMPILER_REV}"
@@ -111,6 +112,13 @@ else
 fi
 
 BUILD_ID="${BUILD_VERSION}-${BUILD_SHORT_REV}"
+
+# patch JAR's maven version to our SHA-annotated version
+echo "Patching ClojureScript JAR..."
+jar -xf "$BUILD_JAR" "$POM_PATH"
+mv "$POM_PATH" "$POM_PATH.orig"
+cat "$POM_PATH.orig" | sed "s|<version>$BUILD_VERSION</version>|<version>$BUILD_ID</version>|g" > "$POM_PATH"
+jar -uf "$BUILD_JAR" "$POM_PATH"
 
 TRAVIS_BUILD_URL="https://travis-ci.org/cljs-oss/canary/builds/$TRAVIS_BUILD_ID"
 
