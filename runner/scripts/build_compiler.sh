@@ -37,7 +37,7 @@ RESULT_DIR=${RESULT_DIR:-`pwd`}
 POM_PATH=${POM_PATH:-"META-INF/maven/org.clojure/clojurescript/pom.xml"}
 
 CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
-COMPILER_REV_URL="${COMPILER_REPO/.git/\/commit}/${COMPILER_REV}"
+COMPILER_REV_URL="${COMPILER_REPO/.git//commit}/${COMPILER_REV}"
 
 echo "going to build $COMPILER_REV_URL"
 
