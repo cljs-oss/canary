@@ -15,15 +15,6 @@ if [[ -z "$CANARY_BUILD" ]]; then
   exit 0
 fi
 
-ANSI_CLEAR="\033[0K"
-
-travis_fold() {
-  local action=$1
-  local name=$2
-  echo -en "travis_fold:${action}:${name}\r${ANSI_CLEAR}"
-}
-
-travis_fold start canary-support
 echo "Installing Canary support"
 
 JAR_PATH=`mktemp`
@@ -32,7 +23,6 @@ TEMP_WORK_DIR=`mktemp -d`
 function finish {
   rm "$JAR_PATH"
   rm -rf "$TEMP_WORK_DIR"
-  travis_fold end canary-support
 }
 trap finish EXIT
 
