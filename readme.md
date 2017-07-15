@@ -10,19 +10,14 @@ The goal is to detect issues early before releasing new ClojureScript version.
 
 ```bash
 ./scripts/docker-build.sh
-./scripts/docker-run.sh job -c HEAD -v
+./scripts/docker-run.sh job --help
+./scripts/docker-run.sh job -v
 ```
 
 ### directly
 
 ```bash
-./runner/run.sh job -v
-```
-    
-### travis entry point
-
-```bash
-./scripts/travis-entrypoint.sh
+./runner/run.sh job -v -r afe65a0
 ```
 
 ## Proposal
