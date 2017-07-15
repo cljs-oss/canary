@@ -54,18 +54,9 @@
     :projects (utils/canonical-path (:projects options))
     :workdir (utils/canonical-path (:workdir options))))
 
-(defn prevent-verbose-mode-in-production [options]
-  (if (and (:production options) (pos? (:verbosity options)))
-    (do
-      (println (str "Note: Verbose mode is not allowed in production because it could leak secret env variables. "
-                    "Using non-verbose mode instead."))
-      (assoc options :verbosity 0))
-    options))
-
 (defn sanitize-options [options]
   (-> options
-      (expand-paths)
-      (prevent-verbose-mode-in-production)))
+      (expand-paths)))
 
 (defn validate-options [options]
   (let [projects-dir (:projects options)
