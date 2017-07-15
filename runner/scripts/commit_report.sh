@@ -18,6 +18,13 @@ OPTIONS_FILE=${OPTIONS_FILE:-"$RESULT_DIR/options.edn"}
 
 CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
 
+if [[ -n "$TRAVIS_BUILD_ID" ]]; then
+  TRAVIS_BUILD_URL="https://travis-ci.org/cljs-oss/canary/builds/$TRAVIS_BUILD_ID"
+else
+  TRAVIS_BUILD_URL="n/a"
+fi
+TRAVIS_BUILD_INFO="Travis log: $TRAVIS_BUILD_URL."
+
 git clone --branch results https://github.com/cljs-oss/canary results
 cd results
 
@@ -39,9 +46,9 @@ cp "$OPTIONS_FILE" .
 # commit to git
 git add --all .
 git commit -F- <<EOF
-A report for ${CANARY_JOB_ID}
+Report for job #${CANARY_JOB_ID} via ${CANARY_JOB_COMMIT_URL}
 
-${CANARY_JOB_COMMIT_URL}.
+${TRAVIS_BUILD_INFO}
 EOF
 
 # push if in production
