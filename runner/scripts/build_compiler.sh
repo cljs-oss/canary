@@ -79,8 +79,6 @@ echo
 
 BUILD_SHORT_REV=`git rev-parse --short HEAD`
 
-# TODO: determine clojurescript version and check if release already exists
-
 if [[ "$CANARY_VERBOSITY" -eq 0 ]]; then
   export CLJS_SCRIPT_QUIET=1
   MAVEN_VERBOSITY="--quiet"
@@ -176,42 +174,52 @@ if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
 fi
 
 set +e
-UPLOAD_URL=`json-val [\"upload_url\"] <<< "$RELEASE_RESPONSE" | sed -e 's/^"//' -e 's/"$//'`
+RELEASE_ERROR=`json-val [\"errors\"][0][\"code\"] <<< "$RELEASE_RESPONSE" | sed -e 's/^"//' -e 's/"$//'`
 set -e
 
-if [[ "$UPLOAD_URL" =~ ^https://uploads\.github\.com/repos/cljs-oss/canary/releases/(.*)/assets.*$ ]]; then
-  GITHUB_RELEASE_ID="${BASH_REMATCH[1]}"
+if [[ "$RELEASE_ERROR" == "already_exists" ]]; then
+  echo "GitHub release for ${BUILD_ID} already exists => skipping JAR upload (assuming it is the same)"
+  # TODO: here we could query github api and get release assets and pick one
+  BUILD_DOWNLOAD_URL="https://github.com/cljs-oss/canary/releases/download/r${BUILD_ID}/clojurescript-${BUILD_ID}.jar"
+  echo "Download URL: $BUILD_DOWNLOAD_URL (assumed)"
 else
-  echo "ERROR!"
-  echo -e "Invalid upload_url returned from github api\n$RELEASE_RESPONSE\n\ninput data:\n$DATA"
-  exit 5
+  set +e
+  UPLOAD_URL=`json-val [\"upload_url\"] <<< "$RELEASE_RESPONSE" | sed -e 's/^"//' -e 's/"$//'`
+  set -e
+
+  if [[ "$UPLOAD_URL" =~ ^https://uploads\.github\.com/repos/cljs-oss/canary/releases/(.*)/assets.*$ ]]; then
+    GITHUB_RELEASE_ID="${BASH_REMATCH[1]}"
+  else
+    echo "ERROR!"
+    echo -e "Invalid upload_url returned from github api\n$RELEASE_RESPONSE\n\ninput data:\n$DATA"
+    exit 5
+  fi
+
+  RAW_UPLOAD_URL="https://uploads.github.com/repos/cljs-oss/canary/releases/$GITHUB_RELEASE_ID/assets"
+  COMPLETE_UPLOAD_URL="$RAW_UPLOAD_URL?name=clojurescript-$BUILD_ID.jar"
+
+  UPLOAD_RESPONSE=`curl ${CANARY_EXTRA_CURL_OPTS} \
+                        -H "Content-Type: application/java-archive" \
+                        -H "Authorization: token $CANARY_REPO_TOKEN" \
+                        -X POST \
+                        --data-binary "@$BUILD_JAR" \
+                        "$COMPLETE_UPLOAD_URL"`
+
+  if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
+    echo -e "GitHub API response:\n$UPLOAD_RESPONSE"
+  fi
+
+  set +e
+  BUILD_DOWNLOAD_URL=`json-val [\"browser_download_url\"] <<< "$UPLOAD_RESPONSE" | sed -e 's/^"//' -e 's/"$//'`
+  set -e
+
+  if [[ ! "$BUILD_DOWNLOAD_URL" =~ ^https://github\.com/cljs-oss/canary/releases/download.*$ ]]; then
+    echo "ERROR!"
+    echo -e "Invalid browser_download_url returned from github api\n$UPLOAD_RESPONSE"
+    exit 6
+  fi
+  echo "Download URL: $BUILD_DOWNLOAD_URL"
 fi
-
-RAW_UPLOAD_URL="https://uploads.github.com/repos/cljs-oss/canary/releases/$GITHUB_RELEASE_ID/assets"
-COMPLETE_UPLOAD_URL="$RAW_UPLOAD_URL?name=clojurescript-$BUILD_ID.jar"
-
-UPLOAD_RESPONSE=`curl ${CANARY_EXTRA_CURL_OPTS} \
-                      -H "Content-Type: application/java-archive" \
-                      -H "Authorization: token $CANARY_REPO_TOKEN" \
-                      -X POST \
-                      --data-binary "@$BUILD_JAR" \
-                      "$COMPLETE_UPLOAD_URL"`
-
-if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
-  echo -e "GitHub API response:\n$UPLOAD_RESPONSE"
-fi
-
-set +e
-BUILD_DOWNLOAD_URL=`json-val [\"browser_download_url\"] <<< "$UPLOAD_RESPONSE" | sed -e 's/^"//' -e 's/"$//'`
-set -e
-
-if [[ ! "$BUILD_DOWNLOAD_URL" =~ ^https://github\.com/cljs-oss/canary/releases/download.*$ ]]; then
-  echo "ERROR!"
-  echo -e "Invalid browser_download_url returned from github api\n$UPLOAD_RESPONSE"
-  exit 6
-fi
-
-echo "Download URL: $BUILD_DOWNLOAD_URL"
 
 RESULT_JAR_PATH="$RESULT_DIR/clojurescript-${BUILD_ID}.jar"
 cp "$BUILD_JAR" "$RESULT_JAR_PATH"
