@@ -126,27 +126,30 @@ mv "$POM_PATH" "$POM_PATH.orig"
 cat "$POM_PATH.orig" | sed "s|<version>$BUILD_VERSION</version>|<version>$BUILD_ID</version>|g" > "$POM_PATH"
 jar -uf "$BUILD_JAR" "$POM_PATH"
 
-TRAVIS_BUILD_URL="https://travis-ci.org/cljs-oss/canary/builds/$TRAVIS_BUILD_ID"
-
 if [[ -n "$TRAVIS_BUILD_ID" ]]; then
+  TRAVIS_BUILD_URL="https://travis-ci.org/cljs-oss/canary/builds/$TRAVIS_BUILD_ID"
   TRAVIS_BUILD_INFO="Travis log: $TRAVIS_BUILD_URL."
 else
+  TRAVIS_BUILD_URL="n/a"
   TRAVIS_BUILD_INFO=""
 fi
 
-RELEASE_BODY=`cat <<MARKDOWN
+GITHUB_RELEASE_BODY=`cat <<MARKDOWN
 A test build of ${COMPILER_REV_URL} via ${CANARY_JOB_COMMIT_URL}.
 ${TRAVIS_BUILD_INFO}
 MARKDOWN
 `
-RELEASE_BODY_ENCODED=`string-encode "${RELEASE_BODY}"`
+GITHUB_RELEASE_BODY_ENCODED=`string-encode "${GITHUB_RELEASE_BODY}"`
+
+GITHUB_RELEASE_NAME="ClojureScript ${BUILD_ID}"
+GITHUB_RELEASE_TAG="r${BUILD_ID}"
 
 DATA=`cat <<JSON
 {
-  "tag_name": "r${BUILD_ID}",
+  "tag_name": "${GITHUB_RELEASE_TAG}",
   "target_commitish": "${CANARY_JOB_COMMIT}",
-  "name": "ClojureScript ${BUILD_ID}",
-  "body": "${RELEASE_BODY_ENCODED}",
+  "name": "${GITHUB_RELEASE_NAME}",
+  "body": "${GITHUB_RELEASE_BODY_ENCODED}",
   "draft": false,
   "prerelease": true
 }
@@ -235,8 +238,11 @@ RESULT=`cat <<EDN
   :build-jar-path "${RESULT_JAR_PATH}"
   :build-download-url "${BUILD_DOWNLOAD_URL}"
   :github-release-id "${GITHUB_RELEASE_ID}"
+  :github-release-name "${GITHUB_RELEASE_NAME}"
+  :github-release-tag "${GITHUB_RELEASE_TAG}"
+  :compiler-rev-url "${COMPILER_REV_URL}"
   :canary-job-commit-url "${CANARY_JOB_COMMIT_URL}"
-  :travis-job-url "${TRAVIS_BUILD_URL}"
+  :travis-build-url "${TRAVIS_BUILD_URL}"
 }
 EDN
 `
