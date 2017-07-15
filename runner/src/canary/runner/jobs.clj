@@ -7,11 +7,12 @@
             [canary.runner.tasks :as tasks]
             [canary.runner.utils :as utils]
             [canary.runner.build :as build]
+            [canary.runner.report :as report]
             [canary.runner.print :as print :refer [announce with-job-printing with-task-printing]]))
 
 (defn just-test-task [task options]
   (announce "[test mode] not executing, just providing a dummy report")
-  {:report (str "test report from task " (:name task))})
+  {:report (str "a dummy report from task " (:name task))})
 
 (defn execute-task! [task options]
   (let [task-fn (:fn task)]
@@ -51,7 +52,7 @@
 (defn report-disabled-tasks [tasks options]
   (let [disabled-tasks (remove :enabled tasks)]
     (doseq [task disabled-tasks]
-      (let [reason (str " (" (:reason task) ")")
+      (let [reason (str " (" (:enabled-reason task) ")")
             announcement (str (print/emphasize "skipping") " task " (print/task-name task))]
         (announce (str announcement (if (>= (:verbosity options) 1) reason)))))))
 
@@ -69,11 +70,10 @@
             (do
               (announce (str "still waiting ... #" iteration))
               (recur (inc iteration) running-tasks completed-tasks))
-            (let [completed-task (get running-tasks completed-channel)
+            (let [completed-task (dissoc (get running-tasks completed-channel) :running)
                   new-running-tasks (dissoc running-tasks completed-channel)
                   new-completed-tasks (conj completed-tasks (assoc completed-task
-                                                              :result result
-                                                              :running false))]
+                                                              :result result))]
               (announce (str (print/emphasize "completed") " task " (print/task-name completed-task)))
               (recur (inc iteration) new-running-tasks new-completed-tasks))))))))
 
@@ -104,7 +104,7 @@
             2)
           (let [result-tasks (preprocess-result-tasks result)]
             (announce (str "the job completed:\n" (utils/pp result-tasks)) 1 options)
-            ; TODO: process results
+            (report/prepare-and-commit-report! result-tasks options)
             ; TODO: add timing info
             0)))
       3)))

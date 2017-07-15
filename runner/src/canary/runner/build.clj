@@ -35,7 +35,7 @@
     (if (zero? exit-code)
       (read-build-result options)
       (do
-        (announce (str "compiler build failed wit exit code " exit-code))
+        (announce (str "compiler build failed (exit code " exit-code ")"))
         nil))))
 
 (defn prepare-compiler! [options]
@@ -43,10 +43,9 @@
         build-task {:name  "compiler build"
                     :color :cyan}]
     (if test
-      (let [build-result {:id      "?"
-                          :skipped true}]
+      (do
         (announce (str (print/emphasize "skipping") " building compiler rev " compiler-rev " from " compiler-repo))
-        build-result)
+        nil)
       (do
         (announce (str (print/emphasize "building") " compiler rev " compiler-rev " from " compiler-repo))
         (with-task-printing build-task options

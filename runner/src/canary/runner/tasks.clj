@@ -26,11 +26,11 @@
                  (str "included because matching --only '" only "'")
                  (str "excluded because not matching --only '" only "'"))]
     (assoc task :enabled active?
-                :reason reason)))
+                :enabled-reason reason)))
 
 (defn filter-default [task]
   (assoc task :enabled true
-              :reason "included by default"))
+              :enabled-reason "included by default"))
 
 (defn task-filter [options task]
   (let [{:keys [only]} options]

@@ -45,11 +45,11 @@
         (throw (utils/ex (i18n/curl-failed-msg (:err result))))))))
 
 (defn prepare-build-env [options]
-  (let [{:keys [build-id build-download-url travis-job-url]} (:build-result options)]
+  (let [{:keys [build-id build-download-url travis-build-url]} (:build-result options)]
     {"CANARY_BUILD"                 "1"
      "CANARY_CLOJURESCRIPT_VERSION" build-id
      "CANARY_CLOJURESCRIPT_JAR_URL" build-download-url
-     "CANARY_TRAVIS_JOB_URL"        travis-job-url}))
+     "CANARY_TRAVIS_BUILD_URL"      travis-build-url}))
 
 (defn trigger-build-with-token! [slug token branch options]
   (let [api-slug (URLEncoder/encode slug)
