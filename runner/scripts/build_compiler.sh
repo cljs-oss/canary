@@ -11,7 +11,7 @@ travis_fold() {
 }
 
 function json-val () {
-  python -c "import json,sys;sys.stdout.write(json.dumps(json.load(sys.stdin)$1))";
+  python -c "import json,sys;sys.stdout.write(json.dumps(json.load(sys.stdin)$1))" 2> /dev/null;
 }
 
 function string-encode () {
