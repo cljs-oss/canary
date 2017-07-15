@@ -5,12 +5,10 @@
             [canary.runner.shell :as shell]
             [clojure.java.io :as io]
             [canary.runner.env :as env]
-            [clojure.edn :as edn]))
+            [clojure.edn :as edn]
+            [canary.runner.i18n :as i18n]))
 
 (def build-script-path "scripts/build_compiler.sh")
-
-(defn make-result-file-problem-msg [path reason]
-  (str "Unable to to read env edn file at '" path "'" (if (some? reason) (str ", reason: " reason "."))))
 
 (defn read-build-result [options]
   (let [workdir (:workdir options)
@@ -25,7 +23,7 @@
               info {:path   result-file-path
                     :file   edn-file
                     :reason reason}]
-          (throw (ex-info (make-result-file-problem-msg result-file-path reason) info)))))))
+          (throw (ex-info (i18n/result-file-problem-msg result-file-path reason) info)))))))
 
 (defn build-compiler! [build-task compiler-rev compiler-repo options]
   ; note it seemed to be easier to resort to shell for building the compiler

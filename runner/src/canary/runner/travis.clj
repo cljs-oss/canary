@@ -6,17 +6,9 @@
             [canary.runner.shell :as shell]
             [canary.runner.print :refer [announce]]
             [canary.runner.env :as env]
+            [canary.runner.i18n :as i18n]
             [canary.runner.utils :as utils])
   (:import (java.net URLEncoder)))
-
-(defn api-invalid-json-response-msg [error response]
-  (str "Travis API responded with invalid JSON: " error "\n" response))
-
-(defn api-token-not-set-msg [token-var-name]
-  (str "Travis API token '" token-var-name "' not set in the environment"))
-
-(defn curl-failed-msg [error]
-  (str "curl failed when talking to travis\n" error))
 
 (defn blind-secrets [args]
   (let [* (fn [arg]
@@ -33,8 +25,8 @@
   (try
     (json/read-str content)
     (catch Throwable e
-      (throw (ex-info (api-invalid-json-response-msg (.getMessage e) content) {:response content
-                                                                               :error    (.getMessage e)})))))
+      (throw (ex-info (i18n/api-invalid-json-response-msg (.getMessage e) content) {:response content
+                                                                                    :error    (.getMessage e)})))))
 
 (defn inspect-api-response [response-text]
   (parse-response response-text))
@@ -51,7 +43,7 @@
     (let [result (shell/launch! "curl" curl-args)]
       (if (and (zero? (:exit-code result)) (empty? (:err result)))
         (inspect-api-response (:out result))
-        (throw (ex-info (curl-failed-msg (:err result)) {:result result}))))))
+        (throw (ex-info (i18n/curl-failed-msg (:err result)) {:result result}))))))
 
 (defn prepare-build-env [options]
   (let [{:keys [build-id build-download-url travis-job-url]} (:build-result options)]
@@ -83,7 +75,7 @@
   (announce (str "trigger-build! " slug " " token-var-name " " branch "\n" (utils/pp options)) 1 options)
   (if-some [api-token (env/get token-var-name)]
     (trigger-build-with-token! slug api-token branch options)
-    (throw (ex-info (api-token-not-set-msg token-var-name)
+    (throw (ex-info (i18n/api-token-not-set-msg token-var-name)
                     {:token-var-name token-var-name
                      :slug           slug
                      :options        options}))))

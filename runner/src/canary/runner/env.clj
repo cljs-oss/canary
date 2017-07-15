@@ -2,12 +2,10 @@
   (:refer-clojure :exclude [get])
   (:require [clojure.java.io :as io]
             [clojure.edn :as edn]
-            [canary.runner.utils :as utils]))
+            [canary.runner.utils :as utils]
+            [canary.runner.i18n :as i18n]))
 
 (def default-env-file ".env")
-
-(defn make-env-file-problem-msg [path reason]
-  (str "Unable to to read env edn file at '" path "'" (if (some? reason) (str ", reason: " reason "."))))
 
 (defn- read-env-file [path]
   (let [full-path (utils/canonical-path path)]
@@ -22,7 +20,7 @@
                   info {:path   full-path
                         :file   env-file
                         :reason reason}]
-              (throw (ex-info (make-env-file-problem-msg full-path reason) info)))))))))
+              (throw (ex-info (i18n/env-file-problem-msg full-path reason) info)))))))))
 
 (defn get-env-vars []
   (merge {}

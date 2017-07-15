@@ -5,7 +5,8 @@
             [canary.runner.jobs :as jobs]
             [canary.runner.utils :as utils]
             [canary.runner.cli :refer [timeout-cli-option normal-cli-option verbosity-cli-option]]
-            [canary.runner.output :as output])
+            [canary.runner.output :as output]
+            [canary.runner.i18n :as i18n])
   (:gen-class))
 
 (def default-compiler-rev "master")
@@ -41,18 +42,6 @@
    (normal-cli-option
      ["-h" "--help"])])
 
-(defn usage [options-summary]
-  (string/join \newline ["Exercises ClojureScript libraries with pinned ClojureScript version."
-                         ""
-                         "Usage: ./run.sh job [options]"
-                         ""
-                         "Options:"
-                         options-summary]))
-
-(defn error-msg [errors]
-  (str "The following errors occurred while parsing your command:\n\n"
-       (string/join \newline errors)))
-
 (defn exit [status & [msg]]
   (if (some? msg)
     (println msg))
@@ -87,6 +76,6 @@
 (defn -main [& args]
   (let [{:keys [options errors summary]} (cli/parse-opts args cli-options)]
     (cond
-      errors (exit 1 (error-msg errors))
-      (:help options) (exit 0 (usage summary))
+      errors (exit 1 (i18n/cli-error-msg errors))
+      (:help options) (exit 0 (i18n/cli-usage summary))
       :else (exit (run-job! options)))))
