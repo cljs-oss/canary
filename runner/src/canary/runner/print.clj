@@ -26,7 +26,7 @@
   (clansi/style (:description task) :black))
 
 (defn job-name [options]
-  (clansi/style (string/trim (str "job " (:job-id options))) :underline))
+  (clansi/style (string/trim (str "job #" (:job-id options))) :underline))
 
 (defn emphasize [text]
   (clansi/style text :bright))

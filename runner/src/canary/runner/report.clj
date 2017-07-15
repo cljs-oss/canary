@@ -67,7 +67,7 @@
 (defn report-header [options]
   (let [job-commit (env/get "CANARY_JOB_COMMIT")
         canary-repo-commit-url "https://github.com/cljs-oss/canary/commit"
-        lines [(str "## Report for " (:job-id options))
+        lines [(str "## Report for job #" (:job-id options))
                ""
                (about-job job-commit canary-repo-commit-url)
                (about-compiler (:build-result options))
