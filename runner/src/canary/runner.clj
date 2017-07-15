@@ -6,7 +6,8 @@
             [canary.runner.utils :as utils]
             [canary.runner.cli :refer [timeout-cli-option normal-cli-option verbosity-cli-option]]
             [canary.runner.output :as output]
-            [canary.runner.i18n :as i18n])
+            [canary.runner.i18n :as i18n]
+            [me.raynes.fs :as fs])
   (:gen-class))
 
 (def default-compiler-rev "master")
@@ -42,7 +43,7 @@
    (normal-cli-option
      ["-h" "--help"])])
 
-(defn exit [status & [msg]]
+(defn exit! [status & [msg]]
   (if (some? msg)
     (println msg))
   (output/flush-outputs!)
@@ -66,16 +67,28 @@
       (expand-paths)
       (prevent-verbose-mode-in-production)))
 
+(defn validate-options [options]
+  (let [projects-dir (:projects options)
+        issues (cond-> []
+                       (not (fs/exists? projects-dir)) (conj (i18n/projects-dir-not-exists-msg projects-dir))
+                       (and (fs/exists? projects-dir)
+                            (or (not (fs/directory? projects-dir))
+                                (not (fs/readable? projects-dir)))) (conj (i18n/projects-dir-not-dir-msg projects-dir)))]
+    (if-not (empty? issues)
+      issues)))
+
 (defn run-job! [options]
   (let [sanitized-options (sanitize-options options)
-        status (jobs/run! sanitized-options)]
-    status))
+        validation-errors (validate-options sanitized-options)]
+    (if (some? validation-errors)
+      (exit! 2 (i18n/cli-validation-msg validation-errors))
+      (jobs/run! sanitized-options))))
 
 ; -- main entry point -------------------------------------------------------------------------------------------------------
 
 (defn -main [& args]
   (let [{:keys [options errors summary]} (cli/parse-opts args cli-options)]
     (cond
-      errors (exit 1 (i18n/cli-error-msg errors))
-      (:help options) (exit 0 (i18n/cli-usage summary))
-      :else (exit (run-job! options)))))
+      errors (exit! 1 (i18n/cli-errors-msg errors))
+      (:help options) (exit! 0 (i18n/cli-usage summary))
+      :else (exit! (run-job! options)))))
