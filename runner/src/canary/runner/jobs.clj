@@ -74,7 +74,7 @@
                   new-completed-tasks (conj completed-tasks (assoc completed-task
                                                               :result result
                                                               :running false))]
-              (announce (str "completed task " (print/task-name completed-task)) 1 options)
+              (announce (str (print/emphasize "completed") " task " (print/task-name completed-task)))
               (recur (inc iteration) new-running-tasks new-completed-tasks))))))))
 
 (defn spawn-runner! [tasks options]
