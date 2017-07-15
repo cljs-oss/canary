@@ -8,6 +8,8 @@ printf "test multi\nline\noutput\n"
 
 printf "test \e[1;34mANSI colors\e[m\n"
 
+printf "\e[31m%s\e[0m\n" "test error" >&2;
+
 for i in {1..10} ; do
   echo "x";
   sleep 1.2;
