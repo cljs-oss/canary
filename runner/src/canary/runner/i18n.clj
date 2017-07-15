@@ -3,7 +3,7 @@
   (:require [clojure.string :as string]))
 
 (defn ^:dynamic cli-usage [options-summary]
-  (string/join \newline ["Exercises ClojureScript libraries with pinned ClojureScript version."
+  (string/join \newline ["Exercises ClojureScript projects with a pinned ClojureScript version."
                          ""
                          "Usage: ./run.sh job [options]"
                          ""
