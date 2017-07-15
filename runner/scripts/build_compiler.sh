@@ -37,9 +37,6 @@ RESULT_DIR=${RESULT_DIR:-`pwd`}
 POM_PATH=${POM_PATH:-"META-INF/maven/org.clojure/clojurescript/pom.xml"}
 
 CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
-COMPILER_REV_URL="${COMPILER_REPO/.git//commit}/${COMPILER_REV}"
-
-echo "going to build $COMPILER_REV_URL"
 
 if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
   mvn --version
@@ -78,6 +75,9 @@ git log -1 --pretty=format:"%C(magenta)%h%C(reset) | %C(yellow)%s%C(reset) | %C(
 echo
 
 BUILD_SHORT_REV=`git rev-parse --short HEAD`
+BUILD_REV=`git rev-parse HEAD`
+
+COMPILER_REV_URL="${COMPILER_REPO/.git//commit}/${BUILD_REV}"
 
 if [[ "$CANARY_VERBOSITY" -eq 0 ]]; then
   export CLJS_SCRIPT_QUIET=1
