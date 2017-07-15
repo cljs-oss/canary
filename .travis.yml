@@ -5,22 +5,24 @@ env:
   - DOCKER_CACHE_DIR=$HOME/docker-cache
   - secure: qtSRnvfxi4PfwZg43cYGgSZgVo6o2u2FBEnL+Gn9TTYeXOlk/cmXnC1mavMJkxXuhmIlUz0Y5Az/FS4wk2kN7/aL/vpgk563fgdJwkbGD/14hSlbB4i1YODZqt0TfmS0sM61WteDtQm53RrNeQMHDq6lXE9L8kESHFTasxeBFufO1HtbDNCeY+nfvyiKBWOYEu346mTbsQGCHISy7aJGCtC3D2XgYKvY7J8skE7kPCW6tuu4WSMsrmv/Zs93hCiu0USTUgvqsgzcwDwFqO3AVuQ+4nmCcNS5rkSduND7Yo58wt+KqAbrb8UVLGFMUhumJ0SKup8izHwzDtxZcTADaSG5JHdeSWu/rhMrQgBr0bqK1CZF8HKqJ/OoHzOnAJRFGot73Qxg6WDYDTZaVJ4x7L1XnEZD507cSWj+jkJHW1Sh0Z/bpFLCnhyu3m6IMtYE55th28BjwjUv9JA0va69Nfj1sfyb1bULKMdNalZPQYcj/1SykhkA6rY8uFcaXyGBPDLW90I4E/0PZZbkYqMfyB8VjsXesJAd5ydsnLibdTF8FSZhILlWZaPMCtpDBblDQFGlrTsudlumzRPf1UoIdfM0nKFb5SgcmfqfaWuaiCUfKVLckKYmhBElpDDq9NAQL8TiQGM1IbbERk7tjhY/mPA9It889v6j3mhKMadJSjU=
   - secure: GZ0fR/7Lc4OZ8fwqARZWSU0nO7hyzVS12k+tTGSY5i7YBDFRpUx/o7DE8A2jfi32vjJforpb3ZR0d5F+mQbussA9zXWALCjTh1/5dIrL2J/upTv3ecBrG9S7s2sSHFNBBP3kfGWEX3kccBd8fu9Lv7ZQhlF8lQx1DBbbDFCZHkxCN9E7mv0o3Ex+jsnHn1IFfxR4ewEQ7NixVugSHS0nJXMwrLnO36CCaMEqChQnxQaXu0xkZE8e9caZs02gJ2dJMvL40xoPZ5FRQfUncoYd+xbd1gl+jLIhSQappVY1bhCdCT9xpt1cvrhWEk0jGAf/fxeTxU9Yk2gAKq9kOWrXOKz0E1jmMS7x/A17zk6y1aphJDZkDKhOKKcze8zaFc2cpX3cjfdjoIpX+K61rHhqilbBfPjnWPHjvZGHiCVqy73zmi0Zy/05POE0/OY+nUpA3BINNEH6mZwvxr5fL34HKdJET0WjhTpBb1gGZYm87whxs3e/EABv7g3PlAg4TwgZLT1v2adNBC/HQBEPCEzsGdKh33kzqVD94K5l3LrFd6v9Aq8J3dx+0WxJ+at0ZFNFRm2iqb33Y/rJwVIOUZ5k5GjlpQqp+kZeGY7PNFNsKDzzgEQAKujHQemMZ3gXKG2/dJNzgvTeStadI/S0W52zlpKdubThCxRu1ywEYyUgpCs=
+  - secure: eNzSMTr7udikJnxZZ7U8+1n5gyloLTXuhK6En0yaPYNYZXzLEvGTnW5LWi386LJZw1hbDbTRJcmC2Qv5hFBIq08nrZUFQ7jQqc6erssWTsbVEYVXbd0nZh0lf2ZqCTDfcPMVQtruRM0lZtZ+be6mr0iegr3Qx9DRqGYjZF3ApimpZx/B291c+BMnNF7M8OGyvpsvFvM/BSPHgtBv36a8K2KlvxWc+QvSuBLkM3Fy+npA+27oSH0DoPadfZJZlP2oTce0iwkP2JAsaGyOc4Xpz39cL3ppI4z+cdmvLYTmnDzyox/HKUyQtt/T0V+7EkSgmkoHWsNE9XypUPh7yzHCnRU37YnLJgw8EfUlZ47QweA40w8Ut/pFlPf9DkwejYt987VtjuQd+A+vaIUwyfPmqhb1SvKJPbfkoMcVxGZVePm4e6FAMLczTreYFzAu3nDnffcs5Z14vjnWy4sA1Ln48Xt+BQ22hBMIup666WXZS0xwAEVxs6TnO0hC1QeYWpkS0oeiWV3mlns0AdMAbcpw1nck4qGfJpRFHLg2Lnp/0HzEiGhbIvuafPCZFirvLzALq1lNFW9kAZ0hBJqgbdK3OGUJK8C7QCe/cM4TZ1MrTliB8Nj201jx2tlPCSavZBGOLCub+zn53kz1GofHQ4TVCGOm8KcpHibO/SEcqRIhTdU=
 cache:
   apt: true
   directories:
-  - "$DOCKER_CACHE_DIR"
-  - "$DOCKER_VOLUMES_DIR"
+  - $DOCKER_CACHE_DIR
+  - $DOCKER_VOLUMES_DIR
 branches:
   only:
   - jobs
 services:
 - docker
 before_cache:
-- "./scripts/docker-save.sh"
+- ./scripts/docker-save.sh
 before_install:
 - sudo apt-get update
 - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
-- git remote add x https://github.com/cljs-oss/canary.git && git fetch x master && git checkout x/master
-- "./scripts/docker-load.sh"
+- git remote add x https://github.com/cljs-oss/canary.git && git fetch x master &&
+  git checkout x/master
+- ./scripts/docker-load.sh
 script:
-- "./scripts/travis-entrypoint.sh"
+- ./scripts/travis-entrypoint.sh
