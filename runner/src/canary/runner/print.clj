@@ -9,7 +9,7 @@
 (def palette (cycle [:green :blue :yellow :magenta :red]))
 (def job-label-padding 10)
 (def task-label-padding 20)
-(def time-formatter (SimpleDateFormat. "HH:mm:ss"))
+(def time-formatter (SimpleDateFormat. "mm:ss.SSS"))
 
 ; -- announcement printing --------------------------------------------------------------------------------------------------
 
