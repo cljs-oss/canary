@@ -43,9 +43,15 @@
         nil))))
 
 (defn prepare-compiler! [options]
-  (let [{:keys [compiler-rev compiler-repo]} options]
-    (announce (str (print/emphasize "building") " compiler rev " compiler-rev " from " compiler-repo))
-    (let [build-task {:name  "compiler build"
-                      :color :cyan}]
-      (with-task-printing build-task options
-        (build-compiler! build-task compiler-rev compiler-repo options)))))
+  (let [{:keys [compiler-rev compiler-repo test]} options
+        build-task {:name  "compiler build"
+                    :color :cyan}]
+    (if test
+      (let [build-result {:id      "?"
+                          :skipped true}]
+        (announce (str (print/emphasize "skipping") " building compiler rev " compiler-rev " from " compiler-repo))
+        build-result)
+      (do
+        (announce (str (print/emphasize "building") " compiler rev " compiler-rev " from " compiler-repo))
+        (with-task-printing build-task options
+          (build-compiler! build-task compiler-rev compiler-repo options))))))
