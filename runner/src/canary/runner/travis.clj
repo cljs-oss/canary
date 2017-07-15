@@ -25,8 +25,7 @@
   (try
     (json/read-str content)
     (catch Throwable e
-      (throw (ex-info (i18n/api-invalid-json-response-msg (.getMessage e) content) {:response content
-                                                                                    :error    (.getMessage e)})))))
+      (throw (utils/ex (i18n/api-invalid-json-response-msg (.getMessage e) content))))))
 
 (defn inspect-api-response [response-text]
   (parse-response response-text))
@@ -43,7 +42,7 @@
     (let [result (shell/launch! "curl" curl-args)]
       (if (and (zero? (:exit-code result)) (empty? (:err result)))
         (inspect-api-response (:out result))
-        (throw (ex-info (i18n/curl-failed-msg (:err result)) {:result result}))))))
+        (throw (utils/ex (i18n/curl-failed-msg (:err result))))))))
 
 (defn prepare-build-env [options]
   (let [{:keys [build-id build-download-url travis-job-url]} (:build-result options)]
@@ -75,7 +74,4 @@
   (announce (str "trigger-build! " slug " " token-var-name " " branch "\n" (utils/pp options)) 1 options)
   (if-some [api-token (env/get token-var-name)]
     (trigger-build-with-token! slug api-token branch options)
-    (throw (ex-info (i18n/api-token-not-set-msg token-var-name)
-                    {:token-var-name token-var-name
-                     :slug           slug
-                     :options        options}))))
+    (throw (utils/ex (i18n/api-token-not-set-msg token-var-name)))))

@@ -19,11 +19,7 @@
         (assert (map? data))
         data)
       (catch Throwable e
-        (let [reason (.getMessage e)
-              info {:path   result-file-path
-                    :file   edn-file
-                    :reason reason}]
-          (throw (ex-info (i18n/result-file-problem-msg result-file-path reason) info)))))))
+        (throw (utils/ex (i18n/result-file-problem-msg result-file-path (.getMessage e))))))))
 
 (defn build-compiler! [build-task compiler-rev compiler-repo options]
   ; note it seemed to be easier to resort to shell for building the compiler

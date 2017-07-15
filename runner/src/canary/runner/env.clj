@@ -16,11 +16,7 @@
             (assert (map? data))
             data)
           (catch Throwable e
-            (let [reason (.getMessage e)
-                  info {:path   full-path
-                        :file   env-file
-                        :reason reason}]
-              (throw (ex-info (i18n/env-file-problem-msg full-path reason) info)))))))))
+            (throw (utils/ex (i18n/env-file-problem-msg full-path (.getMessage e))))))))))
 
 (defn get-env-vars []
   (merge {}

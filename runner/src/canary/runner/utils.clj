@@ -30,6 +30,11 @@
       (string/replace #"[^a-zA-Z0-9]" "_")
       (string/replace #"_+" "_")))
 
+(defn ex [message & [data cause]]
+  (if (some? cause)
+    (ex-info message (or data {}) cause)
+    (ex-info message (or data {}))))
+
 ; -- tests ------------------------------------------------------------------------------------------------------------------
 
 (comment
