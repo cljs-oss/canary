@@ -7,6 +7,6 @@ set -e -o pipefail -x
 
 # source: https://github.com/cljs-oss/planck/blob/master/.travis.yml
 
-git clone https://github.com/mfikes/planck
+#git clone https://github.com/mfikes/planck
 
-cd planck && script/build && script/test
+#cd planck && script/build && script/test
