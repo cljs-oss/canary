@@ -27,6 +27,7 @@
              "CANARY_VERBOSITY"  (str (:verbosity options))
              "CANARY_PRODUCTION" (str (:production options))
              "CANARY_JOB_ID"     (str (:job-id options))
+             "CANARY_BUILD_ID"   (str (get-in options [:build-result :build-id]))
              "CANARY_REPO_TOKEN" (env/get "CANARY_REPO_TOKEN")}                                                               ; we want to get advantage of .env files
         build-launcher (shell/make-shell-launcher script env)
         result (build-launcher (with-meta options commit-task))
