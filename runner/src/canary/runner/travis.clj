@@ -9,6 +9,15 @@
             [canary.runner.utils :as utils])
   (:import (java.net URLEncoder)))
 
+(defn api-invalid-json-response-msg [error response]
+  (str "Travis API responded with invalid JSON: " error "\n" response))
+
+(defn api-token-not-set-msg [token-var-name]
+  (str "Travis API token '" token-var-name "' not set in the environment"))
+
+(defn curl-failed-msg [error]
+  (str "curl failed when talking to travis\n" error))
+
 (defn blind-secrets [args]
   (let [* (fn [arg]
             (if (re-matches #"^Authorization:.*" arg)
@@ -24,13 +33,11 @@
   (try
     (json/read-str content)
     (catch Throwable e
-      (throw (ex-info (str "Travis API responded with invalid JSON: " (.getMessage e)) {:response content
-                                                                                        :reason   (.getMessage e)})))))
+      (throw (ex-info (api-invalid-json-response-msg (.getMessage e) content) {:response content
+                                                                               :error    (.getMessage e)})))))
 
 (defn inspect-api-response [response-text]
-  (cond
-    (= response-text "access denied") (throw (ex-info (str "Travis API issue: " response-text) {}))
-    :else (parse-response response-text)))
+  (parse-response response-text))
 
 (defn post-to-travis-api! [api-endpoint token request-body options]
   (let [curl-args ["-s" "-X" "POST"
@@ -44,7 +51,7 @@
     (let [result (shell/launch! "curl" curl-args)]
       (if (and (zero? (:exit-code result)) (empty? (:err result)))
         (inspect-api-response (:out result))
-        (throw (ex-info (str "curl failed when talking to travis\n" (:err result)) {:result result}))))))
+        (throw (ex-info (curl-failed-msg (:err result)) {:result result}))))))
 
 (defn prepare-build-env [options]
   (let [{:keys [build-id build-download-url travis-job-url]} (:build-result options)]
@@ -76,7 +83,7 @@
   (announce (str "trigger-build! " slug " " token-var-name " " branch "\n" (utils/pp options)) 1 options)
   (if-some [api-token (env/get token-var-name)]
     (trigger-build-with-token! slug api-token branch options)
-    (throw (ex-info (str "travis api token '" token-var-name "' not set in the environment")
+    (throw (ex-info (api-token-not-set-msg token-var-name)
                     {:token-var-name token-var-name
                      :slug           slug
                      :options        options}))))
