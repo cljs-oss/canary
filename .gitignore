@@ -6,3 +6,4 @@
 /runner/.nrepl-port
 /docker/.inherited-env-with-secrets
 /.compiler-build
+/scripts/test.sh
