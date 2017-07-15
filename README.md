@@ -8,6 +8,8 @@ needed for talking to GitHub and Travis APIs. Instead you can trigger canary job
 
 For example `job -r master` will run the job for bleeding edge [ClojureScript master](https://github.com/clojure/clojurescript/tree/master).
 
+Please note that `--production` and `--job-id` parameters are not available to you. They are [forced by our launcher script](https://github.com/cljs-oss/canary/blob/3a555f984f27dea52af2d756df28647af208b08d/scripts/travis-entrypoint.sh#L31).
+
 Each completed job should produce a report page with results. You can find archived reports in the [results branch](https://github.com/cljs-oss/canary/tree/results).
 
 #### Available parameters
