@@ -4,8 +4,7 @@
             [cuerdas.core :as cuerdas]
             [clansi])
   (:import (java.text SimpleDateFormat)
-           (java.util Date)
-           (java.io PipedReader PipedWriter PrintWriter)))
+           (java.util Date)))
 
 (def palette (cycle [:green :blue :yellow :magenta :red]))
 (def job-label-padding 10)
@@ -37,22 +36,12 @@
 (defn format-current-time []
   (.format time-formatter (Date.)))
 
-(defn make-print-writer! [printer]
-  (let [stream (PipedReader.)
-        writer (PipedWriter. stream)]
-    (output/print-stream-as-lines! stream printer)
-    (PrintWriter. writer)))
-
 (defn mark-errors [kind options content]
   (if (:mark-errors options)
     (let [prefix (if (= kind :err) "!" " ")
           style (if (= kind :err) :red :default)]
       (clansi/style (str prefix content) style))
     (str " " content)))
-
-(defmacro with-bound-target [target kind & body]
-  `(binding [~(if (= kind :err) '*err* '*out*) ~target]
-     ~@body))
 
 (defn process-passthrough-content [content]
   ; we want to handle travis folding command gracefully
@@ -75,7 +64,7 @@
     (str (apply clansi/style prefix styles) content)))
 
 (defn job-printer [target kind options content]
-  (with-bound-target target kind
+  (binding [*out* target]
     (let [printable-content (process-passthrough-content content)
           line (format-job-line (format-current-time)
                                 (job-name options)
@@ -86,7 +75,7 @@
       (println line))))
 
 (defn make-job-print-writer! [target kind options]
-  (make-print-writer! (partial job-printer target kind options)))
+  (output/make-print-writer! (partial job-printer target kind options) target))
 
 (defmacro with-job-printing [options & body]
   `(let [options# ~options]
@@ -109,7 +98,7 @@
       (println line))))
 
 (defn make-task-print-writer! [target kind task options]
-  (make-print-writer! (partial task-printer target kind task options)))
+  (output/make-print-writer! (partial task-printer target kind task options) target))
 
 (defmacro with-task-printing [task options & body]
   `(let [task# ~task

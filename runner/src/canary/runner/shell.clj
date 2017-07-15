@@ -9,16 +9,9 @@
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 
-(defn out-printer [& args]
-  (apply println args))
-
-(defn err-printer [& args]
-  (binding [*out* *err*]
-    (apply println args)))
-
 (defn stream-proc-output! [proc]
-  (output/print-stream-as-lines! (:out proc) out-printer)
-  (output/print-stream-as-lines! (:err proc) err-printer))
+  (output/print-stream-as-lines! (:out proc) output/synchronized-out-printer)
+  (output/print-stream-as-lines! (:err proc) output/synchronized-err-printer))
 
 (defn determine-workdir-for-task [task options]
   (let [job-slug (utils/sanitize-as-filename (or (:job-id options) "_local-job"))
