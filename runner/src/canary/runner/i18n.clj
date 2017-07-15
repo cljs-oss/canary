@@ -38,3 +38,6 @@
 
 (defn ^:dynamic projects-dir-not-dir-msg [projects-dir]
   (str "Projects directory does not seem to be a readable directory at '" projects-dir "'"))
+
+(defn ^:dynamic compiler-build-failed [exit-code]
+  (str "compiler build failed (exit code " exit-code))
