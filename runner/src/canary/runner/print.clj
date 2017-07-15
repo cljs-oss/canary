@@ -9,7 +9,7 @@
 (def palette (cycle [:green :blue :yellow :magenta :red]))
 (def job-label-padding 10)
 (def task-label-padding 20)
-(def time-formatter (SimpleDateFormat. "mm:ss.SSS"))
+(def default-time-format "mm:ss.SSS")
 
 ; -- announcement printing --------------------------------------------------------------------------------------------------
 
@@ -33,8 +33,13 @@
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 
-(defn format-current-time []
-  (.format time-formatter (Date.)))
+(defn make-time-formatter [format]
+  (SimpleDateFormat. format))
+
+(def time-formatter (memoize make-time-formatter))
+
+(defn format-time [time & [format]]
+  (.format (time-formatter (or format default-time-format)) time))
 
 (defn mark-errors [kind options content]
   (if (:mark-errors options)
@@ -66,7 +71,8 @@
 (defn job-printer [target kind options content]
   (binding [*out* target]
     (let [printable-content (process-passthrough-content content)
-          line (format-job-line (format-current-time)
+          current-time (Date.)
+          line (format-job-line (format-time current-time (:time-format options))
                                 (job-name options)
                                 nil
                                 (mark-errors kind options printable-content)
