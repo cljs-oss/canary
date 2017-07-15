@@ -24,7 +24,7 @@ if [[ -n "$TRAVIS_BUILD_ID" ]]; then
 else
   TRAVIS_BUILD_URL="n/a"
 fi
-TRAVIS_BUILD_INFO="Travis log: $TRAVIS_BUILD_URL."
+TRAVIS_BUILD_INFO="Travis: $TRAVIS_BUILD_URL."
 
 git clone --branch results https://github.com/cljs-oss/canary results
 cd results
@@ -52,7 +52,7 @@ while [ ${#FORMATTED_ID} -lt 6 ]; do
   FORMATTED_ID=0${FORMATTED_ID}
 done
 
-REPORT_SLUG="job$FORMATTED_ID-$CANARY_BUILD_ID"
+REPORT_SLUG="job-$FORMATTED_ID-$CANARY_BUILD_ID"
 REPORT_DIR="reports/$REPORT_SLUG"
 
 if [[ -d "$REPORT_DIR" ]]; then
