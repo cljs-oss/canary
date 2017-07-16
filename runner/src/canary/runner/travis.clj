@@ -10,13 +10,6 @@
             [canary.runner.utils :as utils])
   (:import (java.net URLEncoder)))
 
-(defn blind-secrets [args]
-  (let [* (fn [arg]
-            (if (re-matches #"^Authorization:.*" arg)
-              "Authorization: <secret>"
-              arg))]
-    (vec (map * args))))
-
 (defn mock-travis-requests-response [args]
   (let [fake-response (json/write-str {"repository" {"slug" "some-repo/some-project"}
                                        "request"    {"repository" {"id" "n/a"}}})]
@@ -30,7 +23,7 @@
       :else (throw (utils/ex (i18n/unable-to-mock-travis-api-msg cmd args))))))
 
 (defn launch! [cmd args options]
-  (announce (str "> curl " (blind-secrets args)) 2 options)
+  (announce (str "> curl " args) 2 options)
   (if (:production options)
     (shell/launch! cmd args)
     (mock-travis-response cmd args)))
