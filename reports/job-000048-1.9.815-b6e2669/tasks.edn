@@ -1,0 +1,13 @@
+({:name "cljs-devtools",
+  :description
+  "a Clojure function cljs-devtools from canary.projects.binaryage",
+  :enabled false,
+  :enabled-reason "excluded because not matching --only 'planck'",
+  :color :green}
+ {:name "planck",
+  :description "a Clojure function planck from canary.projects.mfikes",
+  :enabled true,
+  :enabled-reason "included because matching --only 'planck'",
+  :color :blue,
+  :result
+  {:status :ok, :report "triggered a build of  => request id "}})
