@@ -112,7 +112,6 @@
   (try
     (run-naked! options)
     (catch Throwable e
-      ; convert exceptions to task results in production
       (if (:production options)
         (do
           (announce (str "job failed due to an exception: " (.getMessage e)))
