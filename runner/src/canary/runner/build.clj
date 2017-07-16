@@ -35,7 +35,7 @@
         exit-code (:exit-code result)]
     (if (zero? exit-code)
       (read-build-result options)
-      (throw (i18n/compiler-build-failed exit-code)))))
+      (throw (utils/ex (i18n/compiler-build-failed exit-code))))))
 
 (defn prepare-compiler! [options]
   (let [{:keys [compiler-rev compiler-repo test]} options
