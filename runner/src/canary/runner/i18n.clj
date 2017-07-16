@@ -41,3 +41,6 @@
 
 (defn ^:dynamic compiler-build-failed [exit-code]
   (str "compiler build failed (exit code " exit-code))
+
+(defn ^:dynamic unable-to-mock-travis-api-msg [cmd args]
+  (str "Unable to mock Travis API: " cmd " " (pr-str args)))
