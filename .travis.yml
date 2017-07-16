@@ -11,6 +11,7 @@ cache:
   directories:
   - $DOCKER_CACHE_DIR
   - $DOCKER_VOLUMES_DIR
+  - /runner/.cachedir
 branches:
   only:
   - jobs
