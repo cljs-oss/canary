@@ -28,7 +28,8 @@
              "COMPILER_REV"      compiler-rev
              "RESULT_DIR"        (:workdir options)
              "CANARY_VERBOSITY"  (str (:verbosity options))
-             "CANARY_REPO_TOKEN" (env/get "CANARY_REPO_TOKEN")}                                                               ; we want to get advantage of .env files
+             "CANARY_REPO_TOKEN" (env/get "CANARY_REPO_TOKEN")                                                                ; we want to get advantage of .env files
+             "CANARY_PRODUCTION" (str (:production options))}
         build-launcher (shell/make-shell-launcher script env)
         result (build-launcher (with-meta options build-task))
         exit-code (:exit-code result)]
