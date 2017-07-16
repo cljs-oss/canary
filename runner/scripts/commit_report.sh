@@ -19,6 +19,12 @@ OPTIONS_FILE=${OPTIONS_FILE:-"$RESULT_DIR/options.edn"}
 
 CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
 
+if [[ "$CANARY_VERBOSITY" -gt 1 ]]; then
+  echo "effective settings:\n"
+  # https://unix.stackexchange.com/a/5691/188074
+  comm -3 <(declare | sort) <(declare -f | sort)
+fi
+
 if [[ -n "$TRAVIS_BUILD_ID" ]]; then
   TRAVIS_BUILD_URL="https://travis-ci.org/cljs-oss/canary/builds/$TRAVIS_BUILD_ID"
 else

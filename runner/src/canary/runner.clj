@@ -14,6 +14,7 @@
 (def default-compiler-repo "https://github.com/clojure/clojurescript.git")
 (def default-projects-dir "src/canary/projects")
 (def default-work-dir ".workdir")
+(def default-cache-dir ".cachedir")
 (def default-timeout (utils/seconds-to-msec (* 60 60)))                                                                       ; 60min
 (def default-polling-interval (utils/seconds-to-msec (* 60 5)))                                                               ; 5min, travis kills a job when no output is presented in last 10min
 
@@ -26,6 +27,8 @@
      ["-p" "--projects DIR" "Path to projects directory" :default default-projects-dir])
    (normal-cli-option
      [nil "--workdir DIR" "Path to working directory" :default default-work-dir])
+   (normal-cli-option
+     [nil "--cachedir DIR" "Path to caching directory. Persists state between runs for speedup." :default default-cache-dir])
    (normal-cli-option
      [nil "--only SUBSTR" "Run only tasks matching a substring"])
    (normal-cli-option
@@ -52,7 +55,8 @@
 (defn expand-paths [options]
   (assoc options
     :projects (utils/canonical-path (:projects options))
-    :workdir (utils/canonical-path (:workdir options))))
+    :workdir (utils/canonical-path (:workdir options))
+    :cachedir (utils/canonical-path (:cachedir options))))
 
 (defn sanitize-options [options]
   (-> options

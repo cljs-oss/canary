@@ -22,6 +22,14 @@ function string-encode () {
   echo "$content"
 }
 
+pushd () {
+    command pushd "$@" > /dev/null
+}
+
+popd () {
+    command popd "$@" > /dev/null
+}
+
 # parametrization via environment
 COMPILER_REV=${COMPILER_REV:-"master"} # https://git-scm.com/book/tr/v2/Git-Tools-Revision-Selection
 COMPILER_REPO=${COMPILER_REPO:-"https://github.com/clojure/clojurescript.git"}
@@ -36,8 +44,16 @@ CANARY_EXTRA_CURL_OPTS=${CANARY_EXTRA_CURL_OPTS:-"-sS"}
 RESULT_DIR=${RESULT_DIR:-`pwd`}
 POM_PATH=${POM_PATH:-"META-INF/maven/org.clojure/clojurescript/pom.xml"}
 CANARY_PRODUCTION=${CANARY_PRODUCTION}
+CANARY_CACHE_DIR=${CANARY_CACHE_DIR:-"$(pwd)/.cache"}
+OFFICIAL_COMPILER_REPO=${OFFICIAL_COMPILER_REPO:-"https://github.com/clojure/clojurescript.git"}
 
 CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
+
+if [[ "$CANARY_VERBOSITY" -gt 1 ]]; then
+  echo "effective settings:\n"
+  # https://unix.stackexchange.com/a/5691/188074
+  comm -3 <(declare | sort) <(declare -f | sort)
+fi
 
 if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
   mvn --version
@@ -60,14 +76,26 @@ fi
 mkdir .compiler-build
 cd .compiler-build
 
-mkdir clojurescript
-cd clojurescript
+# prepare git cache if it does not exist already
+GIT_REPO_CACHE_NAME="cached-clojurescript-repo"
+GIT_REPO_CACHE_DIR="$CANARY_CACHE_DIR/$GIT_REPO_CACHE_NAME"
 
-git init
-git remote add origin "$COMPILER_REPO"
-# we have to fetch whole clojurescript repo, clojurescript's build script depends on it
-# TODO: we probably want to setup sharing of git objects persisted by travis to speed this up
-git fetch ${GIT_VERBOSITY} --tags origin
+if [[ ! -d "$GIT_REPO_CACHE_DIR" ]]; then
+  echo "Shared git cache repo for compiler does not exist => creating it"
+  mkdir -p "$CANARY_CACHE_DIR"
+  pushd "$CANARY_CACHE_DIR"
+  # we have to fetch whole clojurescript repo, clojurescript's build script depends on tags
+  git clone --mirror ${GIT_VERBOSITY} "$OFFICIAL_COMPILER_REPO" "$GIT_REPO_CACHE_NAME"
+  popd
+else
+  echo "Update shared git cache repo for compiler"
+  pushd "$GIT_REPO_CACHE_DIR"
+  git fetch --tags ${GIT_VERBOSITY}
+  popd
+fi
+
+git clone ${GIT_VERBOSITY} --reference "$GIT_REPO_CACHE_DIR" "$COMPILER_REPO" clojurescript
+cd clojurescript
 git checkout "$COMPILER_REV"
 git checkout -b canary-build
 
@@ -95,6 +123,7 @@ if [[ "$CANARY_VERBOSITY" -gt 2 ]]; then
   env
 fi
 
+# TODO: implement caching of compiler builds
 ./script/build
 travis_fold end clojurescript-build
 
