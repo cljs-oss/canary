@@ -13,6 +13,8 @@ fi
 
 pushd "$ROOT"
 
+echo "Travis entry point at '$(pwd)'"
+
 JOB_ARGS=$(git show -s --format=%B "jobs" | head -n 1)
 
 # TODO: do some better sanitation of JOB_ARGS
