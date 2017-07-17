@@ -102,7 +102,7 @@ git checkout "$COMPILER_REV"
 git checkout -b canary-build
 
 echo "Effective ClojureScript SHA to be built:"
-git log -1 --pretty=format:"%C(magenta)%h%C(reset) | %C(yellow)%s%C(reset) | %C(blue)%an%C(reset) | %ad" --date=rfc
+git log -1 --pretty=format:"%C(magenta)%h%C(reset) | %C(yellow)%s%C(reset)%n        └ %C(blue)%an%C(reset) | %ad" --date=rfc
 echo
 
 BUILD_SHORT_REV=`git rev-parse --short HEAD`
