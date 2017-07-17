@@ -31,6 +31,9 @@
 (defn emphasize [text]
   (clansi/style text :bright))
 
+(defn repo-slug [text]
+  (clansi/style text :blue))
+
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 
 (defn make-time-formatter [format]

@@ -7,7 +7,8 @@
             [canary.runner.print :refer [announce]]
             [canary.runner.env :as env]
             [canary.runner.i18n :as i18n]
-            [canary.runner.utils :as utils])
+            [canary.runner.utils :as utils]
+            [canary.runner.print :as print])
   (:import (java.net URLEncoder)))
 
 (defn mock-travis-requests-response [args]
@@ -87,7 +88,8 @@
     "non-production-dummy-token-value"))
 
 (defn trigger-build! [slug token-var-name branch options]
-  (announce (str "trigger-build! " slug " " token-var-name " " branch "\n" (utils/pp options)) 1 options)
+  (announce (str "Triggering Travis build of " (print/repo-slug slug) " and waiting for results..."))
+  (announce (str "trigger-build! " slug " " token-var-name " " branch "\n" (utils/pp options)) 2 options)
   (if-some [api-token (retrieve-token token-var-name options)]
     (trigger-build-with-token! slug api-token branch options)
     (throw (utils/ex (i18n/api-token-not-set-msg token-var-name)))))
