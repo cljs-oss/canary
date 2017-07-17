@@ -3,7 +3,8 @@
   (:require [clojure.pprint :refer [pprint]]
             [clojure.string :as string]
             [clojure.core.async :as async])
-  (:import (java.util.concurrent TimeUnit)))
+  (:import (java.util.concurrent TimeUnit)
+           (java.io StringWriter PrintWriter)))
 
 (defn pp [data & [level length]]
   (with-out-str
@@ -34,6 +35,12 @@
   (if (some? cause)
     (ex-info message (or data {}) cause)
     (ex-info message (or data {}))))
+
+(defn stacktrace-str [^Throwable ex]
+  (let [string-writer (StringWriter.)
+        print-writer (PrintWriter. string-writer)]
+    (.printStackTrace ex print-writer)
+    (.toString string-writer)))
 
 ; -- tests ------------------------------------------------------------------------------------------------------------------
 
