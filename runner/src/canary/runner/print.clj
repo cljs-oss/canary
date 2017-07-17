@@ -32,13 +32,19 @@
   (clansi/style text :bright))
 
 (defn repo-slug [text]
-  (clansi/style text :blue))
+  (clansi/style text :cyan))
 
 (defn travis-url [text]
-  (clansi/style text :yellow))
+  (clansi/style text :blue))
 
 (defn travis-build-number [text]
-  (clansi/style (str "#" text) :cyan))
+  (clansi/style (str "#" text) :cyan :bright))
+
+(defn rev [compiler-rev]
+  (clansi/style compiler-rev :magenta))
+
+(defn url [text]
+  (clansi/style text :blue))
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 

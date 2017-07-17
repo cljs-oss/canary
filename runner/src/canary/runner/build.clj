@@ -44,9 +44,13 @@
                     :color :cyan}]
     (if test
       (do
-        (announce (str (print/emphasize "skipping") " building compiler rev " compiler-rev " from " compiler-repo))
+        (announce (str (print/emphasize "skipping building")
+                       " compiler rev " (print/rev compiler-rev)
+                       " from " (print/url compiler-repo)))
         {:build-id "1.9.000-deadbeef"})
       (do
-        (announce (str (print/emphasize "building") " compiler rev " compiler-rev " from " compiler-repo))
+        (announce (str (print/emphasize "building")
+                       " compiler rev " (print/rev compiler-rev)
+                       " from " (print/url compiler-repo)))
         (with-task-printing build-task options
           (build-compiler! build-task compiler-rev compiler-repo options))))))
