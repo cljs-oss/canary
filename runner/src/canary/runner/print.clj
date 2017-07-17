@@ -34,6 +34,12 @@
 (defn repo-slug [text]
   (clansi/style text :blue))
 
+(defn travis-url [text]
+  (clansi/style text :yellow))
+
+(defn travis-build-id [text]
+  (clansi/style text :green))
+
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 
 (defn make-time-formatter [format]

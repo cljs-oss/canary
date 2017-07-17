@@ -9,11 +9,108 @@
             [canary.runner.i18n :as i18n]
             [canary.runner.utils :as utils]
             [canary.runner.print :as print])
-  (:import (java.net URLEncoder)))
+  (:import (java.net URLEncoder)
+           (java.util.concurrent TimeUnit)))
+
+; {"message" nil,
+;  "owner"
+;  {"@type" "organization",
+;   "@href" "/org/23773",
+;   "@representation" "minimal",
+;   "id" 23773,
+;   "login" "binaryage"},
+;  "@href" "/repo/3839739/request/76577839",
+;  "branch_name"
+;  {"@type" "branch",
+;   "@href" "/repo/3839739/branch/master",
+;   "@representation" "minimal",
+;   "name" "master"},
+;  "builds"
+;  [{"@href" "/build/254467456",
+;    "pull_request_number" nil,
+;    "previous_state" "errored",
+;    "id" 254467456,
+;    "@representation" "minimal",
+;    "started_at" nil,
+;    "event_type" "api",
+;    "number" "313",
+;    "duration" nil,
+;    "state" "created",
+;    "pull_request_title" nil,
+;    "@type" "build",
+;    "finished_at" nil}],
+;  "repository"
+;  {"@type" "repository",
+;   "@href" "/repo/3839739",
+;   "@representation" "minimal",
+;   "id" 3839739,
+;   "name" "cljs-devtools",
+;   "slug" "binaryage/cljs-devtools"},
+;  "id" 76577839,
+;  "@representation" "standard",
+;  "event_type" "api",
+;  "commit"
+;  {"@type" "commit",
+;   "@representation" "minimal",
+;   "id" 73961817,
+;   "sha" "45c1df1e0de53c9d320963b296bd7a741056599c",
+;   "ref" nil,
+;   "message" "canary build with ClojureScript ",
+;   "compare_url"
+;   "https://github.com/binaryage/cljs-devtools/compare/d3af0f855d94d0a2b906b1840b5c7534cedbb768...45c1df1e0de53c9d320963b296bd7a741056599c",
+;   "committed_at" "2017-07-14T22:04:48Z"},
+;  "state" "finished",
+;  "created_at" "2017-07-17T14:37:25Z",
+;  "@type" "request",
+;  "result" "approved"}
 
 (defn mock-travis-requests-response [args]
   (let [fake-response (json/write-str {"repository" {"slug" "some-repo/some-project"}
-                                       "request"    {"repository" {"id" "n/a"}}})]
+                                       "request"    {"id"         0
+                                                     "repository" {"id" "n/a"}}})]
+    {:exit-code 0
+     :out       fake-response}))
+
+(def mock-request-info-counter (atom 0))
+
+(def pending-request-info (json/write-str {"id"         0
+                                           "repository" {"slug" "some-repo/some-project"}
+                                           "state"      "pending"}))
+
+(def created-request-info (json/write-str {"id"         0
+                                           "repository" {"slug" "some-repo/some-project"}
+                                           "state"      "finished"
+                                           "builds"     [{"id"    1
+                                                          "state" "created"}
+                                                         {"id"    2
+                                                          "state" "created"}]}))
+
+(def running-request-info (json/write-str {"id"         0
+                                           "repository" {"slug" "some-repo/some-project"}
+                                           "state"      "finished"
+                                           "builds"     [{"id"    1
+                                                          "state" "started"}
+                                                         {"id"       2
+                                                          "state"    "errored"
+                                                          "duration" 1}]}))
+
+(def done-request-info (json/write-str {"id"         0
+                                        "repository" {"slug" "some-repo/some-project"}
+                                        "state"      "finished"
+                                        "builds"     [{"id"       1
+                                                       "state"    "passed"
+                                                       "duration" 10}
+                                                      {"id"       2
+                                                       "state"    "errored"
+                                                       "duration" 1}]}))
+
+(defn mock-travis-request-info-response [args]
+  (let [counter (swap! mock-request-info-counter inc)
+        fake-response (cond
+                        (< counter 3) pending-request-info
+                        (and (>= counter 3) (< counter 5)) created-request-info
+                        (and (>= counter 5) (< counter 10)) running-request-info
+                        :else done-request-info)]
     {:exit-code 0
      :out       fake-response}))
 
@@ -21,10 +118,11 @@
   (let [api-endpoint (last args)]
     (cond
       (re-matches #"^https://api.travis-ci.org/repo/.*/requests$" api-endpoint) (mock-travis-requests-response args)
+      (re-matches #"^https://api.travis-ci.org/repo/.*/request/0$" api-endpoint) (mock-travis-request-info-response args)
       :else (throw (utils/ex (i18n/unable-to-mock-travis-api-msg cmd args))))))
 
 (defn launch! [cmd args options]
-  (announce (str "> curl " args) 2 options)
+  (announce (str "> curl " (vec args)) 2 options)
   (if (:production options)
     (shell/launch! cmd args)
     (mock-travis-response cmd args)))
@@ -42,20 +140,33 @@
 (defn inspect-api-response [response-text options]
   (let [response (parse-response response-text)
         mocked-label (if-not (:production options) "(mocked) " "")]
-    (announce (str mocked-label "Travis response:\n" (utils/pp response)) 2 options)))
+    (announce (str mocked-label "Travis response:\n" (utils/pp response)) 2 options)
+    response))
+
+(defn talk-to-travis-api! [curl-args options]
+  (let [result (launch! "curl" curl-args options)]
+    (if (and (zero? (:exit-code result)) (empty? (:err result)))
+      (inspect-api-response (:out result) options)
+      (throw (utils/ex (i18n/curl-failed-msg curl-args (:err result)))))))
+
+(defn common-curl-args [token]
+  ["-sS"
+   "-H" "Travis-API-Version: 3"
+   "-H" (str "Authorization: token " token)])
 
 (defn post-to-travis-api! [api-endpoint token request-body options]
-  (let [curl-args ["-s" "-X" "POST"
-                   "-H" "Content-Type: application/json"
-                   "-H" "Accept: application/json"
-                   "-H" "Travis-API-Version: 3"
-                   "-H" (str "Authorization: token " token)
-                   "-d" (json/write-str request-body)
-                   api-endpoint]]
-    (let [result (launch! "curl" curl-args options)]
-      (if (and (zero? (:exit-code result)) (empty? (:err result)))
-        (inspect-api-response (:out result) options)
-        (throw (utils/ex (i18n/curl-failed-msg (:err result))))))))
+  (let [curl-args (concat (common-curl-args token)
+                          ["-s" "-X" "POST"
+                           "-H" "Content-Type: application/json"
+                           "-H" "Accept: application/json"
+                           "-d" (json/write-str request-body)
+                           api-endpoint])]
+    (talk-to-travis-api! curl-args options)))
+
+(defn get-from-travis-api! [api-endpoint token options]
+  (let [curl-args (concat (common-curl-args token)
+                          [api-endpoint])]
+    (talk-to-travis-api! curl-args options)))
 
 (defn prepare-build-env [options]
   (let [{:keys [build-id build-download-url travis-build-url]} (:build-result options)]
@@ -64,7 +175,9 @@
      "CANARY_CLOJURESCRIPT_JAR_URL" build-download-url
      "CANARY_TRAVIS_BUILD_URL"      travis-build-url}))
 
-(defn trigger-build-with-token! [slug token options]
+(defn trigger-build! [slug token options]
+  ; https://docs.travis-ci.com/user/triggering-builds/
+  ; https://developer.travis-ci.com/resource/requests#Requests
   (let [api-slug (URLEncoder/encode slug)
         api-endpoint (str "https://api.travis-ci.org/repo/" api-slug "/requests")
         build-result (:build-result options)
@@ -73,23 +186,158 @@
                :message (str "canary build with ClojureScript " (:build-id build-result))
                :config  {:merge_mode "deep_merge"
                          :env        (prepare-build-env options)}}}
-        request-body (merge body (:travis-body options))
-        response (post-to-travis-api! api-endpoint token request-body options)
-        repo-slug (get-in response ["repository" "slug"])
-        request-id (get-in response ["request" "repository" "id"])
-        build-url (make-build-url repo-slug request-id)
-        report (str "triggered a build of " repo-slug " => request id " request-id)]
+        request-body (merge body (:travis-body options))]
+    (post-to-travis-api! api-endpoint token request-body options)))
+
+(defn monitoring-wait-time [options]
+  (if (:production options)
+    30                                                                                                                        ; TODO: make this configurable
+    1))
+
+; https://github.com/travis-ci/travis-api/blob/master/lib/travis/model/build/states.rb
+(def possible-build-states #{:created :received :started :passed :failed :errored :canceled})
+(def done-build-states #{:passed :failed :canceled :errored})
+
+(defn valid-build-state? [build-state]
+  (some? ((keyword build-state) possible-build-states)))
+
+(defn build-done? [build-state]
+  (some? ((keyword build-state) done-build-states)))
+
+(defn build-passed? [build-state]
+  (= (keyword build-state) :passed))
+
+(defn request-slug [request]
+  (get-in request ["repository" "slug"]))
+
+(defn travis-build-url [slug build-id]
+  (str "https://travis-ci.org/" slug "/builds/" build-id))
+
+(defn request-label
+  ([request] (request-label (get request "id") (request-slug request)))
+  ([request-id slug] (str "#" request-id " [" slug "]")))
+
+(defn determine-builds-state [builds]
+  ; https://developer.travis-ci.com/resource/builds#Builds
+  (let [states (map #(get % "state") builds)]
+    (assert (every? valid-build-state? states) (str "all build states must be valid: " (pr-str states)))
+    (if (every? build-done? states)
+      :done
+      :running)))
+
+(defn determine-request-state [request-response]
+  (let [travis-state (get-in request-response ["state"])
+        builds (get-in request-response ["builds"])]
+    ; didn't find any documentation for possible travis request states
+    (case travis-state
+      "pending" :pending
+      "authorized" :pending
+      "declined" :done                                                                                                        ; this probably does not exist
+      "finished" (determine-builds-state builds)                                                                              ; => :running or :done
+      (throw (utils/ex (i18n/received-unrecognized-travis-request-state travis-state))))))
+
+(defn poll-request-status! [slug request-id token options]
+  ; https://developer.travis-ci.com/resource/request#find
+  (announce (str "Polling travis API for info about request " (request-label request-id slug)) 2 options)
+  (let [api-slug (URLEncoder/encode slug)
+        api-endpoint (str "https://api.travis-ci.org/repo/" api-slug "/request/" request-id)]
+    (get-from-travis-api! api-endpoint token options)))
+
+(defn transit-to-running-state! [report-data request-response options]
+  (announce (str "Travis request " (request-label request-response) " is running") 1 options)
+  (announce (utils/pp request-response) 2 options)
+  report-data)
+
+(defn collect-builds-results [request-response]
+  (let [builds (get request-response "builds")
+        * (fn [acc build]
+            (let [build-id (get build "id")]
+              (assert (number? build-id))
+              (conj acc {:id       build-id
+                         :state    (keyword (get build "state"))
+                         :duration (get build "duration")})))]
+    (reduce * [] builds)))
+
+(defn transit-to-done-state! [report-data request-response options]
+  (announce (str "Travis request " (request-label request-response) " is done") 1 options)
+  (announce (utils/pp request-response) 2 options)
+  (assoc report-data :builds (collect-builds-results request-response)
+                     :result (get request-response "result")))
+
+(defn announce-builds-progress! [slug announced-builds request-response options]
+  (let [builds (get request-response "builds")
+        slug (request-slug request-response)]
+    (doseq [build builds]
+      (let [build-id (get build "id")
+            build-state (get build "state")]
+        (assert build-id)
+        (when (not= build-state (get announced-builds build-id))
+          (announce (str "Travis build " (print/travis-build-id (str "#" build-id))
+                         " of " (print/repo-slug slug)
+                         " => " build-state))
+          (when (= build-state "created")
+            (announce (str "Travis build url: " (print/travis-url (travis-build-url slug build-id))))))))
+    (into {} (for [build builds] [(get build "id") (get build "state")]))))
+
+(defn monitor-request-status! [slug request-id token options]
+  (loop [request-state :pending
+         announced-builds {}
+         report-data {}]
+    (if (= request-state :done)
+      report-data
+      (do
+        (.sleep TimeUnit/SECONDS (monitoring-wait-time options))
+        (let [request-response (poll-request-status! slug request-id token options)
+              new-request-state (determine-request-state request-response)
+              new-report-data (if (= new-request-state request-state)
+                                report-data
+                                (case new-request-state
+                                  :running (transit-to-running-state! report-data request-response options)
+                                  :done (transit-to-done-state! report-data request-response options)))
+              new-announced-builds (announce-builds-progress! slug announced-builds request-response options)]
+          (recur new-request-state new-announced-builds new-report-data))))))
+
+(defn title-span [text color]
+  (str "<span style=\"font-weight:bold;color:" color "\">" text "</span>"))
+
+(defn prepare-report [slug report-data options]
+  (let [{:keys [builds result]} report-data
+        builds-states (map #(get % "state") builds)
+        all-passed? (every? build-passed? builds-states)
+        render-check-mark (fn [build]
+                            (let [passed? (build-passed? (:state build))]
+                              (str "<span title=\"" (name (:state build)) "\">"
+                                   (if passed? "&#x2714; " "&#x2718; ")
+                                   "</span>")))
+        render-li (fn [build]
+                    (str "<li>" (render-check-mark build)
+                         "<a href=\"" (travis-build-url slug (:id build)) "\">"
+                         "Travis #" (:id build)
+                         "</a></li>"))
+        lis (map render-li builds)
+        build-table (if-not (empty? lis) (concat ["<ul>"] lis ["</ul>"]))
+        lines (concat [(if all-passed?
+                         (title-span "All builds passed" "green")
+                         (title-span "Some builds failed!" "red"))]
+                      build-table)]
+    (str "<div>" (string/join \newline lines) "</div>")))
+
+(defn request-build-and-wait-for-results! [slug token options]
+  (let [trigger-response (trigger-build! slug token options)
+        request-id (get-in trigger-response ["request" "id"])
+        report-data (monitor-request-status! slug request-id token options)]
+    (announce (str "report data:\n" (utils/pp report-data)) 1 options)
     {:status :ok
-     :report report}))
+     :report (prepare-report slug report-data options)}))
 
 (defn retrieve-token [token-var-name options]
   (if (:production options)
     (env/get token-var-name)
     "non-production-dummy-token-value"))
 
-(defn trigger-build! [slug token-var-name options]
+(defn request-build! [slug token-var-name options]
   (announce (str "Triggering Travis build of " (print/repo-slug slug) " and waiting for results..."))
   (announce (str "trigger-build! " slug " " token-var-name "\n" (utils/pp options)) 2 options)
-  (if-some [api-token (retrieve-token token-var-name options)]
-    (trigger-build-with-token! slug api-token options)
+  (if-some [token (retrieve-token token-var-name options)]
+    (request-build-and-wait-for-results! slug token options)
     (throw (utils/ex (i18n/api-token-not-set-msg token-var-name)))))

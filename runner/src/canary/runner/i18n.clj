@@ -24,8 +24,8 @@
 (defn ^:dynamic api-token-not-set-msg [token-var-name]
   (str "Travis API token '" token-var-name "' not set in the environment"))
 
-(defn ^:dynamic curl-failed-msg [error]
-  (str "curl failed when talking to travis\n" error))
+(defn ^:dynamic curl-failed-msg [curl-args error]
+  (str "Error: curl failed while talking to Travis:\n" (vec curl-args) "\n" error))
 
 (defn ^:dynamic env-file-problem-msg [path reason]
   (str "Unable to to read env edn file at '" path "'" (if (some? reason) (str ", reason: " reason "."))))
@@ -44,3 +44,9 @@
 
 (defn ^:dynamic unable-to-mock-travis-api-msg [cmd args]
   (str "Unable to mock Travis API: " cmd " " (pr-str args)))
+
+(defn ^:dynamic travis-request-didnt-complete-in-time [slug request-id]
+  (str "Travis request #" request-id " for " slug " didn't complete in time"))
+
+(defn ^:dynamic received-unrecognized-travis-request-state [travis-state]
+  (str "Received unrecognized Travis request state '" travis-state "'"))
