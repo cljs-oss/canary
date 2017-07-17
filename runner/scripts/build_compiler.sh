@@ -238,6 +238,7 @@ else # production mode
     exit 4
   fi
 
+  echo "Creating GitHub release $GITHUB_RELEASE_TAG..."
   RELEASE_RESPONSE=`curl ${CANARY_EXTRA_CURL_OPTS} \
                          -H "Content-Type: application/json" \
                          -H "Authorization: token $CANARY_REPO_TOKEN" \
@@ -274,6 +275,7 @@ else # production mode
     RAW_UPLOAD_URL="https://uploads.github.com/repos/cljs-oss/canary/releases/$GITHUB_RELEASE_ID/assets"
     COMPLETE_UPLOAD_URL="$RAW_UPLOAD_URL?name=clojurescript-$BUILD_ID.jar"
 
+    echo "Uploading ClojureScript jar as GitHub release asset..."
     UPLOAD_RESPONSE=`curl ${CANARY_EXTRA_CURL_OPTS} \
                           -H "Content-Type: application/java-archive" \
                           -H "Authorization: token $CANARY_REPO_TOKEN" \
