@@ -30,7 +30,7 @@ if [[ -n "$TRAVIS_BUILD_ID" ]]; then
 else
   TRAVIS_BUILD_URL="n/a"
 fi
-TRAVIS_BUILD_INFO="Travis: $TRAVIS_BUILD_URL."
+TRAVIS_BUILD_INFO="Travis: $TRAVIS_BUILD_URL"
 
 git clone --branch results https://github.com/cljs-oss/canary results
 cd results
