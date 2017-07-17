@@ -95,7 +95,7 @@
     (map * tasks)))
 
 (defn task-passed? [task]
-  (= (:status task) :passed))
+  (= (get-in task [:result :state]) :passed))
 
 (defn run-naked! [options]
   (with-job-printing options

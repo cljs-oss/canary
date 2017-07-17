@@ -81,7 +81,7 @@
                   "### Executed Tasks"
                   ]
           render-check-mark (fn [task]
-                              (let [passed? (= (:state task) :passed)]
+                              (let [passed? (= (get-in task [:result :state]) :passed)]
                                 (if passed? "&#x2714;" "&#x2718;")))
           * (fn [task]
               (str "\n" "#### " (render-check-mark task) " " (:name task) "\n" (get-in task [:result :report])))
