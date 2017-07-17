@@ -21,7 +21,7 @@
   {:status :passed
    :report "oops ok"})
 
-(defn ^:task clojure-throwing-task [options]
+(defn ^:task throwing-task [options]
   (println "want to do something")
   (throw (ex-info "something went wrong" {})))
 
