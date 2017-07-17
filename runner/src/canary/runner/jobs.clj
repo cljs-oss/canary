@@ -8,7 +8,11 @@
             [canary.runner.utils :as utils]
             [canary.runner.build :as build]
             [canary.runner.report :as report]
-            [canary.runner.print :as print :refer [announce with-job-printing with-task-printing]]))
+            [canary.runner.print :as print :refer [announce with-job-printing with-task-printing]]
+            [canary.runner.env :as env]))
+
+(defn dev? []
+  (some? (env/get "CANARY_DEBUG")))
 
 (defn just-test-task [task options]
   (announce "[test mode] not executing, just providing a dummy report")
@@ -16,23 +20,25 @@
 
 (defn execute-task! [task options]
   (let [task-fn (:fn task)]
+    ; TODO: validate task result here
     (task-fn (with-meta options task))))
 
 (defn run-task! [task options]
-  (with-task-printing task options
-    (if (:test options)
-      (just-test-task task options)
-      (execute-task! task options))))
+  (if (:test options)
+    (just-test-task task options)
+    (execute-task! task options)))
 
 (defn try-run-task! [task options]
-  (try
-    (run-task! task options)
-    (catch Throwable e
-      ; convert exceptions to task results in production
-      (if (:production options)
-        {:status :exception
-         :report (report/report-for-exception e)}
-        (throw e)))))
+  (with-task-printing task options
+    (try
+      (run-task! task options)
+      (catch Throwable e
+        (if (dev?)
+          (throw e)
+          (do
+            (announce (utils/stacktrace-str e))
+            {:status :exception
+             :report (report/report-for-exception e)}))))))
 
 (defn spawn-task! [task options]
   (async/thread (try-run-task! task options)))
@@ -117,8 +123,8 @@
   (try
     (run-naked! options)
     (catch Throwable e
-      (if (:production options)
+      (if (dev?)
+        (throw e)
         (do
           (announce (str "Job failed due to an exception: " (str e) "\n" (utils/stacktrace-str e)))
-          9)
-        (throw e)))))
+          9)))))
