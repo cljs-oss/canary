@@ -1,0 +1,19 @@
+({:name "cljs-devtools",
+  :description
+  "a Clojure function cljs-devtools from canary.projects.binaryage",
+  :enabled true,
+  :enabled-reason "included by default",
+  :color :green,
+  :result
+  {:status :failed,
+   :report
+   "  * &#x2718; Travis build [binaryage/cljs-devtools#326](https://travis-ci.org/binaryage/cljs-devtools/builds/254623368)"}}
+ {:name "planck",
+  :description "a Clojure function planck from canary.projects.mfikes",
+  :enabled true,
+  :enabled-reason "included by default",
+  :color :blue,
+  :result
+  {:status :passed,
+   :report
+   "  * &#x2714; Travis build [mfikes/planck#875](https://travis-ci.org/mfikes/planck/builds/254623451)"}})
