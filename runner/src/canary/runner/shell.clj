@@ -5,13 +5,21 @@
             [canary.runner.output :as output]
             [canary.runner.print :refer [announce]]
             [canary.runner.utils :as utils]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io])
+  (:import (java.io InputStream)))
+
+(def max-output-buffer 1M)
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 
+(defn stream-output! [^InputStream stream]
+  (assert (.markSupported stream))
+  (.mark stream max-output-buffer)
+  (output/print-stream-as-lines! stream output/synchronized-out-printer))
+
 (defn stream-proc-output! [proc]
-  (output/print-stream-as-lines! (:out proc) output/synchronized-out-printer)
-  (output/print-stream-as-lines! (:err proc) output/synchronized-err-printer))
+  (stream-output! (:out proc))
+  (stream-output! (:err proc)))
 
 (defn determine-workdir-for-task [task options]
   (let [job-slug (utils/sanitize-as-filename (or (:job-id options) "_local-job"))
@@ -30,6 +38,17 @@
     (ensure-clean-workdir! workdir-path)
     workdir-path))
 
+(defn reset-stream [proc which]
+  (let [stream (proc which)]
+    (.reset stream)
+    stream))
+
+(defn extract-outputs [result proc]
+  (let [rewind-proc (partial reset-stream proc)]
+    (assoc result
+      :out (sh/stream-to-string rewind-proc :out)
+      :err (sh/stream-to-string rewind-proc :err))))
+
 (defn make-shell-launcher [file & [env]]
   (let [path (str file)
         name (.getName file)]
@@ -40,14 +59,8 @@
           (stream-proc-output! proc)
           (let [status (sh/exit-code proc)]
             (announce (str "shell task " name " exit-code: " status) 2 options)
-            {:exit-code status}))))))
-
-(defn extract-outputs-if-needed [result proc options]
-  (if (:stream-output options)
-    result
-    (assoc result
-      :out (sh/stream-to-string proc :out)
-      :err (sh/stream-to-string proc :err))))
+            (-> {:exit-code status}
+                (extract-outputs proc))))))))
 
 (defn launch! [cmd args & [options]]
   (let [proc (apply sh/proc cmd args)]
@@ -55,4 +68,4 @@
       (stream-proc-output! proc))
     (let [status (sh/exit-code proc)]
       (-> {:exit-code status}
-          (extract-outputs-if-needed proc options)))))
+          (extract-outputs proc)))))
