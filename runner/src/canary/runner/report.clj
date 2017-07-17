@@ -79,10 +79,9 @@
   (when-not (empty? tasks)
     (let [header [""
                   "### Executed Tasks"
-                  "| Task | Result |"
-                  "| :--- | :--- |"]
+                  ]
           * (fn [task]
-              (str "| " (:name task) " | " (get-in task [:result :report]) " |"))
+              (str "#### " (:name task) "\n" (get-in task [:result :report])))
           list (map * tasks)]
       (string/join \newline (concat header list)))))
 
