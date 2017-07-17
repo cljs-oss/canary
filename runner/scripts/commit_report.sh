@@ -77,10 +77,8 @@ if [[ -d "$REPORT_DIR" ]]; then
   rm -rf "$REPORT_DIR"
 fi
 
-pushd
-
 mkdir -p "$REPORT_DIR"
-cd "$REPORT_DIR"
+pushd "$REPORT_DIR"
 
 cp "$REPORT_FILE" .
 cp "$TASKS_FILE" .
