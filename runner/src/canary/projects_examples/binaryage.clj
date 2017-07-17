@@ -11,9 +11,19 @@
   (println "TODO: check-cljs-devtools")
   (some-helper "xxx")
   (println "devtools done")
-  "some result")
+  {:status :failed
+   :report "some result"})
 
 (defn ^:task check-cljs-oops [options]
   (println "TODO: check-cljs-oops")
   (.sleep TimeUnit/SECONDS 7)
-  (println "oops done"))
+  (println "oops done")
+  {:status :passed
+   :report "oops ok"})
+
+(defn ^:task clojure-throwing-task [options]
+  (println "want to do something")
+  (throw (ex-info "something went wrong" {})))
+
+(defn ^:task java-throwing-task [options]
+  (zero? nil))
