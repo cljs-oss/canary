@@ -80,8 +80,11 @@
     (let [header [""
                   "### Executed Tasks"
                   ]
+          render-check-mark (fn [task]
+                              (let [passed? (= (:state task) :passed)]
+                                (if passed? "&#x2714;" "&#x2718;")))
           * (fn [task]
-              (str "\n" "#### " (:name task) "\n" (get-in task [:result :report])))
+              (str "\n" "#### " (render-check-mark task) " " (:name task) "\n" (get-in task [:result :report])))
           list (map * tasks)]
       (string/join \newline (concat header list)))))
 
