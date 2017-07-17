@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
-# this script should download & install canary's clojurescript build into local maven repo based on environment
-# for example you can call it in your .travis.yml in before_install
-# - curl -sSL https://raw.githubusercontent.com/cljs-oss/canary/master/scripts/install-canary.sh | bash
+# This script should download & install Canary's ClojureScript build into local Maven repo based on environment.
+#
+# For example you can call it in your .travis.yml in:
+#
+#   before_install
+#   - curl -sSL https://raw.githubusercontent.com/cljs-oss/canary/master/scripts/install-canary.sh | bash
 
 set -e -o pipefail
 
@@ -10,9 +13,19 @@ CANARY_BUILD=${CANARY_BUILD}
 CANARY_CLOJURESCRIPT_JAR_URL=${CANARY_CLOJURESCRIPT_JAR_URL}
 POM_PATH=${POM_PATH:-"META-INF/maven/org.clojure/clojurescript/pom.xml"}
 
+echo_err() {
+  printf "\e[31m%s\e[0m\n" "$*" >&2;
+}
+
 if [[ -z "$CANARY_BUILD" ]]; then
-  # CANARY is not present in environment
+  # Canary is not present in the environment, stay silent and do nothing
   exit 0
+fi
+
+if [[ -z "$CANARY_CLOJURESCRIPT_JAR_URL" ]]; then
+  echo_err "CANARY_CLOJURESCRIPT_JAR_URL env var must be specified with CANARY_BUILD"
+  echo_err "Please review your Canary setup and see https://github.com/cljs-oss/canary/blob/master/scripts/install-canary.sh"
+  exit 1
 fi
 
 echo "Installing Canary support"
