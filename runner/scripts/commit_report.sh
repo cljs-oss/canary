@@ -19,6 +19,14 @@ OPTIONS_FILE=${OPTIONS_FILE:-"$RESULT_DIR/options.edn"}
 
 CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
 
+pushd () {
+    command pushd "$@" > /dev/null
+}
+
+popd () {
+    command popd "$@" > /dev/null
+}
+
 if [[ "$CANARY_VERBOSITY" -gt 1 ]]; then
   echo "effective settings:\n"
   # https://unix.stackexchange.com/a/5691/188074
@@ -69,12 +77,25 @@ if [[ -d "$REPORT_DIR" ]]; then
   rm -rf "$REPORT_DIR"
 fi
 
+pushd
+
 mkdir -p "$REPORT_DIR"
 cd "$REPORT_DIR"
 
 cp "$REPORT_FILE" .
 cp "$TASKS_FILE" .
 cp "$OPTIONS_FILE" .
+
+popd
+
+# patch root readme with most recent reports
+ROOT_README_NAME="README.md"
+OLD_RECENT_LIST=`perl -pe 'BEGIN{undef $/;} s/.*Recent reports\n\n(.*)\n\nAll job reports.*/$1/smg' "$ROOT_README_NAME"`
+NEW_RECENT_LIST=`echo -e "* [$REPORT_DIR]($REPORT_DIR)\n$OLD_RECENT_LIST" | head -n 10`
+README_WITH_MARKER=`perl -pe 'BEGIN{undef $/;} s/Recent reports\n\n(.*)\n\nAll job reports.*/Recent reports\n\nRECENT_REPORTS_MARKER\n\nAll job reports/smg' "$ROOT_README_NAME"`
+NEW_README="${README_WITH_MARKER/RECENT_REPORTS_MARKER/$NEW_RECENT_LIST}"
+
+echo "$NEW_README" > "$ROOT_README_NAME"
 
 # commit to git
 git add --all .
