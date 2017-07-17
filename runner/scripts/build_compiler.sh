@@ -229,7 +229,6 @@ if [[ -z "$CANARY_PRODUCTION" ]]; then
 
   # don't talk to github just fill in some dummy result data
   BUILD_DOWNLOAD_URL="n/a in non-production mode"
-  GITHUB_RELEASE_ID=0
 
 else # production mode
 
@@ -313,7 +312,6 @@ RESULT=`cat <<EDN
   :build-id "${BUILD_ID}"
   :build-jar-path "${RESULT_JAR_PATH}"
   :build-download-url "${BUILD_DOWNLOAD_URL}"
-  :github-release-id "${GITHUB_RELEASE_ID}"
   :github-release-name "${GITHUB_RELEASE_NAME}"
   :github-release-tag "${GITHUB_RELEASE_TAG}"
   :compiler-rev-url "${COMPILER_REV_URL}"
