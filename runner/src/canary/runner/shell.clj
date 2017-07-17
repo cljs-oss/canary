@@ -12,14 +12,24 @@
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 
-(defn stream-output! [^InputStream stream]
+(defn mark-stream! [^InputStream stream & [max-buffer]]
   (assert (.markSupported stream))
-  (.mark stream max-output-buffer)
+  (.mark stream (or max-buffer max-output-buffer)))
+
+(defn reset-stream! [^InputStream stream]
+  (assert (.markSupported stream))
+  (.reset stream))
+
+(defn stream-output! [^InputStream stream]
   (output/print-stream-as-lines! stream output/synchronized-out-printer))
 
 (defn stream-proc-output! [proc]
   (stream-output! (:out proc))
   (stream-output! (:err proc)))
+
+(defn mark-proc-output! [proc]
+  (mark-stream! (:out proc))
+  (mark-stream! (:err proc)))
 
 (defn determine-workdir-for-task [task options]
   (let [job-slug (utils/sanitize-as-filename (or (:job-id options) "_local-job"))
@@ -38,16 +48,18 @@
     (ensure-clean-workdir! workdir-path)
     workdir-path))
 
-(defn reset-stream [proc which]
+(defn reset-proc-stream! [proc which]
   (let [stream (proc which)]
-    (.reset stream)
+    (reset-stream! stream)
     stream))
 
-(defn extract-outputs [result proc]
-  (let [rewind-proc (partial reset-stream proc)]
+(defn extract-outputs! [result proc]
+  (let [rewind-proc (partial reset-proc-stream! proc)]
     (assoc result
       :out (sh/stream-to-string rewind-proc :out)
       :err (sh/stream-to-string rewind-proc :err))))
+
+; -- main api ---------------------------------------------------------------------------------------------------------------
 
 (defn make-shell-launcher [file & [env]]
   (let [path (str file)
@@ -56,16 +68,18 @@
       (let [task (meta options)]
         (let [workdir (prepare-workdir! task options)
               proc (sh/proc path :verbose false :dir workdir :env env)]
+          (mark-proc-output! proc)
           (stream-proc-output! proc)
           (let [status (sh/exit-code proc)]
             (announce (str "shell task " name " exit-code: " status) 2 options)
             (-> {:exit-code status}
-                (extract-outputs proc))))))))
+                (extract-outputs! proc))))))))
 
 (defn launch! [cmd args & [options]]
   (let [proc (apply sh/proc cmd args)]
+    (mark-proc-output! proc)
     (when (:stream-output options)
       (stream-proc-output! proc))
     (let [status (sh/exit-code proc)]
       (-> {:exit-code status}
-          (extract-outputs proc)))))
+          (extract-outputs! proc)))))
