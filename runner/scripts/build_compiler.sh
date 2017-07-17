@@ -46,6 +46,8 @@ POM_PATH=${POM_PATH:-"META-INF/maven/org.clojure/clojurescript/pom.xml"}
 CANARY_PRODUCTION=${CANARY_PRODUCTION}
 CANARY_CACHE_DIR=${CANARY_CACHE_DIR:-"$(pwd)/.cache"}
 OFFICIAL_COMPILER_REPO=${OFFICIAL_COMPILER_REPO:-"https://github.com/clojure/clojurescript.git"}
+CLOJURESCRIPT_MAJOR=${CLOJURESCRIPT_MAJOR:-1}
+CLOJURESCRIPT_MINOR=${CLOJURESCRIPT_MINOR:-9}
 
 CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
 
@@ -108,53 +110,85 @@ BUILD_REV=`git rev-parse HEAD`
 
 COMPILER_REV_URL="${COMPILER_REPO/.git//commit}/${BUILD_REV}"
 
-if [[ "$CANARY_VERBOSITY" -eq 0 ]]; then
-  export CLJS_SCRIPT_QUIET=1
-  MAVEN_VERBOSITY="--quiet"
-fi
+# The command `git describe --match v0.0` will return a string like
+#
+# v0.0-856-g329708b
+#
+# where 856 is the number of commits since the v0.0 tag. It will always
+# find the v0.0 tag and will always return the total number of commits (even
+# if the tag is v0.0.1).
+CLOJURESCRIPT_REVISION=`git --no-replace-objects describe --match v${CLOJURESCRIPT_MAJOR}.${CLOJURESCRIPT_MINOR}`
 
-export CLJS_SCRIPT_MVN_OPTS="--batch-mode $MAVEN_VERBOSITY"
+# Extract the version number from the string. Do this in two steps so
+# it is a little easier to understand.
+CLOJURESCRIPT_REVISION=${CLOJURESCRIPT_REVISION:5} # drop the first 5 characters
+CLOJURESCRIPT_REVISION=${CLOJURESCRIPT_REVISION:0:${#CLOJURESCRIPT_REVISION}-9} # drop the last 9 characters
+CLOJURESCRIPT_REVISION=${CLOJURESCRIPT_REVISION/\-/}
 
-travis_fold start clojurescript-build
-echo "Building ClojureScript compiler..."
+EXPECTED_BUILD_ID="${CLOJURESCRIPT_MAJOR}.${CLOJURESCRIPT_MINOR}.${CLOJURESCRIPT_REVISION}-${BUILD_SHORT_REV}"
 
-if [[ "$CANARY_VERBOSITY" -gt 2 ]]; then
-  echo "Effective environment before compiler build:"
-  env
-fi
+GIT_BUILDS_CACHE_DIR="$CANARY_CACHE_DIR/builds"
+GIT_BUILD_CACHE_DIR="$GIT_BUILDS_CACHE_DIR/$EXPECTED_BUILD_ID"
+CACHED_JAR_PATH="$GIT_BUILD_CACHE_DIR/clojurescript-${EXPECTED_BUILD_ID}.jar"
 
-# TODO: implement caching of compiler builds
-./script/build
-travis_fold end clojurescript-build
-
-# purge clojurescript jars from maven, .m2 is cached by travis and that would lead to cache invalidation
-rm -rf "$LOCAL_MAVEN_REPO/org/clojure/clojurescript"
-
-BUILD_JAR=`ls -1 ./target/${CLOJURESCRIPT_MAVEN_ARTIFACT}-*.jar | grep -v aot`
-
-if [[ -z "$BUILD_JAR" ]]; then
-  echo "ERROR!"
-  echo "ClojureScript JAR was not produced as clojurescript/target/clojurescript-<version>.jar"
-  ls -l ./target
-  exit 2
-fi
-
-if [[ "$BUILD_JAR" =~ ^.*clojurescript-(.*)\.jar$  ]]; then
-  BUILD_VERSION="${BASH_REMATCH[1]}"
+if [[ -f "$CACHED_JAR_PATH" ]]; then
+  echo "ClojureScript build $EXPECTED_BUILD_ID is cached => using it"
+  BUILD_ID="$EXPECTED_BUILD_ID"
+  BUILD_JAR="$CACHED_JAR_PATH"
 else
-  echo "ERROR!"
-  echo "Unable to determine clojurescript version from $BUILD_JAR"
-  exit 3
+  echo "ClojureScript build $EXPECTED_BUILD_ID not cached => building it"
+
+  if [[ "$CANARY_VERBOSITY" -eq 0 ]]; then
+    export CLJS_SCRIPT_QUIET=1
+    MAVEN_VERBOSITY="--quiet"
+  fi
+
+  export CLJS_SCRIPT_MVN_OPTS="--batch-mode $MAVEN_VERBOSITY"
+
+  travis_fold start clojurescript-build
+  echo "Building ClojureScript compiler..."
+
+  if [[ "$CANARY_VERBOSITY" -gt 2 ]]; then
+    echo "Effective environment before compiler build:"
+    env
+  fi
+
+  ./script/build
+  travis_fold end clojurescript-build
+
+  # purge clojurescript jars from maven, .m2 is cached by travis and that would lead to cache invalidation
+  rm -rf "$LOCAL_MAVEN_REPO/org/clojure/clojurescript"
+
+  BUILD_JAR=`ls -1 ./target/${CLOJURESCRIPT_MAVEN_ARTIFACT}-*.jar | grep -v aot`
+
+  if [[ -z "$BUILD_JAR" ]]; then
+    echo "ERROR!"
+    echo "ClojureScript JAR was not produced as clojurescript/target/clojurescript-<version>.jar"
+    ls -l ./target
+    exit 2
+  fi
+
+  if [[ "$BUILD_JAR" =~ ^.*clojurescript-(.*)\.jar$  ]]; then
+    BUILD_VERSION="${BASH_REMATCH[1]}"
+  else
+    echo "ERROR!"
+    echo "Unable to determine clojurescript version from $BUILD_JAR"
+    exit 3
+  fi
+
+  BUILD_ID="${BUILD_VERSION}-${BUILD_SHORT_REV}"
+
+  # patch JAR's maven version to our SHA-annotated version
+  echo "Patching ClojureScript JAR..."
+  jar -xf "$BUILD_JAR" "$POM_PATH"
+  mv "$POM_PATH" "$POM_PATH.orig"
+  cat "$POM_PATH.orig" | sed "s|<version>$BUILD_VERSION</version>|<version>$BUILD_ID</version>|g" > "$POM_PATH"
+  jar -uf "$BUILD_JAR" "$POM_PATH"
+
+  # cache build
+  mkdir -p "$GIT_BUILD_CACHE_DIR"
+  cp "$BUILD_JAR" "$CACHED_JAR_PATH"
 fi
-
-BUILD_ID="${BUILD_VERSION}-${BUILD_SHORT_REV}"
-
-# patch JAR's maven version to our SHA-annotated version
-echo "Patching ClojureScript JAR..."
-jar -xf "$BUILD_JAR" "$POM_PATH"
-mv "$POM_PATH" "$POM_PATH.orig"
-cat "$POM_PATH.orig" | sed "s|<version>$BUILD_VERSION</version>|<version>$BUILD_ID</version>|g" > "$POM_PATH"
-jar -uf "$BUILD_JAR" "$POM_PATH"
 
 if [[ -n "$TRAVIS_BUILD_ID" ]]; then
   TRAVIS_BUILD_URL="https://travis-ci.org/cljs-oss/canary/builds/$TRAVIS_BUILD_ID"
