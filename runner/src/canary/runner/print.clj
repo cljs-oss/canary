@@ -38,7 +38,7 @@
   (clansi/style text :yellow))
 
 (defn travis-build-number [text]
-  (clansi/style (str "#" text) :green))
+  (clansi/style (str "#" text) :cyan))
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 

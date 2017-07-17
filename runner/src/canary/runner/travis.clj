@@ -281,7 +281,7 @@
             build-state (get build "state")]
         (assert build-id)
         (when (not= build-state (get announced-builds build-id))
-          (announce (str "Travis build " (print/repo-slug slug) "#" (print/travis-build-number build-number)
+          (announce (str "Travis build " (print/repo-slug slug) (print/travis-build-number build-number)
                          " => " build-state))
           (when (= build-state "created")
             (announce (str "Travis build url: " (print/travis-url (travis-build-url slug build-id))))))))
