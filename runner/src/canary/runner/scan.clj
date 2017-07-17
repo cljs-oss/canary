@@ -53,11 +53,20 @@
   (->> (file-seq (io/file dir-path))
        (filter shell-project?)))
 
+(defn task-result-maker [shell-task]
+  (fn [& args]
+    (let [shell-result (apply shell-task args)                                                                                ; TODO: catch exceptions?
+          out (:out shell-result)
+          err (:err shell-result)
+          passed? (zero? (:exit-code shell-result))]
+      {:status (if passed? :passed :failed)
+       :report (str "```\n" out (if-not (empty? err) (str "\n" err)) "```\n")})))
+
 (defn shell-tasks-for-file [options file]
   (let [normalized-name (cuerdas/kebab (utils/remove-extension (.getName file)))]
     [{:name        (task-name :sh "shell" normalized-name)
       :description (str "a shell script at '" (str file) "'")
-      :fn          (shell/make-shell-launcher file)}]))
+      :fn          (task-result-maker (shell/make-shell-launcher file))}]))
 
 (defn collect-all-shell-tasks [options dir-path]
   (mapcat (partial shell-tasks-for-file options) (scan-for-shell-projects dir-path)))
