@@ -104,6 +104,14 @@
         content (string/join \newline (keep identity all-parts))]
     {:content content}))
 
+(defn report-for-exception [e]
+  (let [stacktrace (utils/stacktrace-str e)]
+    (str "```\n"
+         "Exception: " (str e) "\n"
+         "\n"
+         stacktrace "\n"
+         "```")))
+
 ; -- main api ---------------------------------------------------------------------------------------------------------------
 
 (defn prepare-and-commit-report! [tasks options]

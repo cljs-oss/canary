@@ -30,9 +30,8 @@
     (catch Throwable e
       ; convert exceptions to task results in production
       (if (:production options)
-        {:status     :exception
-         :exception  (str e)
-         :stacktrace (utils/stacktrace-str e)}
+        {:status :exception
+         :report (report/report-for-exception e)}
         (throw e)))))
 
 (defn spawn-task! [task options]
