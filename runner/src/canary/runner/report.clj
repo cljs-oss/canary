@@ -107,9 +107,7 @@
 (defn report-for-exception [e]
   (let [stacktrace (utils/stacktrace-str e)]
     (str "```\n"
-         "Exception: " (str e) "\n"
-         "\n"
-         stacktrace "\n"
+         "Exception: " stacktrace "\n"
          "```")))
 
 ; -- main api ---------------------------------------------------------------------------------------------------------------
