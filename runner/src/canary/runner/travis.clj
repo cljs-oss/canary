@@ -64,12 +64,12 @@
      "CANARY_CLOJURESCRIPT_JAR_URL" build-download-url
      "CANARY_TRAVIS_BUILD_URL"      travis-build-url}))
 
-(defn trigger-build-with-token! [slug token branch options]
+(defn trigger-build-with-token! [slug token options]
   (let [api-slug (URLEncoder/encode slug)
         api-endpoint (str "https://api.travis-ci.org/repo/" api-slug "/requests")
         build-result (:build-result options)
         body {:request
-              {:branch  branch
+              {:branch  (or (:travis-branch options) "master")
                :message (str "canary build with ClojureScript " (:build-id build-result))
                :config  {:merge_mode "deep_merge"
                          :env        (prepare-build-env options)}}}
@@ -87,9 +87,9 @@
     (env/get token-var-name)
     "non-production-dummy-token-value"))
 
-(defn trigger-build! [slug token-var-name branch options]
+(defn trigger-build! [slug token-var-name options]
   (announce (str "Triggering Travis build of " (print/repo-slug slug) " and waiting for results..."))
-  (announce (str "trigger-build! " slug " " token-var-name " " branch "\n" (utils/pp options)) 2 options)
+  (announce (str "trigger-build! " slug " " token-var-name "\n" (utils/pp options)) 2 options)
   (if-some [api-token (retrieve-token token-var-name options)]
-    (trigger-build-with-token! slug api-token branch options)
+    (trigger-build-with-token! slug api-token options)
     (throw (utils/ex (i18n/api-token-not-set-msg token-var-name)))))
