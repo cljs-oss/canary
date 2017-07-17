@@ -305,12 +305,9 @@
               new-announced-builds (announce-builds-progress! slug announced-builds request-response options)]
           (recur new-request-state new-announced-builds new-report-data))))))
 
-(defn primary-result [text]
-  (str "**" text "**"))
-
 (defn all-passed? [report-data]
   (let [{:keys [builds]} report-data
-        builds-states (map #(get % "state") builds)]
+        builds-states (map :state builds)]
     (every? build-passed? builds-states)))
 
 (defn prepare-report [slug report-data options]
@@ -322,13 +319,8 @@
                       (str "  * " (render-check-mark build) " "
                            "Travis build "
                            "[" slug "#" (:number build) "](" (travis-build-url slug (:id build)) ")"))
-        items (map render-item builds)
-        lines (concat [(if (all-passed? report-data)
-                         (primary-result "`PASSED`")
-                         (primary-result "`FAILED`"))
-                       ""]
-                      items)]
-    (string/join \newline lines)))
+        items (map render-item builds)]
+    (string/join \newline items)))
 
 (defn request-build-and-wait-for-results! [slug token options]
   (let [trigger-response (trigger-build! slug token options)
