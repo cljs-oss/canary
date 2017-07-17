@@ -335,7 +335,7 @@
         request-id (get-in trigger-response ["request" "id"])
         report-data (monitor-request-status! slug request-id token options)]
     (announce (str "report data:\n" (utils/pp report-data)) 1 options)
-    {:status :ok
+    {:status (if (all-passed? report-data) :passed :failed)
      :report (prepare-report slug report-data options)}))
 
 (defn retrieve-token [token-var-name options]

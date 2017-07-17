@@ -74,7 +74,7 @@
                   new-running-tasks (dissoc running-tasks completed-channel)
                   new-completed-tasks (conj completed-tasks (assoc completed-task
                                                               :result result))]
-              (announce (str (print/emphasize "completed") " task " (print/task-name completed-task)))
+              (announce (str (print/emphasize "completed") " task " (print/task-name completed-task)))                        ; TODO: add timing info
               (recur (inc iteration) new-running-tasks new-completed-tasks))))))))
 
 (defn spawn-runner! [tasks options]
@@ -87,6 +87,9 @@
   (let [* (fn [task]
             (dissoc task :fn))]
     (map * tasks)))
+
+(defn task-passed? [task]
+  (= (:status task) :passed))
 
 (defn run-naked! [options]
   (with-job-printing options
@@ -102,11 +105,13 @@
         (do
           (announce (timeout-error-message options))
           2)
-        (let [result-tasks (preprocess-result-tasks result)]
+        (let [result-tasks (preprocess-result-tasks result)
+              enabled-tasks (filter :enabled result-tasks)
+              all-passed? (every? task-passed? enabled-tasks)]
           (announce (str "the job completed:\n" (utils/pp result-tasks)) 1 options)
-          (report/prepare-and-commit-report! result-tasks options)
           ; TODO: add timing info
-          0)))))
+          (report/prepare-and-commit-report! result-tasks options)
+          (if all-passed? 0 1))))))
 
 (defn run! [options]
   (try
@@ -114,6 +119,6 @@
     (catch Throwable e
       (if (:production options)
         (do
-          (announce (str "job failed due to an exception: " (.getMessage e)))
+          (announce (str "Job failed due to an exception: " (str e) "\n" (utils/stacktrace-str e)))
           9)
         (throw e)))))
