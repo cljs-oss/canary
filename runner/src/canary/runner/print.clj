@@ -37,8 +37,8 @@
 (defn travis-url [text]
   (clansi/style text :yellow))
 
-(defn travis-build-id [text]
-  (clansi/style text :green))
+(defn travis-build-number [text]
+  (clansi/style (str "#" text) :green))
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 

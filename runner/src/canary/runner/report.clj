@@ -81,7 +81,7 @@
                   "### Executed Tasks"
                   ]
           * (fn [task]
-              (str "#### " (:name task) "\n" (get-in task [:result :report])))
+              (str "\n" "#### " (:name task) "\n" (get-in task [:result :report])))
           list (map * tasks)]
       (string/join \newline (concat header list)))))
 

@@ -80,17 +80,21 @@
 (def created-request-info (json/write-str {"id"         0
                                            "repository" {"slug" "some-repo/some-project"}
                                            "state"      "finished"
-                                           "builds"     [{"id"    1
-                                                          "state" "created"}
-                                                         {"id"    2
-                                                          "state" "created"}]}))
+                                           "builds"     [{"id"     1
+                                                          "number" 11
+                                                          "state"  "created"}
+                                                         {"id"     2
+                                                          "number" 22
+                                                          "state"  "created"}]}))
 
 (def running-request-info (json/write-str {"id"         0
                                            "repository" {"slug" "some-repo/some-project"}
                                            "state"      "finished"
-                                           "builds"     [{"id"    1
-                                                          "state" "started"}
+                                           "builds"     [{"id"     1
+                                                          "number" 11
+                                                          "state"  "started"}
                                                          {"id"       2
+                                                          "number"   22
                                                           "state"    "errored"
                                                           "duration" 1}]}))
 
@@ -98,9 +102,11 @@
                                         "repository" {"slug" "some-repo/some-project"}
                                         "state"      "finished"
                                         "builds"     [{"id"       1
+                                                       "number"   11
                                                        "state"    "passed"
                                                        "duration" 10}
                                                       {"id"       2
+                                                       "number"   22
                                                        "state"    "errored"
                                                        "duration" 1}]}))
 
@@ -215,7 +221,7 @@
 
 (defn request-label
   ([request] (request-label (get request "id") (request-slug request)))
-  ([request-id slug] (str "#" request-id " [" slug "]")))
+  ([request-id slug] (str slug "#" request-id)))
 
 (defn determine-builds-state [builds]
   ; https://developer.travis-ci.com/resource/builds#Builds
@@ -251,9 +257,11 @@
 (defn collect-builds-results [request-response]
   (let [builds (get request-response "builds")
         * (fn [acc build]
-            (let [build-id (get build "id")]
+            (let [build-id (get build "id")
+                  build-number (get build "number")]
               (assert (number? build-id))
               (conj acc {:id       build-id
+                         :number   build-number
                          :state    (keyword (get build "state"))
                          :duration (get build "duration")})))]
     (reduce * [] builds)))
@@ -269,11 +277,11 @@
         slug (request-slug request-response)]
     (doseq [build builds]
       (let [build-id (get build "id")
+            build-number (or (get build "number") "?")
             build-state (get build "state")]
         (assert build-id)
         (when (not= build-state (get announced-builds build-id))
-          (announce (str "Travis build " (print/travis-build-id (str "#" build-id))
-                         " of " (print/repo-slug slug)
+          (announce (str "Travis build " (print/repo-slug slug) "#" (print/travis-build-number build-number)
                          " => " build-state))
           (when (= build-state "created")
             (announce (str "Travis build url: " (print/travis-url (travis-build-url slug build-id))))))))
@@ -297,30 +305,30 @@
               new-announced-builds (announce-builds-progress! slug announced-builds request-response options)]
           (recur new-request-state new-announced-builds new-report-data))))))
 
-(defn title-span [text color]
-  (str "<span style=\"font-weight:bold;color:" color "\">" text "</span>"))
+(defn primary-result [text]
+  (str "**" text "**"))
+
+(defn all-passed? [report-data]
+  (let [{:keys [builds]} report-data
+        builds-states (map #(get % "state") builds)]
+    (every? build-passed? builds-states)))
 
 (defn prepare-report [slug report-data options]
-  (let [{:keys [builds result]} report-data
-        builds-states (map #(get % "state") builds)
-        all-passed? (every? build-passed? builds-states)
+  (let [{:keys [builds]} report-data
         render-check-mark (fn [build]
                             (let [passed? (build-passed? (:state build))]
-                              (str "<span title=\"" (name (:state build)) "\">"
-                                   (if passed? "&#x2714; " "&#x2718; ")
-                                   "</span>")))
-        render-li (fn [build]
-                    (str "<li>" (render-check-mark build)
-                         "<a href=\"" (travis-build-url slug (:id build)) "\">"
-                         "Travis #" (:id build)
-                         "</a></li>"))
-        lis (map render-li builds)
-        build-table (if-not (empty? lis) (concat ["<ul>"] lis ["</ul>"]))
-        lines (concat [(if all-passed?
-                         (title-span "All builds passed" "green")
-                         (title-span "Some builds failed!" "red"))]
-                      build-table)]
-    (str "<div>" (string/join \newline lines) "</div>")))
+                              (if passed? "&#x2714;" "&#x2718;")))
+        render-item (fn [build]
+                      (str "  * " (render-check-mark build) " "
+                           "Travis build "
+                           "[" slug "#" (:number build) "](" (travis-build-url slug (:id build)) ")"))
+        items (map render-item builds)
+        lines (concat [(if (all-passed? report-data)
+                         (primary-result "`PASSED`")
+                         (primary-result "`FAILED`"))
+                       ""]
+                      items)]
+    (string/join \newline lines)))
 
 (defn request-build-and-wait-for-results! [slug token options]
   (let [trigger-response (trigger-build! slug token options)
