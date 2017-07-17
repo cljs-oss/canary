@@ -59,7 +59,10 @@ while [ ${#FORMATTED_ID} -lt 6 ]; do
 done
 
 REPORT_SLUG="job-$FORMATTED_ID-$CANARY_BUILD_ID"
-REPORT_DIR="reports/$REPORT_SLUG"
+DATE_YEAR=`date +%Y`
+DATE_MONTH=`date +%m`
+DATE_DAY=`date +%d`
+REPORT_DIR="reports/$DATE_YEAR/$DATE_MONTH/$DATE_DAY/$REPORT_SLUG"
 
 if [[ -d "$REPORT_DIR" ]]; then
   echo "removing previous report folder"
