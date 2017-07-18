@@ -20,7 +20,6 @@ CANARY_CACHE_DIR=${CANARY_CACHE_DIR:-"$(pwd)/.cache"}
 OFFICIAL_COMPILER_REPO=${OFFICIAL_COMPILER_REPO:-"https://github.com/clojure/clojurescript.git"}
 CLOJURESCRIPT_MAJOR=${CLOJURESCRIPT_MAJOR:-1}
 CLOJURESCRIPT_MINOR=${CLOJURESCRIPT_MINOR:-9}
-LOCAL_MAVEN_REPO=${LOCAL_MAVEN_REPO:-`get-local-maven-repo`}
 
 CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
 
@@ -170,6 +169,7 @@ else
   travis_fold end clojurescript-build
 
   # purge clojurescript jars from maven, .m2 is cached by travis and that would lead to cache invalidation
+  LOCAL_MAVEN_REPO=${LOCAL_MAVEN_REPO:-`get-local-maven-repo`}
   rm -rf "$LOCAL_MAVEN_REPO/org/clojure/clojurescript"
 
   BUILD_JAR=`ls -1 ./target/${CLOJURESCRIPT_MAVEN_ARTIFACT}-*.jar | grep -v aot`
