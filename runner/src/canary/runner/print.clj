@@ -25,8 +25,8 @@
 (defn task-description [task]
   (clansi/style (:description task) :black))
 
-(defn job-name [options]
-  (clansi/style (string/trim (str "job #" (:job-id options))) :underline))
+(defn job-name [job-id]
+  (clansi/style (string/trim (str "job #" job-id)) :underline))
 
 (defn emphasize [text]
   (clansi/style text :bright))
@@ -45,6 +45,10 @@
 
 (defn url [text]
   (clansi/style text :blue))
+
+(defn request-label
+  ([request] (request-label (get-in request ["repository" "slug"]) (get request "id")))
+  ([slug request-id] (str slug "#" request-id)))
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 
@@ -88,7 +92,7 @@
     (let [printable-content (process-passthrough-content content)
           current-time (Date.)
           line (format-job-line (format-time current-time (:time-format options))
-                                (job-name options)
+                                (job-name (:job-id options))
                                 nil
                                 (mark-errors kind options printable-content)
                                 (:verbosity options))]

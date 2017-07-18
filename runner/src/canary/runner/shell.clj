@@ -5,6 +5,7 @@
             [canary.runner.output :as output]
             [canary.runner.print :refer [announce]]
             [canary.runner.utils :as utils]
+            [canary.runner.i18n :as i18n]
             [clojure.java.io :as io])
   (:import (java.io InputStream)))
 
@@ -68,7 +69,7 @@
           (mark-proc-output! proc)
           (stream-proc-output! proc)
           (let [status (sh/exit-code proc)]
-            (announce (str "shell task " name " exit-code: " status) 2 options)
+            (announce (i18n/shell-task-exit-code name status) 2 options)
             (-> {:exit-code status}
                 (extract-outputs! proc))))))))
 

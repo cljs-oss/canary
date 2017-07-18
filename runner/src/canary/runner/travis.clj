@@ -128,7 +128,7 @@
       :else (throw (utils/ex (i18n/unable-to-mock-travis-api-msg cmd args))))))
 
 (defn launch! [cmd args options]
-  (announce (str "> curl " (vec args)) 2 options)
+  (announce (i18n/curl-command-msg args) 2 options)
   (if (:production options)
     (shell/launch! cmd args)
     (mock-travis-response cmd args)))
@@ -144,9 +144,8 @@
       (throw (utils/ex (i18n/api-invalid-json-response-msg (.getMessage e) content))))))
 
 (defn inspect-api-response [response-text options]
-  (let [response (parse-response response-text)
-        mocked-label (if-not (:production options) "(mocked) " "")]
-    (announce (str mocked-label "Travis response:\n" (utils/pp response)) 2 options)
+  (let [response (parse-response response-text)]
+    (announce (i18n/travis-response-msg response (:production options)) 2 options)
     response))
 
 (defn talk-to-travis-api! [curl-args options]
@@ -219,10 +218,6 @@
 (defn travis-build-url [slug build-id]
   (str "https://travis-ci.org/" slug "/builds/" build-id))
 
-(defn request-label
-  ([request] (request-label (get request "id") (request-slug request)))
-  ([request-id slug] (str slug "#" request-id)))
-
 (defn determine-builds-state [builds]
   ; https://developer.travis-ci.com/resource/builds#Builds
   (let [states (map #(get % "state") builds)]
@@ -244,14 +239,14 @@
 
 (defn poll-request-status! [slug request-id token options]
   ; https://developer.travis-ci.com/resource/request#find
-  (announce (str "Polling travis API for info about request " (request-label request-id slug)) 2 options)
+  (announce (i18n/polling-travis-api-for-request-info-msg slug request-id) 2 options)
   (let [api-slug (URLEncoder/encode slug)
         api-endpoint (str "https://api.travis-ci.org/repo/" api-slug "/request/" request-id)]
     (get-from-travis-api! api-endpoint token options)))
 
 (defn transit-to-running-state! [report-data request-response options]
-  (announce (str "Travis request " (request-label request-response) " is running") 1 options)
-  (announce (utils/pp request-response) 2 options)
+  (announce (i18n/travis-request-is-running-msg request-response) 1 options)
+  (announce (i18n/travis-request-response-dump-msg request-response) 2 options)
   report-data)
 
 (defn collect-builds-results [request-response]
@@ -267,8 +262,8 @@
     (reduce * [] builds)))
 
 (defn transit-to-done-state! [report-data request-response options]
-  (announce (str "Travis request " (request-label request-response) " is done") 1 options)
-  (announce (utils/pp request-response) 2 options)
+  (announce (i18n/travis-request-is-done-msg request-response) 1 options)
+  (announce (i18n/travis-request-response-dump-msg request-response) 2 options)
   (assoc report-data :builds (collect-builds-results request-response)
                      :result (get request-response "result")))
 
@@ -281,10 +276,9 @@
             build-state (get build "state")]
         (assert build-id)
         (when (not= build-state (get announced-builds build-id))
-          (announce (str "Travis build " (print/repo-slug slug) (print/travis-build-number build-number)
-                         " => " build-state))
+          (announce (i18n/travis-build-update-msg slug build-number build-state))
           (when (= build-state "created")
-            (announce (str "Travis build url: " (print/travis-url (travis-build-url slug build-id))))))))
+            (announce (i18n/travis-build-url-msg (travis-build-url slug build-id)))))))
     (into {} (for [build builds] [(get build "id") (get build "state")]))))
 
 (defn monitor-request-status! [slug request-id token options]
@@ -326,7 +320,7 @@
   (let [trigger-response (trigger-build! slug token options)
         request-id (get-in trigger-response ["request" "id"])
         report-data (monitor-request-status! slug request-id token options)]
-    (announce (str "report data:\n" (utils/pp report-data)) 1 options)
+    (announce (i18n/travis-report-data-dump-msg report-data) 1 options)
     {:status (if (all-passed? report-data) :passed :failed)
      :report (prepare-report slug report-data options)}))
 
@@ -336,8 +330,8 @@
     "non-production-dummy-token-value"))
 
 (defn request-build! [slug token-var-name options]
-  (announce (str "Triggering Travis build of " (print/repo-slug slug) " and waiting for results..."))
-  (announce (str "trigger-build! " slug " " token-var-name "\n" (utils/pp options)) 2 options)
+  (announce (i18n/triggering-travis-build-msg slug))
+  (announce (i18n/trigger-travis-build-inspect-msg slug token-var-name options) 2 options)
   (if-some [token (retrieve-token token-var-name options)]
     (request-build-and-wait-for-results! slug token options)
     (throw (utils/ex (i18n/api-token-not-set-msg token-var-name)))))

@@ -85,5 +85,5 @@
   (let [{:keys [options errors summary]} (cli/parse-opts args cli-options)]
     (cond
       errors (exit! 1 (i18n/cli-errors-msg errors))
-      (:help options) (exit! 0 (i18n/cli-usage summary))
+      (:help options) (exit! 0 (i18n/cli-usage-msg summary))
       :else (exit! (run-job! options)))))

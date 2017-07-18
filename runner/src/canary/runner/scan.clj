@@ -7,6 +7,7 @@
             [canary.runner.utils :as utils]
             [canary.runner.tasks :as tasks]
             [canary.runner.shell :as shell]
+            [canary.runner.i18n :as i18n]
             [canary.runner.print :refer [announce]]))
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
@@ -37,7 +38,7 @@
    :fn          (var-get task-var)})
 
 (defn collect-clojure-tasks-for-namespace! [options namespace]
-  (announce (str "requiring '" namespace "'") 2 options)
+  (announce (i18n/requiring-namespace-msg namespace) 2 options)
   (require namespace)
   (map make-clojure-task (tasks/scan-tasks namespace)))
 

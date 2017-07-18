@@ -5,6 +5,7 @@
             [canary.runner.utils :as utils]
             [canary.runner.env :as env]
             [clojure.string :as string]
+            [canary.runner.i18n :as i18n]
             [me.raynes.fs :as fs]))
 
 (def commit-script-path "scripts/commit_report.sh")
@@ -23,7 +24,7 @@
 (defn commit-report! [commit-task options]
   ; note it seemed to be easier to resort to shell
   (let [script (io/file (utils/canonical-path commit-script-path))
-        env {"RESULT_DIR"        (:workdir options)
+        env {"RESULT_DIR"        (:workdir options)                                                                           ; TODO: rename
              "CANARY_VERBOSITY"  (str (:verbosity options))
              "CANARY_PRODUCTION" (str (:production options))
              "CANARY_JOB_ID"     (str (:job-id options))
@@ -35,7 +36,7 @@
     (if (zero? exit-code)
       true
       (do
-        (announce (str "report commit script failed (exit code " exit-code ")"))
+        (announce (i18n/report-commit-script-failed-msg exit-code))
         nil))))
 
 ; -- report building --------------------------------------------------------------------------------------------------------
@@ -120,15 +121,15 @@
         commit-task {:name  "commit report"
                      :color :red}
         report (prepare-report tasks options)]
-    (announce (str "report:\n" (utils/pp report)) 1 options)
+    (announce (i18n/report-dump-msg report) 1 options)
     (write-file-to-workdir! (utils/pp options) options-file options)
     (write-file-to-workdir! (utils/pp tasks) tasks-file options)
     (write-file-to-workdir! (:content report) report-file options)
     (if test
       (do
-        (announce (str (print/emphasize "skipping") " report commit"))
+        (announce (i18n/skipping-report-commit-msg))
         nil)
       (do
-        (announce (str (print/emphasize "performing") " report commit"))
+        (announce (i18n/performing-report-commit-msg))
         (with-task-printing commit-task options
           (commit-report! commit-task options))))))

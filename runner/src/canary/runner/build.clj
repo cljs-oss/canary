@@ -1,11 +1,11 @@
 (ns canary.runner.build
   "Special task for building ClojureScript compiler."
-  (:require [canary.runner.print :as print :refer [announce with-task-printing]]
+  (:require [clojure.edn :as edn]
+            [clojure.java.io :as io]
+            [canary.runner.print :as print :refer [announce with-task-printing]]
             [canary.runner.utils :as utils]
             [canary.runner.shell :as shell]
-            [clojure.java.io :as io]
             [canary.runner.env :as env]
-            [clojure.edn :as edn]
             [canary.runner.i18n :as i18n]))
 
 (def build-script-path "scripts/build_compiler.sh")
@@ -24,9 +24,9 @@
 (defn build-compiler! [build-task compiler-rev compiler-repo options]
   ; note it seemed to be easier to resort to shell for building the compiler
   (let [script (io/file (utils/canonical-path build-script-path))
-        env {"COMPILER_REPO"     compiler-repo
-             "COMPILER_REV"      compiler-rev
-             "RESULT_DIR"        (:workdir options)
+        env {"COMPILER_REPO"     compiler-repo                                                                                ; TODO: rename
+             "COMPILER_REV"      compiler-rev                                                                                 ; TODO: rename
+             "RESULT_DIR"        (:workdir options)                                                                           ; TODO: rename to CANARY_RESULT_DIR
              "CANARY_REPO_TOKEN" (env/get "CANARY_REPO_TOKEN")                                                                ; we want to get advantage of .env files
              "CANARY_VERBOSITY"  (str (:verbosity options))
              "CANARY_CACHE_DIR"  (str (:cachedir options))
@@ -44,13 +44,9 @@
                     :color :cyan}]
     (if test
       (do
-        (announce (str (print/emphasize "skipping building")
-                       " compiler rev " (print/rev compiler-rev)
-                       " from " (print/url compiler-repo)))
+        (announce (i18n/skipping-building-compiler-msg compiler-rev compiler-repo))
         {:build-id "1.9.000-deadbeef"})
       (do
-        (announce (str (print/emphasize "building")
-                       " compiler rev " (print/rev compiler-rev)
-                       " from " (print/url compiler-repo)))
+        (announce (i18n/building-compiler-msg compiler-rev compiler-repo))
         (with-task-printing build-task options
           (build-compiler! build-task compiler-rev compiler-repo options))))))
