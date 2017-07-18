@@ -36,7 +36,7 @@
 (defn ^:dynamic waiting-for-tasks-msg [running-tasks]
   (let [task-count (count running-tasks)
         remaining-info (str task-count " remaining " (pluralize "task" task-count))]
-    (assert (pos? remaining-info))
+    (assert (pos? task-count))
     (str "Still waiting for " remaining-info "...")))
 
 (defn ^:dynamic job-timeout-error-msg [timeout]
