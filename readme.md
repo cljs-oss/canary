@@ -7,7 +7,7 @@ Canary provides a script which can be used to run a job. Each job is assigned a 
 It builds compiler jar, uploads it and then runs exercises of individual projects in parallel (we call them tasks). 
 Finally it waits for task results and generates a report for archiving.
 
-Typically you don't run canary script on local machine but rather invoke it on some machine in the cloud. 
+Typically you don't run canary script on your local machine but rather invoke it on some machine in the cloud. 
 For your convenience a new job can be triggered by committing an empty commit into the [jobs branch](https://github.com/cljs-oss/canary/tree/jobs).
 Travis machine will then execute canary script possibly triggering more child Travis builds for individual project tasks.
 At the end, results are generated and archived in the [results branch](https://github.com/cljs-oss/canary/tree/results).
@@ -57,13 +57,13 @@ When a `job` is triggered. The `runner` goes through following steps:
 1. determines which `tasks` should be part of the `job` based on request parameters
 1. spawns all `tasks` (in parallel) instructing them to use the `compiler`
 1. waits for `tasks` results and collects them 
-1. generates a report and commits it `results` branch
+1. generates a report and commits it in the `results` branch
 
 ### Implemented in Clojure
 
 The `runner` is implemented in Clojure for convenience. Each `project` author gets own place (function/script)
 for implementing functionality specific for their `project`. Authors are expected to trigger test builds on their own repos 
-(e.g. via Travis) and simply collect results back. But anyone can use an escape hatch to invoke a shell script and do whatever 
+(e.g. via Travis) and simply collect results back. But anyone can use an escape hatch to invoke a shell script or do whatever 
 they need in Clojure. For example cloning their repo and running tests directly in the context of the `runner`.
 
 ### Docker
@@ -72,7 +72,7 @@ We wrap `runner` in a Docker container to provide well-controlled environment fo
 
 ### No need for fancy publishing 
 
-We are developers and we have git and GitHub which is a great publishing tool on its own. Travis alone will provide some trace 
+We are developers and we have git and GitHub which is a great publishing platform on its own. Travis alone will provide some trace 
 of a `job` (depending on what `runner` script and individual `tasks` output to stdout). But ultimately a commit into `results` 
 branch presents all interesting results also for archivation purposes. Then anyone can use their git-fu to follow those or 
 process them further.
@@ -93,9 +93,9 @@ You will need to write a new task for your project. First look how existing [pro
 Ask for commit access. You can write your task as a Clojure function or as a shell script.
 
 In case of a Clojure function you have to annotate it with `^:task` metadata so that runner recognizes it. In general
-you can do whatever you need to do in your task (it is running on a separate thread) - this will depend you your project setup. 
-We provide some shared helper functions. For example `canary.runner.travis` namespace might be very useful for triggering 
-a Travis build for your own project. For your inspiration [here](https://github.com/cljs-oss/canary/blob/master/runner/src/canary/projects/binaryage.clj) 
+you can do whatever you need to do in your task (it is running on a separate thread) - this will depend on your project setup. 
+To ease some common scenarios we provide some helper functions. For example `canary.runner.travis` namespace might be very useful for triggering 
+a Travis build for your own project. For inspiration [here](https://github.com/cljs-oss/canary/blob/master/runner/src/canary/projects/binaryage.clj) 
 is the task for cljs-devtools, and [here](https://github.com/binaryage/cljs-devtools/commit/45c1df1e0de53c9d320963b296bd7a741056599c) 
 is the adaptation needed in the project itself. Please note that child Travis build triggered by `travis/request-build!`
 is configured with bunch of extra env variables prefixed with `CANARY_` (an example [here](https://travis-ci.org/binaryage/cljs-devtools/jobs/254939442/config)) those have to be taken into account by
