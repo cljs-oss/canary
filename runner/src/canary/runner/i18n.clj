@@ -4,6 +4,23 @@
             [canary.runner.print :as print]
             [canary.runner.utils :as utils]))
 
+; -- pluralization ----------------------------------------------------------------------------------------------------------
+
+; poor man's solution to pluralization
+; didn't want to bring in full-features inflections library as a new dependency
+
+(def pluralization-table
+  {"task" "tasks"})
+
+(defn ^:dynamic pluralize [name count]
+  (if (= count 1)
+    name
+    (if-let [plural-form (get pluralization-table name)]
+      plural-form
+      (do
+        (assert false (str "Missing plural form for '" name "'. Please update pluralization-table."))
+        name))))
+
 ; -- announcements ----------------------------------------------------------------------------------------------------------
 
 (defn ^:dynamic running-task-msg [task verbosity]
