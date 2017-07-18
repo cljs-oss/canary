@@ -24,13 +24,13 @@
 (defn build-compiler! [build-task compiler-rev compiler-repo options]
   ; note it seemed to be easier to resort to shell for building the compiler
   (let [script (io/file (utils/canonical-path build-script-path))
-        env {"COMPILER_REPO"     compiler-repo                                                                                ; TODO: rename
-             "COMPILER_REV"      compiler-rev                                                                                 ; TODO: rename
-             "RESULT_DIR"        (:workdir options)                                                                           ; TODO: rename to CANARY_RESULT_DIR
-             "CANARY_REPO_TOKEN" (env/get "CANARY_REPO_TOKEN")                                                                ; we want to get advantage of .env files
-             "CANARY_VERBOSITY"  (str (:verbosity options))
-             "CANARY_CACHE_DIR"  (str (:cachedir options))
-             "CANARY_PRODUCTION" (str (:production options))}
+        env {"CANARY_COMPILER_REPO" compiler-repo
+             "CANARY_COMPILER_REV"  compiler-rev
+             "CANARY_RESULT_DIR"    (:workdir options)
+             "CANARY_REPO_TOKEN"    (env/get "CANARY_REPO_TOKEN")                                                             ; we want to get advantage of .env files
+             "CANARY_VERBOSITY"     (str (:verbosity options))
+             "CANARY_CACHE_DIR"     (str (:cachedir options))
+             "CANARY_PRODUCTION"    (str (:production options))}
         build-launcher (shell/make-shell-launcher script env)
         result (build-launcher (with-meta options build-task))
         exit-code (:exit-code result)]

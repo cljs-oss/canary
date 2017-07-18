@@ -35,8 +35,8 @@ get-local-maven-repo() {
 }
 
 # parametrization via environment
-COMPILER_REV=${COMPILER_REV:-"master"} # https://git-scm.com/book/tr/v2/Git-Tools-Revision-Selection
-COMPILER_REPO=${COMPILER_REPO:-"https://github.com/clojure/clojurescript.git"}
+CANARY_COMPILER_REV=${CANARY_COMPILER_REV:-"master"} # https://git-scm.com/book/tr/v2/Git-Tools-Revision-Selection
+CANARY_COMPILER_REPO=${CANARY_COMPILER_REPO:-"https://github.com/clojure/clojurescript.git"}
 CANARY_VERBOSITY=${CANARY_VERBOSITY:-0}
 CLOJURESCRIPT_MAVEN_GROUP=${CLOJURESCRIPT_MAVEN_GROUP:-"org.clojure"}
 CLOJURESCRIPT_MAVEN_ARTIFACT=${CLOJURESCRIPT_MAVEN_ARTIFACT:-"clojurescript"}
@@ -44,7 +44,7 @@ CANARY_JOB_COMMIT=${CANARY_JOB_COMMIT:-"jobs"}
 CANARY_REPO_TOKEN=${CANARY_REPO_TOKEN}
 TRAVIS_BUILD_ID=${TRAVIS_BUILD_ID}
 CANARY_EXTRA_CURL_OPTS=${CANARY_EXTRA_CURL_OPTS:-"-sS"}
-RESULT_DIR=${RESULT_DIR:-`pwd`}
+CANARY_RESULT_DIR=${CANARY_RESULT_DIR:-`pwd`}
 POM_PATH=${POM_PATH:-"META-INF/maven/org.clojure/clojurescript/pom.xml"}
 CANARY_PRODUCTION=${CANARY_PRODUCTION}
 CANARY_CACHE_DIR=${CANARY_CACHE_DIR:-"$(pwd)/.cache"}
@@ -100,9 +100,9 @@ else
   popd
 fi
 
-git clone ${GIT_VERBOSITY} --reference "$GIT_REPO_CACHE_DIR" "$COMPILER_REPO" clojurescript
+git clone ${GIT_VERBOSITY} --reference "$GIT_REPO_CACHE_DIR" "$CANARY_COMPILER_REPO" clojurescript
 cd clojurescript
-git checkout "$COMPILER_REV"
+git checkout "$CANARY_COMPILER_REV"
 git checkout -b canary-build
 
 echo "Effective ClojureScript SHA to be built:"
@@ -112,7 +112,7 @@ echo
 BUILD_SHORT_REV=`git rev-parse --short HEAD`
 BUILD_REV=`git rev-parse HEAD`
 
-COMPILER_REV_URL="${COMPILER_REPO/.git//commit}/${BUILD_REV}"
+COMPILER_REV_URL="${CANARY_COMPILER_REPO/.git//commit}/${BUILD_REV}"
 
 # The command `git describe --match v0.0` will return a string like
 #
@@ -303,7 +303,7 @@ else # production mode
   fi
 fi # production mode
 
-RESULT_JAR_PATH="$RESULT_DIR/clojurescript-${BUILD_ID}.jar"
+RESULT_JAR_PATH="$CANARY_RESULT_DIR/clojurescript-${BUILD_ID}.jar"
 cp "$BUILD_JAR" "$RESULT_JAR_PATH"
 
 if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
@@ -325,8 +325,8 @@ RESULT=`cat <<EDN
 EDN
 `
 
-RESULT_EDN_PATH="$RESULT_DIR/result.edn"
-mkdir -p "$RESULT_DIR"
+RESULT_EDN_PATH="$CANARY_RESULT_DIR/result.edn"
+mkdir -p "$CANARY_RESULT_DIR"
 echo "$RESULT" > "$RESULT_EDN_PATH"
 
 if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
