@@ -10,7 +10,7 @@
   (with-out-str
     (binding [*print-level* (or level 10)                                                                                     ; we have to be careful here, data might contain circular references
               *print-length* (or length 200)
-              clojure.pprint/*print-right-margin* nil]                                                                        ; don't limit right margin
+              clojure.pprint/*print-right-margin* 126]                                                                        ; don't limit right margin
       (pprint data))))
 
 (defn canonical-path [path]
