@@ -68,12 +68,13 @@
   (let [api-slug (URLEncoder/encode slug)
         api-endpoint (str "https://api.travis-ci.org/repo/" api-slug "/requests")
         build-result (:build-result options)
+        config {:merge_mode "deep_merge"
+                :env        (prepare-build-env options)}
         body {:request
               {:branch  (or (:travis-branch options) "master")
                :message (str "canary build with ClojureScript " (:build-id build-result))
-               :config  {:merge_mode "deep_merge"
-                         :env        (prepare-build-env options)}}}
-        request-body (merge body (:travis-body options))]
+               :config  (utils/deep-merge config (or (:travis-config options) {}))}}
+        request-body (utils/deep-merge body (or (:travis-body options) {}))]
     (post-to-travis-api! api-endpoint token request-body options)))
 
 (defn monitoring-wait-time [options]
