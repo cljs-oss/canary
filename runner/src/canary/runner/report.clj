@@ -6,7 +6,8 @@
             [canary.runner.env :as env]
             [clojure.string :as string]
             [canary.runner.i18n :as i18n]
-            [me.raynes.fs :as fs])
+            [me.raynes.fs :as fs]
+            [canary.runner.tasks :as tasks])
   (:import (java.net URLEncoder)))
 
 (def commit-script-path "scripts/commit_report.sh")
@@ -84,16 +85,13 @@
                (about-compiler build-result)]]
     (string/join \newline (keep identity lines))))
 
-(defn task-passed? [task]
-  (= (get-in task [:result :state]) :passed))
-
 (defn report-enabled-tasks [tasks options]
   (when-not (empty? tasks)
     (let [header [""
                   "### Executed Tasks"
                   ]
           render-check-mark (fn [task]
-                              (if (task-passed? task) "&#x2714;" "&#x2718;"))
+                              (if (tasks/task-passed? task) "&#x2714;" "&#x2718;"))
           * (fn [task]
               (str "\n" "#### " (render-check-mark task) " " (:name task) "\n" (get-in task [:result :report])))
           list (map * tasks)]
@@ -113,8 +111,8 @@
 (defn report-summary [tasks options]
   (let [enabled-tasks (filter :enabled tasks)
         disabled-tasks (remove :enabled tasks)
-        passed-tasks (filter task-passed? enabled-tasks)
-        failed-tasks (remove task-passed? enabled-tasks)
+        passed-tasks (filter tasks/task-passed? enabled-tasks)
+        failed-tasks (remove tasks/task-passed? enabled-tasks)
         all-passed? (= (count enabled-tasks) (count passed-tasks))
         happy-msg (str "All tasks passed!")
         unhappy-msg (str "Some tasks failed!")
@@ -139,8 +137,8 @@
         summary (report-summary tasks options)
         enabled-tasks (filter :enabled tasks)
         disabled-tasks (remove :enabled tasks)
-        passed-tasks (filter task-passed? enabled-tasks)
-        failed-tasks (remove task-passed? enabled-tasks)
+        passed-tasks (filter tasks/task-passed? enabled-tasks)
+        failed-tasks (remove tasks/task-passed? enabled-tasks)
         enabled-tasks (report-enabled-tasks (concat failed-tasks passed-tasks) options)
         disabled-tasks (report-disabled-tasks disabled-tasks options)
         all-parts [header summary enabled-tasks disabled-tasks]

@@ -4,6 +4,9 @@
             [clojure.string :as string]
             [canary.runner.print :as print]))
 
+(defn task-passed? [task]
+  (= (get-in task [:result :status]) :passed))
+
 (defn var-task? [var]
   (assert (var? var))
   (true? (:task (meta var))))

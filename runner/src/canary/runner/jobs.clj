@@ -95,9 +95,6 @@
                   (dissoc task :fn))]
     (map cleanup tasks)))
 
-(defn task-passed? [task]
-  (= (get-in task [:result :state]) :passed))
-
 (defn run-naked! [options]
   (with-job-printing options
     (announce (i18n/running-job-msg (:job-id options)))
@@ -114,7 +111,7 @@
           2)
         (let [result-tasks (cleanup-result-tasks result)
               enabled-tasks (filter :enabled result-tasks)
-              all-passed? (every? task-passed? enabled-tasks)]
+              all-passed? (every? tasks/task-passed? enabled-tasks)]
           (announce (i18n/job-completed-msg result-tasks) 1 options)
           ; TODO: add timing info
           (report/prepare-and-commit-complete-report! result-tasks options)
