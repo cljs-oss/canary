@@ -69,7 +69,7 @@
         api-endpoint (str "https://api.travis-ci.org/repo/" api-slug "/requests")
         build-result (:build-result options)
         config {:merge_mode "deep_merge"
-                :env        (prepare-build-env options)}
+                :env        {:global (prepare-build-env options)}}                                                            ; https://docs.travis-ci.com/user/environment-variables/#Global-Variables
         body {:request
               {:branch  (or (:travis-branch options) "master")
                :message (str "canary build with ClojureScript " (:build-id build-result))
