@@ -46,6 +46,9 @@
 (defn url [text]
   (clansi/style text :blue))
 
+(defn dump [text]
+  (clansi/style text :black))
+
 (defn request-label
   ([request] (request-label (get-in request ["repository" "slug"]) (get request "id")))
   ([slug request-id] (str slug "#" request-id)))
