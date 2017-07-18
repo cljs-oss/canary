@@ -15,9 +15,9 @@
 (defmacro kill-on-failure [& body]
   `(try
      ~@body
-     (catch Throwable e
+     (catch Throwable e#
        (println "FATAL:")
-       (println (utils/stacktrace-str e))
+       (println (utils/stacktrace-str e#))
        (System/exit 99))))                                                                                                    ; instant death
 
 (defn dev? []
