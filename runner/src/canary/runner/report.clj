@@ -135,8 +135,12 @@
 (defn prepare-complete-report [tasks options]
   (let [header (report-header options)
         summary (report-summary tasks options)
-        enabled-tasks (report-enabled-tasks (filter :enabled tasks) options)
-        disabled-tasks (report-disabled-tasks (remove :enabled tasks) options)
+        enabled-tasks (filter :enabled tasks)
+        disabled-tasks (remove :enabled tasks)
+        passed-tasks (filter task-passed? enabled-tasks)
+        failed-tasks (remove task-passed? enabled-tasks)
+        enabled-tasks (report-enabled-tasks (concat failed-tasks passed-tasks) options)
+        disabled-tasks (report-disabled-tasks disabled-tasks options)
         all-parts [header summary enabled-tasks disabled-tasks]
         content (string/join \newline (keep identity all-parts))]
     {:content content}))
