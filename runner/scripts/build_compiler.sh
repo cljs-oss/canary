@@ -10,11 +10,11 @@ travis_fold() {
   echo -en "travis_fold:${action}:${name}\r${ANSI_CLEAR}"
 }
 
-function json-val () {
+json-val() {
   python -c "import json,sys;sys.stdout.write(json.dumps(json.load(sys.stdin)$1))" 2> /dev/null;
 }
 
-function string-encode () {
+string-encode() {
   local content=$1
   # see https://stackoverflow.com/a/38283242/84283
   content=${content//'"'/'\"'}
@@ -22,12 +22,16 @@ function string-encode () {
   echo "$content"
 }
 
-pushd () {
+pushd() {
     command pushd "$@" > /dev/null
 }
 
-popd () {
+popd() {
     command popd "$@" > /dev/null
+}
+
+get-local-maven-repo() {
+  mvn help:evaluate -Dexpression=settings.localRepository | grep -v '[INFO]' | tr -d '\n'
 }
 
 # parametrization via environment
@@ -39,7 +43,6 @@ CLOJURESCRIPT_MAVEN_ARTIFACT=${CLOJURESCRIPT_MAVEN_ARTIFACT:-"clojurescript"}
 CANARY_JOB_COMMIT=${CANARY_JOB_COMMIT:-"jobs"}
 CANARY_REPO_TOKEN=${CANARY_REPO_TOKEN}
 TRAVIS_BUILD_ID=${TRAVIS_BUILD_ID}
-LOCAL_MAVEN_REPO=${LOCAL_MAVEN_REPO:-`mvn help:evaluate -Dexpression=settings.localRepository | grep -v '[INFO]' | tr -d '\n'`}
 CANARY_EXTRA_CURL_OPTS=${CANARY_EXTRA_CURL_OPTS:-"-sS"}
 RESULT_DIR=${RESULT_DIR:-`pwd`}
 POM_PATH=${POM_PATH:-"META-INF/maven/org.clojure/clojurescript/pom.xml"}
@@ -48,6 +51,7 @@ CANARY_CACHE_DIR=${CANARY_CACHE_DIR:-"$(pwd)/.cache"}
 OFFICIAL_COMPILER_REPO=${OFFICIAL_COMPILER_REPO:-"https://github.com/clojure/clojurescript.git"}
 CLOJURESCRIPT_MAJOR=${CLOJURESCRIPT_MAJOR:-1}
 CLOJURESCRIPT_MINOR=${CLOJURESCRIPT_MINOR:-9}
+LOCAL_MAVEN_REPO=${LOCAL_MAVEN_REPO:-`get-local-maven-repo`}
 
 CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
 
