@@ -24,7 +24,7 @@
 (defn commit-report! [commit-task options]
   ; note it seemed to be easier to resort to shell
   (let [script (io/file (utils/canonical-path commit-script-path))
-        env {"RESULT_DIR"        (:workdir options)                                                                           ; TODO: rename
+        env {"CANARY_RESULT_DIR" (:workdir options)
              "CANARY_VERBOSITY"  (str (:verbosity options))
              "CANARY_PRODUCTION" (str (:production options))
              "CANARY_JOB_ID"     (str (:job-id options))

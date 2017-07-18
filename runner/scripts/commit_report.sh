@@ -4,28 +4,33 @@ set -e -o pipefail
 
 # we assume cwd is a clean task's workdir, see shell-launcher in commit-report! (report.clj)
 
-# parametrization via environment
+# -- parameters -------------------------------------------------------------------------------------------------------------
+
+TRAVIS_BUILD_ID=${TRAVIS_BUILD_ID}
 CANARY_PRODUCTION=${CANARY_PRODUCTION}
 CANARY_VERBOSITY=${CANARY_VERBOSITY:-0}
 CANARY_JOB_COMMIT=${CANARY_JOB_COMMIT:-"jobs"}
 CANARY_REPO_TOKEN=${CANARY_REPO_TOKEN}
 CANARY_JOB_ID=${CANARY_JOB_ID}
 CANARY_BUILD_ID=${CANARY_BUILD_ID}
-TRAVIS_BUILD_ID=${TRAVIS_BUILD_ID}
-RESULT_DIR=${RESULT_DIR:-`pwd`}
-REPORT_FILE=${REPORT_FILE:-"$RESULT_DIR/README.md"}
-TASKS_FILE=${TASKS_FILE:-"$RESULT_DIR/tasks.edn"}
-OPTIONS_FILE=${OPTIONS_FILE:-"$RESULT_DIR/options.edn"}
+CANARY_RESULT_DIR=${CANARY_RESULT_DIR:-`pwd`}
+CANARY_REPORT_FILE=${CANARY_REPORT_FILE:-"$CANARY_RESULT_DIR/README.md"}
+CANARY_TASKS_FILE=${CANARY_TASKS_FILE:-"$CANARY_RESULT_DIR/tasks.edn"}
+CANARY_OPTIONS_FILE=${CANARY_OPTIONS_FILE:-"$CANARY_RESULT_DIR/options.edn"}
 
 CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
 
-pushd () {
+# -- functions --------------------------------------------------------------------------------------------------------------
+
+pushd() {
     command pushd "$@" > /dev/null
 }
 
-popd () {
+popd() {
     command popd "$@" > /dev/null
 }
+
+# -- clone canary/results branch --------------------------------------------------------------------------------------------
 
 if [[ "$CANARY_VERBOSITY" -gt 1 ]]; then
   echo "effective settings:\n"
@@ -48,7 +53,8 @@ git config --global user.email "canary-bot@users.noreply.github.com"
 git config --global user.name "Canary Bot"
 git remote add up "https://${CANARY_REPO_TOKEN}@github.com/cljs-oss/canary.git"
 
-# prepare content
+# -- prepare content --------------------------------------------------------------------------------------------------------
+
 if [[ -z "$CANARY_BUILD_ID" ]]; then
   echo "ERROR!"
   echo "CANARY_BUILD_ID env var must be specified"
@@ -80,9 +86,9 @@ fi
 mkdir -p "$REPORT_DIR"
 pushd "$REPORT_DIR"
 
-cp "$REPORT_FILE" .
-cp "$TASKS_FILE" .
-cp "$OPTIONS_FILE" .
+cp "$CANARY_REPORT_FILE" .
+cp "$CANARY_TASKS_FILE" .
+cp "$CANARY_OPTIONS_FILE" .
 
 popd
 
@@ -95,7 +101,8 @@ NEW_README="${README_WITH_MARKER/RECENT_REPORTS_MARKER/$NEW_RECENT_LIST}"
 
 echo "$NEW_README" > "$ROOT_README_NAME"
 
-# commit to git
+# -- commit to git ----------------------------------------------------------------------------------------------------------
+
 git add --all .
 git commit -F- <<EOF
 Report for job #${CANARY_JOB_ID} via ${CANARY_JOB_COMMIT_URL}
@@ -104,7 +111,8 @@ Compiler: ${CANARY_BUILD_ID}
 ${TRAVIS_BUILD_INFO}
 EOF
 
-# push if in production
+# -- push if in production --------------------------------------------------------------------------------------------------
+
 if [[ -z "$CANARY_PRODUCTION" ]]; then
   echo "not pushing to GitHub because not in production"
 else
