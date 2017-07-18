@@ -20,29 +20,29 @@
 
 (def cli-options
   [(normal-cli-option
-     ["-r" "--compiler-rev REV" "Pin ClojureScript compiler to specific revision" :default default-compiler-rev])
+     ["-r" "--compiler-rev REV" (i18n/compiler-rev-cli-desc) :default default-compiler-rev])
    (normal-cli-option
-     [nil "--compiler-repo URL" "Git repo to fetch compiler sources from" :default default-compiler-repo])
+     [nil "--compiler-repo URL" (i18n/compiler-repo-cli-desc) :default default-compiler-repo])
    (normal-cli-option
-     ["-p" "--projects DIR" "Path to projects directory" :default default-projects-dir])
+     ["-p" "--projects DIR" (i18n/projects-cli-desc) :default default-projects-dir])
    (normal-cli-option
-     [nil "--workdir DIR" "Path to working directory" :default default-work-dir])
+     [nil "--workdir DIR" (i18n/workdir-cli-desc) :default default-work-dir])
    (normal-cli-option
-     [nil "--cachedir DIR" "Path to caching directory. Persists state between runs for speedup." :default default-cache-dir])
+     [nil "--cachedir DIR" (i18n/cachedir-cli-desc) :default default-cache-dir])
    (normal-cli-option
-     [nil "--only SUBSTR" "Run only tasks matching a substring"])
+     [nil "--only SUBSTR" (i18n/only-cli-desc)])
    (normal-cli-option
-     [nil "--job-id ID" "Optional job id" :default "0"])
+     [nil "--job-id ID" (i18n/job-id-cli-desc) :default "0"])
    (timeout-cli-option
-     [nil "--polling-interval SECONDS" "Polling interval for job status (in seconds)" :default default-polling-interval])
+     [nil "--polling-interval SECONDS" (i18n/polling-interval-cli-desc) :default default-polling-interval])
    (timeout-cli-option
-     [nil "--timeout SECONDS" "Total timeout for job to complete (in seconds)" :default default-timeout])
+     [nil "--timeout SECONDS" (i18n/timeout-cli-desc) :default default-timeout])
    (normal-cli-option
-     [nil "--production" "Will not commit into results branch"])
+     [nil "--production" (i18n/production-cli-desc)])
    (normal-cli-option
-     ["-t" "--test" "Do not launch any tasks. Useful for testing which task will be executed."])
+     ["-t" "--test" (i18n/test-cli-desc)])
    (verbosity-cli-option
-     ["-v" nil "Verbosity level; may be specified multiple times"])
+     ["-v" nil (i18n/verbosity-cli-desc)])
    (normal-cli-option
      ["-h" "--help"])])
 

@@ -124,14 +124,6 @@
 
 ; -- exceptions -------------------------------------------------------------------------------------------------------------
 
-(defn ^:dynamic cli-usage-msg [options-summary]
-  (string/join \newline ["Exercises ClojureScript projects with a pinned ClojureScript version."
-                         ""
-                         "Usage: ./run.sh job [options]"
-                         ""
-                         "Options:"
-                         options-summary]))
-
 (defn ^:dynamic cli-errors-msg [errors]
   (str "The following errors occurred while parsing your command:\n"
        (string/join \newline (map #(str "  * " %) errors))))
@@ -169,3 +161,50 @@
 
 (defn ^:dynamic received-unrecognized-travis-request-state [travis-state]
   (str "Received unrecognized Travis request state '" travis-state "'"))
+
+; -- cli --------------------------------------------------------------------------------------------------------------------
+
+(defn ^:dynamic cli-usage-msg [options-summary]
+  (string/join \newline ["Exercises ClojureScript projects with a pinned ClojureScript version."
+                         ""
+                         "Usage: ./run.sh job [options]"
+                         ""
+                         "Options:"
+                         options-summary]))
+
+(defn ^:dynamic compiler-rev-cli-desc []
+  "Pin ClojureScript compiler to specific revision")
+
+(defn ^:dynamic compiler-repo-cli-desc []
+  "Git repo to fetch compiler sources from")
+
+(defn ^:dynamic projects-cli-desc []
+  "Path to projects directory")
+
+(defn ^:dynamic workdir-cli-desc []
+  "Path to working directory")
+
+(defn ^:dynamic cachedir-cli-desc []
+  "Path to caching directory. Persists state between runs for speedup.")
+
+(defn ^:dynamic only-cli-desc []
+  "Run only tasks matching a substring")
+
+(defn ^:dynamic job-id-cli-desc []
+  "Optional job id")
+
+(defn ^:dynamic polling-interval-cli-desc []
+  "Polling interval for job status (in seconds)")
+
+(defn ^:dynamic timeout-cli-desc []
+  "Total timeout for job to complete (in seconds)")
+
+(defn ^:dynamic production-cli-desc []
+  "Will not commit into results branch")
+
+(defn ^:dynamic test-cli-desc []
+  "Do not launch any tasks. Useful for testing which task will be executed.")
+
+(defn ^:dynamic verbosity-cli-desc []
+  "Verbosity level; may be specified multiple times")
+
