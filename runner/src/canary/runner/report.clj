@@ -100,7 +100,7 @@
           list (map * tasks)]
       (string/join \newline (concat header list)))))
 
-(defn prepare-report [tasks options]
+(defn prepare-complete-report [tasks options]
   (let [header (report-header options)
         enabled-tasks (report-enabled-tasks (filter :enabled tasks) options)
         disabled-tasks (report-disabled-tasks (remove :enabled tasks) options)
@@ -108,19 +108,22 @@
         content (string/join \newline (keep identity all-parts))]
     {:content content}))
 
-(defn report-for-exception [e]
+; -- main api ---------------------------------------------------------------------------------------------------------------
+
+(defn prepare-report-for-exception [e]
   (let [stacktrace (utils/stacktrace-str e)]
     (str "```\n"
          "Exception: " stacktrace "\n"
          "```")))
 
-; -- main api ---------------------------------------------------------------------------------------------------------------
+(defn prepare-dummy-report [task]
+  (str "a dummy report from task " (:name task)))
 
-(defn prepare-and-commit-report! [tasks options]
+(defn prepare-and-commit-complete-report! [tasks options]
   (let [{:keys [test]} options
         commit-task {:name  "commit report"
                      :color :red}
-        report (prepare-report tasks options)]
+        report (prepare-complete-report tasks options)]
     (announce (i18n/report-dump-msg report) 1 options)
     (write-file-to-workdir! (utils/pp options) options-file options)
     (write-file-to-workdir! (utils/pp tasks) tasks-file options)
@@ -133,3 +136,4 @@
         (announce (i18n/performing-report-commit-msg))
         (with-task-printing commit-task options
           (commit-report! commit-task options))))))
+

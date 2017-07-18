@@ -17,11 +17,11 @@
 
 (defn just-test-task [task options]
   (announce (i18n/dummy-test-task-msg))
-  {:report (str "a dummy report from task " (:name task))})
+  {:report (report/prepare-dummy-report task)})
 
 (defn execute-task! [task options]
   (let [task-fn (:fn task)]
-    ; TODO: validate task result here
+    ; TODO: validate task result here for cases when tasks return nothing or malformed result
     (task-fn (with-meta options task))))
 
 (defn run-task! [task options]
@@ -39,7 +39,7 @@
           (do
             (announce (utils/stacktrace-str e))
             {:status :exception
-             :report (report/report-for-exception e)}))))))
+             :report (report/prepare-report-for-exception e)}))))))
 
 (defn spawn-task! [task options]
   (async/thread (try-run-task! task options)))
@@ -82,10 +82,10 @@
 (defn spawn-runner! [tasks options]
   (async/thread (run-tasks! tasks options)))
 
-(defn preprocess-result-tasks [tasks]
-  (let [* (fn [task]
-            (dissoc task :fn))]
-    (map * tasks)))
+(defn cleanup-result-tasks [tasks]
+  (let [cleanup (fn [task]
+                  (dissoc task :fn))]
+    (map cleanup tasks)))
 
 (defn task-passed? [task]
   (= (get-in task [:result :state]) :passed))
@@ -104,12 +104,12 @@
         (do
           (announce (i18n/job-timeout-error-msg (:timeout options)))
           2)
-        (let [result-tasks (preprocess-result-tasks result)
+        (let [result-tasks (cleanup-result-tasks result)
               enabled-tasks (filter :enabled result-tasks)
               all-passed? (every? task-passed? enabled-tasks)]
           (announce (i18n/job-completed-msg result-tasks) 1 options)
           ; TODO: add timing info
-          (report/prepare-and-commit-report! result-tasks options)
+          (report/prepare-and-commit-complete-report! result-tasks options)
           (if all-passed? 0 1))))))
 
 (defn run! [options]
