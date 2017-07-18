@@ -20,12 +20,9 @@
   (assert (.markSupported stream))
   (.reset stream))
 
-(defn stream-output! [^InputStream stream]
-  (output/print-stream-as-lines! stream output/synchronized-out-printer))
-
 (defn stream-proc-output! [proc]
-  (stream-output! (:out proc))
-  (stream-output! (:err proc)))
+  (output/print-stream-as-lines! (:out proc) output/synchronized-out-printer)
+  (output/print-stream-as-lines! (:err proc) output/synchronized-err-printer))
 
 (defn mark-proc-output! [proc]
   (mark-stream! (:out proc))
