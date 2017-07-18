@@ -6,7 +6,8 @@
             [canary.runner.env :as env]
             [clojure.string :as string]
             [canary.runner.i18n :as i18n]
-            [me.raynes.fs :as fs]))
+            [me.raynes.fs :as fs])
+  (:import (java.net URLEncoder)))
 
 (def commit-script-path "scripts/commit_report.sh")
 (def report-file "README.md")
@@ -83,14 +84,16 @@
                (about-compiler build-result)]]
     (string/join \newline (keep identity lines))))
 
+(defn task-passed? [task]
+  (= (get-in task [:result :state]) :passed))
+
 (defn report-enabled-tasks [tasks options]
   (when-not (empty? tasks)
     (let [header [""
                   "### Executed Tasks"
                   ]
           render-check-mark (fn [task]
-                              (let [passed? (= (get-in task [:result :state]) :passed)]
-                                (if passed? "&#x2714;" "&#x2718;")))
+                              (if (task-passed? task) "&#x2714;" "&#x2718;"))
           * (fn [task]
               (str "\n" "#### " (render-check-mark task) " " (:name task) "\n" (get-in task [:result :report])))
           list (map * tasks)]
@@ -107,11 +110,34 @@
           list (map * tasks)]
       (string/join \newline (concat header list)))))
 
+(defn report-summary [tasks options]
+  (let [enabled-tasks (filter :enabled tasks)
+        disabled-tasks (remove :enabled tasks)
+        passed-tasks (filter task-passed? enabled-tasks)
+        failed-tasks (remove task-passed? enabled-tasks)
+        all-passed? (= (count enabled-tasks) (count passed-tasks))
+        counts-msg (str "Ran " (count enabled-tasks) " / " (count tasks) " tasks.")
+        passed-msg (str "Passed " (count passed-tasks) " / " (count enabled-tasks) " tasks.")
+        happy-msg (str "All tasks passed!")
+        unhappy-msg (str "Failed " (count failed-tasks) " / " (count enabled-tasks) " tasks!")
+        failed-linkifier (fn [task]
+                           (let [name (:name task)]
+                             (str "[" (:name task) "](#-" (URLEncoder/encode name) ")")))
+        failed-links (string/join " | " (map failed-linkifier failed-tasks))
+        face (if all-passed? "☺" "☹")
+        lines [""
+               (str "### " face " Summary")
+               (if all-passed?
+                 (str happy-msg " " counts-msg " " passed-msg)
+                 (str unhappy-msg " " counts-msg "\n\nFailed tasks: " failed-links))]]
+    (string/join \newline (keep identity lines))))
+
 (defn prepare-complete-report [tasks options]
   (let [header (report-header options)
+        summary (report-summary tasks options)
         enabled-tasks (report-enabled-tasks (filter :enabled tasks) options)
         disabled-tasks (report-disabled-tasks (remove :enabled tasks) options)
-        all-parts [header enabled-tasks disabled-tasks]
+        all-parts [header summary enabled-tasks disabled-tasks]
         content (string/join \newline (keep identity all-parts))]
     {:content content}))
 
