@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-pushd () {
+pushd() {
     command pushd "$@" > /dev/null
 }
 
-popd () {
+popd() {
     command popd "$@" > /dev/null
 }
 
-echoerr() {
+echo_err() {
   printf "\e[31m%s\e[0m\n" "$*" >&2;
 }

@@ -7,7 +7,7 @@ TRAVIS=${TRAVIS}
 TRAVIS_BUILD_NUMBER=${TRAVIS_BUILD_NUMBER:-?}
 
 if [[ -z "$TRAVIS" ]]; then
-  echoerr "travis-entrypoint.sh should be launched only in the context of travis CI"
+  echo_err "travis-entrypoint.sh should be launched only in the context of travis CI"
   exit 77
 fi
 
@@ -19,9 +19,9 @@ JOB_ARGS=$(git show -s --format=%B "jobs" | head -n 1)
 
 # TODO: do some better sanitation of JOB_ARGS
 if [[ ! ${JOB_ARGS} == job* ]]; then
-  echoerr "The commit message to jobs must begin with 'job' and follow by job arguments."
-  echoerr "I see a commit message '$JOB_ARGS'."
-  echoerr "Consider using [ci skip] in the commit message next time."
+  echo_err "The commit message to jobs must begin with 'job' and follow by job arguments."
+  echo_err "I see a commit message '$JOB_ARGS'."
+  echo_err "Consider using [ci skip] in the commit message next time."
   exit 1
 fi
 
