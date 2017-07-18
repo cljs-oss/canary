@@ -79,15 +79,15 @@ process them further.
 
 ## FAQ
 
-> How to run a job?
+#### How to run a job?
 
 Please read the readme in the [jobs branch](https://github.com/cljs-oss/canary/tree/jobs) with details on that.  
 
-> How to run a job with specific ClojureScript fork?
+#### How to run a job with specific ClojureScript fork?
 
 No problem. You can point Canary to your own fork of ClojureScript by specifying `--compiler-repo` and `--compiler-rev` parameters. 
 
-> How can I participate with my project?
+#### How can I participate with my project?
 
 You will need to write a new task for your project. First look how existing [projects are implemented](https://github.com/cljs-oss/canary/tree/master/runner/src/canary/projects).
 Ask for commit access. You can write your task as a Clojure function or as a shell script.
