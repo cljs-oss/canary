@@ -1,12 +1,23 @@
 
 ## Canary jobs
 
-Canary runner is responsible for exercising [participating ClojureScript projects](https://github.com/cljs-oss/canary/tree/master/runner/src/canary/projects) with a pinned ClojureScript version.
+Canary is responsible for smoke testing [participating ClojureScript projects](https://github.com/cljs-oss/canary/tree/master/runner/src/canary/projects) with a pinned ClojureScript version.
+You can read more about Canary in the [master readme](https://github.com/cljs-oss/canary/tree/master).
 
-You could run it locally, but that would be too old-school. And frankly you would not have some secret tokens
-needed for talking to GitHub and Travis APIs. Instead you can trigger canary jobs by committing into this branch. Travis will pick it up and execute your job. The commit message is [expected](https://github.com/cljs-oss/canary/blob/3a555f984f27dea52af2d756df28647af208b08d/scripts/travis-entrypoint.sh#L16) to contain command-line arguments you would normally use `job [arg1] [arg2] [...]`.
+You could run it locally, but that would be old-school. And frankly you would not have some secret tokens
+needed for talking to GitHub and Travis APIs. Instead you can trigger Canary jobs by committing into this branch. We use git messages as  Travis will pick it up and execute your job. 
+The commit can be empty and the message is [expected](https://github.com/cljs-oss/canary/blob/3a555f984f27dea52af2d756df28647af208b08d/scripts/travis-entrypoint.sh#L16) 
+to contain command-line arguments you would normally use `job [arg1] [arg2] [...]`.
 
-For example `job -r master` will run the job for bleeding edge [ClojureScript master](https://github.com/clojure/clojurescript/tree/master).
+For example `job -r master` will run the job for bleeding-edge [ClojureScript master](https://github.com/clojure/clojurescript/tree/master).
+
+To execute above command personally I would run this from command-line:
+
+```bash
+git clone --branch jobs git@github.com:cljs-oss/canary.git
+cd canary
+git commit --allow-empty -m "job -r master"
+```
 
 Please note that `--production` and `--job-id` parameters are not available to you. They are [forced by our launcher script](https://github.com/cljs-oss/canary/blob/3a555f984f27dea52af2d756df28647af208b08d/scripts/travis-entrypoint.sh#L31).
 
@@ -26,12 +37,12 @@ Options:
       --compiler-repo URL         https://github.com/clojure/clojurescript.git  Git repo to fetch compiler sources from
   -p, --projects DIR              src/canary/projects                           Path to projects directory
       --workdir DIR               .workdir                                      Path to working directory
+      --cachedir DIR              .cachedir                                     Path to caching directory. Persists state between runs for speedup.
       --only SUBSTR                                                             Run only tasks matching a substring
-      --job-id ID                 test                                          Optional job id
+      --job-id ID                 0                                             Optional job id
       --polling-interval SECONDS  300000                                        Polling interval for job status (in seconds)
       --timeout SECONDS           3600000                                       Total timeout for job to complete (in seconds)
       --production                                                              Will not commit into results branch
   -t, --test                                                                    Do not launch any tasks. Useful for testing which task will be executed.
   -v                                                                            Verbosity level; may be specified multiple times
-  -h, --help
-  ```
+  -h, --help  ```
