@@ -2,6 +2,30 @@
 
 set -e -o pipefail
 
+# -- parameters -------------------------------------------------------------------------------------------------------------
+
+CANARY_COMPILER_REV=${CANARY_COMPILER_REV:-"master"} # https://git-scm.com/book/tr/v2/Git-Tools-Revision-Selection
+CANARY_COMPILER_REPO=${CANARY_COMPILER_REPO:-"https://github.com/clojure/clojurescript.git"}
+CANARY_VERBOSITY=${CANARY_VERBOSITY:-0}
+CLOJURESCRIPT_MAVEN_GROUP=${CLOJURESCRIPT_MAVEN_GROUP:-"org.clojure"}
+CLOJURESCRIPT_MAVEN_ARTIFACT=${CLOJURESCRIPT_MAVEN_ARTIFACT:-"clojurescript"}
+CANARY_JOB_COMMIT=${CANARY_JOB_COMMIT:-"jobs"}
+CANARY_REPO_TOKEN=${CANARY_REPO_TOKEN}
+TRAVIS_BUILD_ID=${TRAVIS_BUILD_ID}
+CANARY_EXTRA_CURL_OPTS=${CANARY_EXTRA_CURL_OPTS:-"-sS"}
+CANARY_RESULT_DIR=${CANARY_RESULT_DIR:-`pwd`}
+POM_PATH=${POM_PATH:-"META-INF/maven/org.clojure/clojurescript/pom.xml"}
+CANARY_PRODUCTION=${CANARY_PRODUCTION}
+CANARY_CACHE_DIR=${CANARY_CACHE_DIR:-"$(pwd)/.cache"}
+OFFICIAL_COMPILER_REPO=${OFFICIAL_COMPILER_REPO:-"https://github.com/clojure/clojurescript.git"}
+CLOJURESCRIPT_MAJOR=${CLOJURESCRIPT_MAJOR:-1}
+CLOJURESCRIPT_MINOR=${CLOJURESCRIPT_MINOR:-9}
+LOCAL_MAVEN_REPO=${LOCAL_MAVEN_REPO:-`get-local-maven-repo`}
+
+CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
+
+# -- functions --------------------------------------------------------------------------------------------------------------
+
 ANSI_CLEAR="\033[0K"
 
 travis_fold() {
@@ -34,26 +58,7 @@ get-local-maven-repo() {
   mvn help:evaluate -Dexpression=settings.localRepository | grep -v '[INFO]' | tr -d '\n'
 }
 
-# parametrization via environment
-CANARY_COMPILER_REV=${CANARY_COMPILER_REV:-"master"} # https://git-scm.com/book/tr/v2/Git-Tools-Revision-Selection
-CANARY_COMPILER_REPO=${CANARY_COMPILER_REPO:-"https://github.com/clojure/clojurescript.git"}
-CANARY_VERBOSITY=${CANARY_VERBOSITY:-0}
-CLOJURESCRIPT_MAVEN_GROUP=${CLOJURESCRIPT_MAVEN_GROUP:-"org.clojure"}
-CLOJURESCRIPT_MAVEN_ARTIFACT=${CLOJURESCRIPT_MAVEN_ARTIFACT:-"clojurescript"}
-CANARY_JOB_COMMIT=${CANARY_JOB_COMMIT:-"jobs"}
-CANARY_REPO_TOKEN=${CANARY_REPO_TOKEN}
-TRAVIS_BUILD_ID=${TRAVIS_BUILD_ID}
-CANARY_EXTRA_CURL_OPTS=${CANARY_EXTRA_CURL_OPTS:-"-sS"}
-CANARY_RESULT_DIR=${CANARY_RESULT_DIR:-`pwd`}
-POM_PATH=${POM_PATH:-"META-INF/maven/org.clojure/clojurescript/pom.xml"}
-CANARY_PRODUCTION=${CANARY_PRODUCTION}
-CANARY_CACHE_DIR=${CANARY_CACHE_DIR:-"$(pwd)/.cache"}
-OFFICIAL_COMPILER_REPO=${OFFICIAL_COMPILER_REPO:-"https://github.com/clojure/clojurescript.git"}
-CLOJURESCRIPT_MAJOR=${CLOJURESCRIPT_MAJOR:-1}
-CLOJURESCRIPT_MINOR=${CLOJURESCRIPT_MINOR:-9}
-LOCAL_MAVEN_REPO=${LOCAL_MAVEN_REPO:-`get-local-maven-repo`}
-
-CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
+# -- verbosity --------------------------------------------------------------------------------------------------------------
 
 if [[ "$CANARY_VERBOSITY" -gt 1 ]]; then
   echo "effective settings:\n"
@@ -72,6 +77,8 @@ fi
 if [[ "$CANARY_VERBOSITY" -gt 1 ]]; then
   GIT_VERBOSITY="--verbose"
 fi
+
+# -- compiler checkout ------------------------------------------------------------------------------------------------------
 
 # cwd should already be in a temporary folder, see build.clj
 # but we create another working subdir just for convenience when launching this directly
@@ -104,6 +111,8 @@ git clone ${GIT_VERBOSITY} --reference "$GIT_REPO_CACHE_DIR" "$CANARY_COMPILER_R
 cd clojurescript
 git checkout "$CANARY_COMPILER_REV"
 git checkout -b canary-build
+
+# -- compiler build ---------------------------------------------------------------------------------------------------------
 
 echo "Effective ClojureScript SHA to be built:"
 git log -1 --pretty=format:"%C(magenta)%h%C(reset) | %C(yellow)%s%C(reset)%n        └ %C(blue)%an%C(reset) | %ad" --date=rfc
@@ -193,6 +202,8 @@ else
   mkdir -p "$GIT_BUILD_CACHE_DIR"
   cp "$BUILD_JAR" "$CACHED_JAR_PATH"
 fi
+
+# -- github release ---------------------------------------------------------------------------------------------------------
 
 if [[ -n "$TRAVIS_BUILD_ID" ]]; then
   TRAVIS_BUILD_URL="https://travis-ci.org/cljs-oss/canary/builds/$TRAVIS_BUILD_ID"
@@ -303,6 +314,10 @@ else # production mode
   fi
 fi # production mode
 
+# -- result preparation -----------------------------------------------------------------------------------------------------
+# we pass results to the caller by producing an edn file on agreed path in RESULT_DIR
+# we also copy compiled jar into RESULT_DIR and publish its path via :build-jar-path
+
 RESULT_JAR_PATH="$CANARY_RESULT_DIR/clojurescript-${BUILD_ID}.jar"
 cp "$BUILD_JAR" "$RESULT_JAR_PATH"
 
@@ -310,7 +325,6 @@ if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
   echo -e "Copied result jar into '$RESULT_JAR_PATH'"
 fi
 
-# we pass results to the caller by producing an edn file on agreed path in RESULT_DIR
 RESULT=`cat <<EDN
 {
   :build-id "${BUILD_ID}"
