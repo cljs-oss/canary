@@ -7,8 +7,7 @@
             [clojure.string :as string]
             [canary.runner.i18n :as i18n]
             [me.raynes.fs :as fs]
-            [canary.runner.tasks :as tasks])
-  (:import (java.net URLEncoder)))
+            [canary.runner.tasks :as tasks]))
 
 (def commit-script-path "scripts/commit_report.sh")
 (def report-file "README.md")
@@ -121,7 +120,7 @@
         failed-msg (str "Failed " (count failed-tasks) " / " (count enabled-tasks) " (executed)" total-msg)
         failed-linkifier (fn [task]
                            (let [name (:name task)]
-                             (str "[" name "](#-" (URLEncoder/encode name) ")")))
+                             (str "[" name "](#-" (utils/url-encode name) ")")))
         failed-links (string/join " | " (map failed-linkifier failed-tasks))
         face (if all-passed? "☺" "☹")
         lines [""

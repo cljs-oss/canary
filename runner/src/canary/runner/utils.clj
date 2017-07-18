@@ -4,7 +4,8 @@
             [clojure.string :as string]
             [clojure.core.async :as async])
   (:import (java.util.concurrent TimeUnit)
-           (java.io StringWriter PrintWriter)))
+           (java.io StringWriter PrintWriter)
+           (java.net URLEncoder)))
 
 (defn pp [data & [level length]]
   (with-out-str
@@ -67,6 +68,9 @@
         (apply merge-with m maps)
         (apply f maps)))
     maps))
+
+(defn url-encode [s]
+  (URLEncoder/encode s "UTF-8"))
 
 ; -- tests ------------------------------------------------------------------------------------------------------------------
 

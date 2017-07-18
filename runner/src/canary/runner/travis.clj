@@ -10,8 +10,7 @@
             [canary.runner.utils :as utils]
             [canary.runner.print :as print]
             [canary.runner.travis-mocks :as travis-mocks])
-  (:import (java.net URLEncoder)
-           (java.util.concurrent TimeUnit)))
+  (:import (java.util.concurrent TimeUnit)))
 
 (defn launch! [cmd args options]
   (announce (i18n/curl-command-msg args) 2 options)
@@ -65,7 +64,7 @@
 (defn trigger-build! [slug token options]
   ; https://docs.travis-ci.com/user/triggering-builds/
   ; https://developer.travis-ci.com/resource/requests#Requests
-  (let [api-slug (URLEncoder/encode slug)
+  (let [api-slug (utils/url-encode slug)
         api-endpoint (str "https://api.travis-ci.org/repo/" api-slug "/requests")
         build-result (:build-result options)
         config {:merge_mode "deep_merge"
@@ -123,7 +122,7 @@
 (defn poll-request-status! [slug request-id token options]
   ; https://developer.travis-ci.com/resource/request#find
   (announce (i18n/polling-travis-api-for-request-info-msg slug request-id) 2 options)
-  (let [api-slug (URLEncoder/encode slug)
+  (let [api-slug (utils/url-encode slug)
         api-endpoint (str "https://api.travis-ci.org/repo/" api-slug "/request/" request-id)]
     (get-from-travis-api! api-endpoint token options)))
 
