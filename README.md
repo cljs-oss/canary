@@ -12,3 +12,5 @@ This branch contains reports from canary [jobs](https://github.com/cljs-oss/cana
 * [reports/2017/07/17/job-000056-1.9.817-281ed98](reports/2017/07/17/job-000056-1.9.817-281ed98)
 
 All job reports are available under [reports](reports).
+
+Want to participate? The code lives on [master](https://github.com/cljs-oss/canary/tree/master).
