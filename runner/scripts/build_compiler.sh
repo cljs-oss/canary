@@ -33,11 +33,11 @@ travis_fold() {
   echo -en "travis_fold:${action}:${name}\r${ANSI_CLEAR}"
 }
 
-json-val() {
+json_val() {
   python -c "import json,sys;sys.stdout.write(json.dumps(json.load(sys.stdin)$1))" 2> /dev/null;
 }
 
-string-encode() {
+string_encode() {
   local content=$1
   # see https://stackoverflow.com/a/38283242/84283
   content=${content//'"'/'\"'}
@@ -53,7 +53,7 @@ popd() {
     command popd "$@" > /dev/null
 }
 
-get-local-maven-repo() {
+get_local_maven_repo() {
   mvn help:evaluate -Dexpression=settings.localRepository | grep -v '[INFO]' | tr -d '\n'
 }
 
@@ -169,7 +169,7 @@ else
   travis_fold end clojurescript-build
 
   # purge clojurescript jars from maven, .m2 is cached by travis and that would lead to cache invalidation
-  LOCAL_MAVEN_REPO=${LOCAL_MAVEN_REPO:-`get-local-maven-repo`}
+  LOCAL_MAVEN_REPO=${LOCAL_MAVEN_REPO:-`get_local_maven_repo`}
   rm -rf "$LOCAL_MAVEN_REPO/org/clojure/clojurescript"
 
   BUILD_JAR=`ls -1 ./target/${CLOJURESCRIPT_MAVEN_ARTIFACT}-*.jar | grep -v aot`
@@ -218,7 +218,7 @@ A test build of ${COMPILER_REV_URL} via ${CANARY_JOB_COMMIT_URL}.
 ${TRAVIS_BUILD_INFO}
 MARKDOWN
 `
-GITHUB_RELEASE_BODY_ENCODED=`string-encode "${GITHUB_RELEASE_BODY}"`
+GITHUB_RELEASE_BODY_ENCODED=`string_encode "${GITHUB_RELEASE_BODY}"`
 
 GITHUB_RELEASE_NAME="ClojureScript ${BUILD_ID}"
 GITHUB_RELEASE_TAG="r${BUILD_ID}"
@@ -265,7 +265,7 @@ else # production mode
   fi
 
   set +e
-  RELEASE_ERROR=`json-val [\"errors\"][0][\"code\"] <<< "$RELEASE_RESPONSE" | sed -e 's/^"//' -e 's/"$//'`
+  RELEASE_ERROR=`json_val [\"errors\"][0][\"code\"] <<< "$RELEASE_RESPONSE" | sed -e 's/^"//' -e 's/"$//'`
   set -e
 
   if [[ "$RELEASE_ERROR" == "already_exists" ]]; then
@@ -275,7 +275,7 @@ else # production mode
     echo "Download URL: $BUILD_DOWNLOAD_URL (assumed)"
   else
     set +e
-    UPLOAD_URL=`json-val [\"upload_url\"] <<< "$RELEASE_RESPONSE" | sed -e 's/^"//' -e 's/"$//'`
+    UPLOAD_URL=`json_val [\"upload_url\"] <<< "$RELEASE_RESPONSE" | sed -e 's/^"//' -e 's/"$//'`
     set -e
 
     if [[ "$UPLOAD_URL" =~ ^https://uploads\.github\.com/repos/cljs-oss/canary/releases/(.*)/assets.*$ ]]; then
@@ -302,7 +302,7 @@ else # production mode
     fi
 
     set +e
-    BUILD_DOWNLOAD_URL=`json-val [\"browser_download_url\"] <<< "$UPLOAD_RESPONSE" | sed -e 's/^"//' -e 's/"$//'`
+    BUILD_DOWNLOAD_URL=`json_val [\"browser_download_url\"] <<< "$UPLOAD_RESPONSE" | sed -e 's/^"//' -e 's/"$//'`
     set -e
 
     if [[ ! "$BUILD_DOWNLOAD_URL" =~ ^https://github\.com/cljs-oss/canary/releases/download.*$ ]]; then
