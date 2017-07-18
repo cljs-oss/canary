@@ -116,20 +116,22 @@
         passed-tasks (filter task-passed? enabled-tasks)
         failed-tasks (remove task-passed? enabled-tasks)
         all-passed? (= (count enabled-tasks) (count passed-tasks))
-        counts-msg (str "Ran " (count enabled-tasks) " / " (count tasks) " tasks.")
-        passed-msg (str "Passed " (count passed-tasks) " / " (count enabled-tasks) " tasks.")
         happy-msg (str "All tasks passed!")
-        unhappy-msg (str "Failed " (count failed-tasks) " / " (count enabled-tasks) " tasks!")
+        unhappy-msg (str "Some tasks failed!")
+        total-msg (str " of total " (count tasks) " tasks.")
+        passed-msg (str "Passed " (count passed-tasks) " / " (count enabled-tasks) " (executed)" total-msg)
+        failed-msg (str "Failed " (count failed-tasks) " / " (count enabled-tasks) " (executed)" total-msg)
         failed-linkifier (fn [task]
                            (let [name (:name task)]
-                             (str "[" (:name task) "](#-" (URLEncoder/encode name) ")")))
+                             (str "[" name "](#-" (URLEncoder/encode name) ")")))
         failed-links (string/join " | " (map failed-linkifier failed-tasks))
         face (if all-passed? "☺" "☹")
         lines [""
                (str "### " face " Summary")
+               ""
                (if all-passed?
-                 (str happy-msg " " counts-msg " " passed-msg)
-                 (str unhappy-msg " " counts-msg "\n\nFailed tasks: " failed-links))]]
+                 (str happy-msg " " passed-msg)
+                 (str unhappy-msg " " failed-msg "\n\nFailed tasks: " failed-links "."))]]
     (string/join \newline (keep identity lines))))
 
 (defn prepare-complete-report [tasks options]
