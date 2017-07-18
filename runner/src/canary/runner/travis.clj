@@ -8,134 +8,16 @@
             [canary.runner.env :as env]
             [canary.runner.i18n :as i18n]
             [canary.runner.utils :as utils]
-            [canary.runner.print :as print])
+            [canary.runner.print :as print]
+            [canary.runner.travis-mocks :as travis-mocks])
   (:import (java.net URLEncoder)
            (java.util.concurrent TimeUnit)))
-
-; {"message" nil,
-;  "owner"
-;  {"@type" "organization",
-;   "@href" "/org/23773",
-;   "@representation" "minimal",
-;   "id" 23773,
-;   "login" "binaryage"},
-;  "@href" "/repo/3839739/request/76577839",
-;  "branch_name"
-;  {"@type" "branch",
-;   "@href" "/repo/3839739/branch/master",
-;   "@representation" "minimal",
-;   "name" "master"},
-;  "builds"
-;  [{"@href" "/build/254467456",
-;    "pull_request_number" nil,
-;    "previous_state" "errored",
-;    "id" 254467456,
-;    "@representation" "minimal",
-;    "started_at" nil,
-;    "event_type" "api",
-;    "number" "313",
-;    "duration" nil,
-;    "state" "created",
-;    "pull_request_title" nil,
-;    "@type" "build",
-;    "finished_at" nil}],
-;  "repository"
-;  {"@type" "repository",
-;   "@href" "/repo/3839739",
-;   "@representation" "minimal",
-;   "id" 3839739,
-;   "name" "cljs-devtools",
-;   "slug" "binaryage/cljs-devtools"},
-;  "id" 76577839,
-;  "@representation" "standard",
-;  "event_type" "api",
-;  "commit"
-;  {"@type" "commit",
-;   "@representation" "minimal",
-;   "id" 73961817,
-;   "sha" "45c1df1e0de53c9d320963b296bd7a741056599c",
-;   "ref" nil,
-;   "message" "canary build with ClojureScript ",
-;   "compare_url"
-;   "https://github.com/binaryage/cljs-devtools/compare/d3af0f855d94d0a2b906b1840b5c7534cedbb768...45c1df1e0de53c9d320963b296bd7a741056599c",
-;   "committed_at" "2017-07-14T22:04:48Z"},
-;  "state" "finished",
-;  "created_at" "2017-07-17T14:37:25Z",
-;  "@type" "request",
-;  "result" "approved"}
-
-(defn mock-travis-requests-response [args]
-  (let [fake-response (json/write-str {"repository" {"slug" "some-repo/some-project"}
-                                       "request"    {"id"         0
-                                                     "repository" {"id" "n/a"}}})]
-    {:exit-code 0
-     :out       fake-response}))
-
-(def mock-request-info-counter (atom 0))
-
-(def pending-request-info (json/write-str {"id"         0
-                                           "repository" {"slug" "some-repo/some-project"}
-                                           "state"      "pending"}))
-
-(def created-request-info (json/write-str {"id"         0
-                                           "repository" {"slug" "some-repo/some-project"}
-                                           "state"      "finished"
-                                           "builds"     [{"id"     1
-                                                          "number" 11
-                                                          "state"  "created"}
-                                                         {"id"     2
-                                                          "number" 22
-                                                          "state"  "created"}]}))
-
-(def running-request-info (json/write-str {"id"         0
-                                           "repository" {"slug" "some-repo/some-project"}
-                                           "state"      "finished"
-                                           "builds"     [{"id"     1
-                                                          "number" 11
-                                                          "state"  "started"}
-                                                         {"id"       2
-                                                          "number"   22
-                                                          "state"    "errored"
-                                                          "duration" 1}]}))
-
-(def done-request-info (json/write-str {"id"         0
-                                        "repository" {"slug" "some-repo/some-project"}
-                                        "state"      "finished"
-                                        "builds"     [{"id"       1
-                                                       "number"   11
-                                                       "state"    "passed"
-                                                       "duration" 10}
-                                                      {"id"       2
-                                                       "number"   22
-                                                       "state"    "errored"
-                                                       "duration" 1}]}))
-
-(defn mock-travis-request-info-response [args]
-  (let [counter (swap! mock-request-info-counter inc)
-        fake-response (cond
-                        (< counter 3) pending-request-info
-                        (and (>= counter 3) (< counter 5)) created-request-info
-                        (and (>= counter 5) (< counter 10)) running-request-info
-                        :else done-request-info)]
-    {:exit-code 0
-     :out       fake-response}))
-
-(defn mock-travis-response [cmd args]
-  (let [api-endpoint (last args)]
-    (cond
-      (re-matches #"^https://api.travis-ci.org/repo/.*/requests$" api-endpoint) (mock-travis-requests-response args)
-      (re-matches #"^https://api.travis-ci.org/repo/.*/request/0$" api-endpoint) (mock-travis-request-info-response args)
-      :else (throw (utils/ex (i18n/unable-to-mock-travis-api-msg cmd args))))))
 
 (defn launch! [cmd args options]
   (announce (i18n/curl-command-msg args) 2 options)
   (if (:production options)
     (shell/launch! cmd args)
-    (mock-travis-response cmd args)))
-
-(defn make-build-url [slug request-id]
-  ; TODO: we will have to query travis API to get list of builds triggered by this request id
-  (str "https://travis-ci.org/" slug "/builds/"))
+    (travis-mocks/mock-travis-response cmd args)))
 
 (defn parse-response [content]
   (try
@@ -330,8 +212,9 @@
     "non-production-dummy-token-value"))
 
 (defn request-build! [slug token-var-name options]
-  (announce (i18n/triggering-travis-build-msg slug))
-  (announce (i18n/trigger-travis-build-inspect-msg slug token-var-name options) 2 options)
-  (if-some [token (retrieve-token token-var-name options)]
-    (request-build-and-wait-for-results! slug token options)
-    (throw (utils/ex (i18n/api-token-not-set-msg token-var-name)))))
+  (binding [travis-mocks/*mock-request-context* (travis-mocks/new-mock-request-context)]
+    (announce (i18n/triggering-travis-build-msg slug))
+    (announce (i18n/trigger-travis-build-inspect-msg slug token-var-name options) 2 options)
+    (if-some [token (retrieve-token token-var-name options)]
+      (request-build-and-wait-for-results! slug token options)
+      (throw (utils/ex (i18n/api-token-not-set-msg token-var-name))))))
