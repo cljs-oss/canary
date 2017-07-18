@@ -47,7 +47,7 @@
     (let [{:keys [travis-build-url]} build-result]
       (if (= travis-build-url "n/a")
         "travis n/a"
-        (str "[travis log](" travis-build-url ").")))))
+        (str "[travis log](" travis-build-url ")")))))
 
 (defn about-job [job-id job-sha canary-repo-commit-url build-result]
   (let [trigger-source (if (empty? job-sha)
