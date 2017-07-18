@@ -9,7 +9,7 @@
             [clojure.java.io :as io])
   (:import (java.io InputStream)))
 
-(def max-output-buffer 1M)
+(def max-output-buffer 1000000)
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 
