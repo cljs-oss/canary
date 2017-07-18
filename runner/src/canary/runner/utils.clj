@@ -42,6 +42,11 @@
     (.printStackTrace ex print-writer)
     (.toString string-writer)))
 
+(defn short-sha [sha]
+  (if (< (count sha) 7)                                                                                                       ; prevent exceptions
+    sha
+    (subs sha 0 7)))
+
 ; -- tests ------------------------------------------------------------------------------------------------------------------
 
 (comment
@@ -49,5 +54,10 @@
 
   (canonical-path ".")
   (canonical-path "src/canary")
+
+  (short-sha "0bed4a1f4a51b0ee08aa7f9e3421c0fe51fa5897")
+  (short-sha "123456")
+  (short-sha "1234567")
+  (short-sha "12345678")
 
   (sanitize-as-filename "!@#$%^&*abc  xxx"))
