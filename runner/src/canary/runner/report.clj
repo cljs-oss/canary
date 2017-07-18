@@ -41,39 +41,46 @@
 
 ; -- report building --------------------------------------------------------------------------------------------------------
 
-(defn about-job [job-commit canary-repo-commit-url]
-  (let [trigger-source (if (empty? job-commit)
-                         "locally"
-                         (str "by [this commit](" canary-repo-commit-url "/" job-commit ")"))]
-    (str "The job was triggered " trigger-source
+(defn about-travis [build-result]
+  (when (some? build-result)
+    (let [{:keys [travis-build-url]} build-result]
+      (if (= travis-build-url "n/a")
+        "travis n/a"
+        (str "[travis log](" travis-build-url ").")))))
+
+(defn about-job [job-id job-sha canary-repo-commit-url build-result]
+  (let [trigger-source (if (empty? job-sha)
+                         "local"
+                         (str "[jobs/" (utils/short-sha job-sha) "](" canary-repo-commit-url "/" job-sha ")"))
+        travis-info (about-travis build-result)]
+    (str "\n"
+         "Job: **#" job-id "** "
+         "| " trigger-source " "
          "| [options](options.edn) "
          "| [tasks](tasks.edn)"
+         (if (some? travis-info)
+           (str " | " travis-info))
          ".")))
 
 (defn about-compiler [build-result]
   (when (some? build-result)
     (let [{:keys [compiler-rev-url github-release-name github-release-tag build-download-url]} build-result
           release-page-url (str "https://github.com/cljs-oss/canary/releases/tag/" github-release-tag)
-          lines [(str "The job prepared a test build of [" github-release-name "](" release-page-url ")"
+          lines [""
+                 (str "Compiler: **" github-release-name "** "
+                      "| [release page](" release-page-url ") "
                       "| [jar download](" build-download-url ") "
-                      "| [compiler source](" compiler-rev-url ")"
-                      ".")]]
+                      "| [source](" compiler-rev-url ").")]]
       (string/join \newline (keep identity lines)))))
 
-(defn about-travis [build-result]
-  (when (some? build-result)
-    (let [{:keys [travis-build-url]} build-result]
-      (when (not= travis-build-url "n/a")
-        (str "Full job trace can be retrieved via Travis [build log](" travis-build-url ").")))))
-
 (defn report-header [options]
-  (let [job-commit (env/get "CANARY_JOB_COMMIT")
+  (let [job-sha (env/get "CANARY_JOB_COMMIT")
+        job-id (:job-id options)
+        build-result (:build-result options)
         canary-repo-commit-url "https://github.com/cljs-oss/canary/commit"
-        lines [(str "## Report for job #" (:job-id options))
-               ""
-               (about-job job-commit canary-repo-commit-url)
-               (about-compiler (:build-result options))
-               (about-travis (:build-result options))]]
+        lines [(str "## Report for job #" job-id)
+               (about-job job-id job-sha canary-repo-commit-url build-result)
+               (about-compiler build-result)]]
     (string/join \newline (keep identity lines))))
 
 (defn report-enabled-tasks [tasks options]
@@ -136,4 +143,3 @@
         (announce (i18n/performing-report-commit-msg))
         (with-task-printing commit-task options
           (commit-report! commit-task options))))))
-
