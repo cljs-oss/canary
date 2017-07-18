@@ -61,8 +61,7 @@
 
 (defn run-tasks! [tasks options]
   (report-disabled-tasks tasks options)
-  (loop [iteration 0
-         running-tasks (launch-tasks! tasks options)                                                                          ; channel -> task mappings
+  (loop [running-tasks (launch-tasks! tasks options)                                                                          ; channel -> task mappings
          completed-tasks (vec (remove :enabled tasks))]                                                                       ; disabled tasks are considered instantly completed
     (if (empty? running-tasks)
       completed-tasks
@@ -71,14 +70,14 @@
         (let [[result completed-channel] (async/alts!! all-channels)]
           (if (= completed-channel timeout-channel)
             (do
-              (announce (i18n/still-waiting-msg iteration))
-              (recur (inc iteration) running-tasks completed-tasks))
+              (announce (i18n/waiting-for-tasks-msg running-tasks))
+              (recur running-tasks completed-tasks))
             (let [completed-task (dissoc (get running-tasks completed-channel) :running)
                   new-running-tasks (dissoc running-tasks completed-channel)
                   new-completed-tasks (conj completed-tasks (assoc completed-task
                                                               :result result))]
               (announce (i18n/completed-task-msg completed-task))                                                             ; TODO: add timing info
-              (recur (inc iteration) new-running-tasks new-completed-tasks))))))))
+              (recur new-running-tasks new-completed-tasks))))))))
 
 (defn spawn-runner! [tasks options]
   (async/thread (run-tasks! tasks options)))

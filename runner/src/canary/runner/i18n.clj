@@ -33,14 +33,17 @@
         msg (str (print/emphasize "Skipping") " task " (print/task-name task))]
     (str msg (if (>= verbosity 1) reason))))
 
-(defn ^:dynamic still-waiting-msg [iteration]
-  (str "Still waiting ... #" iteration))
+(defn ^:dynamic waiting-for-tasks-msg [running-tasks]
+  (let [task-count (count running-tasks)
+        remaining-info (str task-count " remaining " (pluralize "task" task-count))]
+    (assert (pos? remaining-info))
+    (str "Still waiting for " remaining-info "...")))
 
 (defn ^:dynamic job-timeout-error-msg [timeout]
   (str "Job timeouted (after " timeout "ms)"))
 
 (defn ^:dynamic dummy-test-task-msg []
-  (str "[test mode] not executing, just providing a dummy report"))
+  (str "Not executing, just providing a dummy report (due to --test flag)"))
 
 (defn ^:dynamic completed-task-msg [task]
   (str (print/emphasize "completed") " task " (print/task-name task)))
