@@ -192,9 +192,10 @@
                             (let [passed? (build-passed? (:state build))]
                               (if passed? "&#x2714;" "&#x2718;")))
         render-item (fn [build]
-                      (str "  * " (render-check-mark build) " "
+                      (str "  " (render-check-mark build) " "
                            "Travis build "
-                           "[" slug "#" (:number build) "](" (travis-build-url slug (:id build)) ")"))
+                           "[" slug "#" (:number build) "](" (travis-build-url slug (:id build)) ")"
+                           "<br>"))
         items (map render-item builds)]
     (string/join \newline items)))
 
