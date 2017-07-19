@@ -22,7 +22,7 @@
 
 ; -- commit script ----------------------------------------------------------------------------------------------------------
 
-(defn commit-report! [commit-task options]
+(defn launch-commit-report-script! [commit-task report-status options]
   ; note it seemed to be easier to resort to shell
   (let [script (io/file (utils/canonical-path commit-script-path))
         env {"CANARY_RESULT_DIR" (:workdir options)
@@ -30,6 +30,7 @@
              "CANARY_PRODUCTION" (str (:production options))
              "CANARY_JOB_ID"     (str (:job-id options))
              "CANARY_BUILD_ID"   (str (get-in options [:build-result :build-id]))
+             "CANARY_JOB_STATUS" (name report-status)
              "CANARY_REPO_TOKEN" (env/get "CANARY_REPO_TOKEN")}                                                               ; we want to get advantage of .env files
         build-launcher (shell/make-shell-launcher script env)
         result (build-launcher (with-meta options commit-task))
@@ -141,8 +142,10 @@
         enabled-tasks (report-enabled-tasks (concat failed-tasks passed-tasks) options)
         disabled-tasks (report-disabled-tasks disabled-tasks options)
         all-parts [header summary enabled-tasks disabled-tasks]
-        content (string/join \newline (keep identity all-parts))]
-    {:content content}))
+        content (string/join \newline (keep identity all-parts))
+        all-passed? (= (count enabled-tasks) (count passed-tasks))]
+    {:status  (if all-passed? :passed :failed)
+     :content content}))
 
 ; -- main api ---------------------------------------------------------------------------------------------------------------
 
@@ -157,8 +160,6 @@
 
 (defn prepare-and-commit-complete-report! [tasks options]
   (let [{:keys [test]} options
-        commit-task {:name  "commit report"
-                     :color :red}
         report (prepare-complete-report tasks options)]
     (announce (i18n/report-dump-msg report) 1 options)
     (write-file-to-workdir! (utils/pp options) options-file options)
@@ -168,7 +169,8 @@
       (do
         (announce (i18n/skipping-report-commit-msg))
         nil)
-      (do
+      (let [commit-task {:name  "commit report"
+                         :color :red}]
         (announce (i18n/performing-report-commit-msg))
         (with-task-printing commit-task options
-          (commit-report! commit-task options))))))
+          (launch-commit-report-script! commit-task (:status report) options))))))
