@@ -124,6 +124,11 @@ git commit -m "add CANARY_YOUR_PROJECT_TRAVIS_TOKEN [ci skip]"
 git push origin jobs
 ```
 
+#### How can I trigger Circle CI build of my project?
+
+You are on your own. We haven't implemented similar helpers as [for Travis](https://github.com/cljs-oss/canary/blob/master/runner/src/canary/runner/travis.clj) yet. 
+Want to contribute them? That would be great.
+
 ---
 
 ### Credits
