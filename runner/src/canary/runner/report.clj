@@ -155,9 +155,9 @@
         disabled-tasks (remove :enabled tasks)
         passed-tasks (filter tasks/task-passed? enabled-tasks)
         failed-tasks (remove tasks/task-passed? enabled-tasks)
-        enabled-tasks (report-enabled-tasks (concat failed-tasks passed-tasks) options)
-        disabled-tasks (report-disabled-tasks disabled-tasks options)
-        all-parts [header summary enabled-tasks disabled-tasks]
+        enabled-tasks-report (report-enabled-tasks (concat failed-tasks passed-tasks) options)
+        disabled-tasks-report (report-disabled-tasks disabled-tasks options)
+        all-parts [header summary enabled-tasks-report disabled-tasks-report]
         content (string/join \newline (keep identity all-parts))
         all-passed? (= (count enabled-tasks) (count passed-tasks))]
     {:status  (if all-passed? :passed :failed)
