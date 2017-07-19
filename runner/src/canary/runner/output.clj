@@ -1,18 +1,22 @@
 (ns canary.runner.output
-  (:require [clojure.java.io :as io])
+  (:require [clojure.java.io :as io]
+            [canary.runner.utils :as utils])
   (:import (java.util.concurrent TimeUnit)
-           (java.util Scanner)
+           (java.util Scanner NoSuchElementException)
            (java.io Writer PipedReader PipedWriter PrintWriter)))
 
 ; -- line-based streaming ---------------------------------------------------------------------------------------------------
 
 (defn print-stream-as-lines! [stream printer]
   (future
-    (let [output (io/reader stream)
-          scanner (.useDelimiter (Scanner. output) "\n")]
-      (loop []
-        (printer (.next scanner))
-        (recur)))))
+    (utils/kill-process-on-failure
+      (let [output (io/reader stream)
+            scanner (.useDelimiter (Scanner. output) "\n")]
+        (try
+          (loop []
+            (printer (.next scanner))
+            (recur))
+          (catch NoSuchElementException e))))))                                                                               ; peacefully finish the thread
 
 ; -- synchronized printing --------------------------------------------------------------------------------------------------
 
