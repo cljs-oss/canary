@@ -102,7 +102,7 @@ fi
 # patch root readme with most recent reports
 ROOT_README_NAME="README.md"
 OLD_RECENT_LIST=`perl -pe 'BEGIN{undef $/;} s/.*Recent reports\n\n(.*)\n\nAll job reports.*/$1/smg' "$ROOT_README_NAME"`
-NEW_RECENT_LIST=`echo -e "$REPORT_FACE [$REPORT_DIR]($REPORT_DIR)<br>\n$OLD_RECENT_LIST" | head -n 10`
+NEW_RECENT_LIST=`echo -e "&nbsp;&nbsp;&nbsp;&nbsp;$REPORT_FACE [$REPORT_DIR]($REPORT_DIR)<br>\n$OLD_RECENT_LIST" | head -n 10`
 README_WITH_MARKER=`perl -pe 'BEGIN{undef $/;} s/Recent reports\n\n(.*)\n\nAll job reports/Recent reports\n\nRECENT_REPORTS_MARKER\n\nAll job reports/smg' "$ROOT_README_NAME"`
 NEW_README="${README_WITH_MARKER/RECENT_REPORTS_MARKER/$NEW_RECENT_LIST}"
 
