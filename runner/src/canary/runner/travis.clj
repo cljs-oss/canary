@@ -193,8 +193,8 @@
         render-check-mark (fn [build]
                             (let [passed? (build-passed? (:state build))]
                               (if passed?
-                                (report/wrap-as-passed "&#x2713;")
-                                (report/wrap-as-failed "&#x2717;"))))
+                                (report/wrap-as-passed report/passed-symbol)
+                                (report/wrap-as-failed report/failed-symbol))))
         render-item (fn [build]
                       (str indent (render-check-mark build) " "
                            "Travis build "
