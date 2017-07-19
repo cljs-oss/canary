@@ -87,26 +87,30 @@
                   (dissoc task :fn))]
     (map cleanup tasks)))
 
+(defn build-compiler-if-needed! [options]
+  (if (some? (:build-result options))
+    options
+    (assoc options :build-result (build/prepare-compiler! options))))
+
 (defn run-naked! [options]
   (with-job-printing options
     (announce (i18n/running-job-msg (:job-id options)))
     (announce (i18n/job-options-msg options) 1 options)
-    (let [build-result (build/prepare-compiler! options)
-          options (assoc options :build-result build-result)
-          analyzed-tasks (scan/collect-and-analyze-all-tasks! options)
-          running-runner (spawn-runner! analyzed-tasks options)
-          timeout-channel (utils/timeout (:timeout options))
+    (let [options-with-build-result (build-compiler-if-needed! options)
+          analyzed-tasks (scan/collect-and-analyze-all-tasks! options-with-build-result)
+          running-runner (spawn-runner! analyzed-tasks options-with-build-result)
+          timeout-channel (utils/timeout (:timeout options-with-build-result))
           [result completed-channel] (async/alts!! [timeout-channel running-runner])]
       (if (= completed-channel timeout-channel)
         (do
-          (announce (i18n/job-timeout-error-msg (:timeout options)))
+          (announce (i18n/job-timeout-error-msg (:timeout options-with-build-result)))
           2)
         (let [result-tasks (cleanup-result-tasks result)
               enabled-tasks (filter :enabled result-tasks)
               all-passed? (every? tasks/task-passed? enabled-tasks)]
-          (announce (i18n/job-completed-msg result-tasks) 1 options)
+          (announce (i18n/job-completed-msg result-tasks) 1 options-with-build-result)
           ; TODO: add timing info
-          (report/prepare-and-commit-complete-report! result-tasks options)
+          (report/prepare-and-commit-complete-report! result-tasks options-with-build-result)
           (if all-passed? 0 1))))))
 
 (defn run! [options]
