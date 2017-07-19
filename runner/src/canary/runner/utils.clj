@@ -72,6 +72,14 @@
 (defn url-encode [s]
   (URLEncoder/encode s "UTF-8"))
 
+(defmacro kill-process-on-failure [& body]
+  `(try
+     ~@body
+     (catch Throwable e#
+       (println "FATAL:")
+       (println (stacktrace-str e#))
+       (System/exit 99))))                                                                                                    ; instant death
+
 ; -- tests ------------------------------------------------------------------------------------------------------------------
 
 (comment

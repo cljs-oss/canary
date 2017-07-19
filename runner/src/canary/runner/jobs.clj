@@ -12,14 +12,6 @@
             [canary.runner.i18n :as i18n]
             [canary.runner.env :as env]))
 
-(defmacro kill-on-failure [& body]
-  `(try
-     ~@body
-     (catch Throwable e#
-       (println "FATAL:")
-       (println (utils/stacktrace-str e#))
-       (System/exit 99))))                                                                                                    ; instant death
-
 (defn dev? []
   (some? (env/get "CANARY_DEBUG")))
 
@@ -50,7 +42,7 @@
              :report (report/prepare-report-for-exception e)}))))))
 
 (defn spawn-task! [task options]
-  (async/thread (kill-on-failure (try-run-task! task options))))
+  (async/thread (utils/kill-process-on-failure (try-run-task! task options))))
 
 (defn launch-task! [task options]
   (announce (i18n/running-task-msg task (:verbosity options)))
@@ -88,7 +80,7 @@
               (recur new-running-tasks new-completed-tasks))))))))
 
 (defn spawn-runner! [tasks options]
-  (async/thread (kill-on-failure (run-tasks! tasks options))))
+  (async/thread (utils/kill-process-on-failure (run-tasks! tasks options))))
 
 (defn cleanup-result-tasks [tasks]
   (let [cleanup (fn [task]
