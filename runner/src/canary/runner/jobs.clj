@@ -84,7 +84,7 @@
 
 (defn cleanup-result-tasks [tasks]
   (let [cleanup (fn [task]
-                  (dissoc task :fn))]
+                  (dissoc task :fn :color))]
     (map cleanup tasks)))
 
 (defn build-compiler-if-needed! [options]
