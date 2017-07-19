@@ -1,0 +1,24 @@
+({:name "chromex",
+  :description "a Clojure function chromex from canary.projects.binaryage",
+  :enabled true,
+  :enabled-reason "included by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/chromex#397](https://travis-ci.org/binaryage/chromex/builds/255429054)<br>"}}
+ {:name "cljs-devtools",
+  :description "a Clojure function cljs-devtools from canary.projects.binaryage",
+  :enabled true,
+  :enabled-reason "included by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-devtools#339](https://travis-ci.org/binaryage/cljs-devtools/builds/255429053)<br>"}}
+ {:name "planck",
+  :description "a Clojure function planck from canary.projects.mfikes",
+  :enabled true,
+  :enabled-reason "included by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/planck#892](https://travis-ci.org/mfikes/planck/builds/255429047)<br>"}})
