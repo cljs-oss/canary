@@ -93,19 +93,36 @@ You will need to write a new task for your project. First look how existing [pro
 Ask for commit access. You can write your task as a Clojure function or as a shell script.
 
 In case of a Clojure function you have to annotate it with `^:task` metadata so that runner recognizes it. In general
-you can do whatever you need to do in your task (it is running on a separate thread) - this will depend on your project setup. 
+you can do whatever you need to do in your task (you can block, it is running on a separate thread) - this will depend on your project setup. 
 To ease some common scenarios we provide some helper functions. For example `canary.runner.travis` namespace might be very useful for triggering 
-a Travis build for your own project. For inspiration [here](https://github.com/cljs-oss/canary/blob/master/runner/src/canary/projects/binaryage.clj) 
-is the task for cljs-devtools, and [here](https://github.com/binaryage/cljs-devtools/commit/45c1df1e0de53c9d320963b296bd7a741056599c) 
-is the adaptation needed in the project itself. Please note that child Travis build triggered by `travis/request-build!`
-is configured with bunch of extra env variables prefixed with `CANARY_` (an example [here](https://travis-ci.org/binaryage/cljs-devtools/jobs/254939442/config)) those have to be taken into account by
-the participating project.
+a Travis build for your own project. 
 
 In case of a shell script. You simply create `your_name.sh` in the projects directory. Script has to return with zero exit
 code to be considered as passing. Standard outputs will be embedded into the final report, so don't be too verbose there.
 
 You can test your task locally. Running jobs without `--production` flag should do no harm. When using `travis/request-build!` 
 it will mock it by default. You will have to add `--production` as the last step for fine-tuning final version of the code.
+
+#### How can I trigger Travis build of my project?
+
+For inspiration [here](https://github.com/cljs-oss/canary/blob/master/runner/src/canary/projects/binaryage.clj) 
+is the task for cljs-devtools, and [here](https://github.com/binaryage/cljs-devtools/commit/45c1df1e0de53c9d320963b296bd7a741056599c) 
+is the adaptation needed in the project itself. Please note that child Travis build triggered by `travis/request-build!`
+is configured with bunch of extra env variables prefixed with `CANARY_` - those have to be taken into account by
+the participating project (an example [here](https://travis-ci.org/binaryage/cljs-devtools/jobs/254939442/config)). 
+Also for us to be able to trigger builds of your Travis projects you will also have to provide a Travis 
+API token for [triggering the builds on your behalf](https://docs.travis-ci.com/user/triggering-builds).
+
+You should encrypt your token and commit it into `.travis.yml` in jobs branch (replace `YOUR_PROJECT` and `deadbeef`):
+
+```
+git clone --branch jobs git@github.com:cljs-oss/canary.git
+cd canary
+travis encrypt CANARY_YOUR_PROJECT_TRAVIS_TOKEN=deadbeef --add env.global
+git add .travis.yml
+git commit -m "add CANARY_YOUR_PROJECT_TRAVIS_TOKEN [ci skip]"
+git push origin jobs
+```
 
 ---
 
