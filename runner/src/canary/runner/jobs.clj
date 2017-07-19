@@ -90,7 +90,7 @@
 (defn build-compiler-if-needed! [options]
   (if (some? (:build-result options))
     options
-    (assoc options :build-result (build/prepare-compiler! options))))
+    (assoc options :build-result (build/build-compiler! options))))
 
 (defn run-naked! [options]
   (with-job-printing options

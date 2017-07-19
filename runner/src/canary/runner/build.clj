@@ -1,5 +1,5 @@
 (ns canary.runner.build
-  "Special task for building ClojureScript compiler."
+  "A special task for building ClojureScript compiler."
   (:require [clojure.edn :as edn]
             [clojure.java.io :as io]
             [canary.runner.print :as print :refer [announce with-task-printing]]
@@ -10,18 +10,17 @@
 
 (def build-script-path "scripts/build_compiler.sh")
 
-(defn read-build-result [options]
-  (let [workdir (:workdir options)
-        result-file-path (utils/canonical-path (str workdir "/result.edn"))
+(defn read-build-result [workdir]
+  (let [result-file-path (str workdir "/result.edn")
         edn-file (io/file result-file-path)]
     (try
       (let [data (edn/read-string (slurp edn-file))]
         (assert (map? data))
         data)
       (catch Throwable e
-        (throw (utils/ex (i18n/result-file-problem-msg result-file-path (.getMessage e))))))))
+        (throw (utils/ex (i18n/result-file-problem-msg result-file-path (str e))))))))
 
-(defn build-compiler! [build-task compiler-rev compiler-repo options]
+(defn launch-compiler-build-script! [build-task compiler-rev compiler-repo options]
   ; note it seemed to be easier to resort to shell for building the compiler
   (let [script (io/file (utils/canonical-path build-script-path))
         env {"CANARY_COMPILER_REPO" compiler-repo
@@ -31,14 +30,14 @@
              "CANARY_VERBOSITY"     (str (:verbosity options))
              "CANARY_CACHE_DIR"     (str (:cachedir options))
              "CANARY_PRODUCTION"    (str (:production options))}
-        build-launcher (shell/make-shell-launcher script env)
-        result (build-launcher (with-meta options build-task))
+        launch-build! (shell/make-shell-launcher script env)
+        result (launch-build! (with-meta options build-task))
         exit-code (:exit-code result)]
     (if (zero? exit-code)
-      (read-build-result options)
+      (read-build-result (:workdir options))
       (throw (utils/ex (i18n/compiler-build-failed exit-code))))))
 
-(defn prepare-compiler! [options]
+(defn build-compiler! [options]
   (let [{:keys [compiler-rev compiler-repo test]} options
         build-task {:name  "compiler build"
                     :color :cyan}]
@@ -49,4 +48,4 @@
       (do
         (announce (i18n/building-compiler-msg compiler-rev compiler-repo))
         (with-task-printing build-task options
-          (build-compiler! build-task compiler-rev compiler-repo options))))))
+          (launch-compiler-build-script! build-task compiler-rev compiler-repo options))))))
