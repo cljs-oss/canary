@@ -1,0 +1,21 @@
+{:projects "/runner/src/canary/projects",
+ :compiler-repo "https://github.com/clojure/clojurescript.git",
+ :only "planck",
+ :compiler-rev "master",
+ :verbosity 0,
+ :job-id "64",
+ :polling-interval 300000,
+ :production true,
+ :cachedir "/runner/.cachedir",
+ :workdir "/runner/.workdir",
+ :build-result
+ {:build-id "1.9.820-5e17860",
+  :build-jar-path "/runner/.workdir/clojurescript-1.9.820-5e17860.jar",
+  :build-download-url
+  "https://github.com/cljs-oss/canary/releases/download/r1.9.820-5e17860/clojurescript-1.9.820-5e17860.jar",
+  :github-release-name "ClojureScript 1.9.820-5e17860",
+  :github-release-tag "r1.9.820-5e17860",
+  :compiler-rev-url "https://github.com/clojure/clojurescript/commit/5e178603f5eb9a29113c3540fde5dee2b44662b1",
+  :canary-job-commit-url "https://github.com/cljs-oss/canary/commit/98c92259b4a5e05d2c4901fe3d961a9bf162e975",
+  :travis-build-url "https://travis-ci.org/cljs-oss/canary/builds/255232955"},
+ :timeout 3600000}
