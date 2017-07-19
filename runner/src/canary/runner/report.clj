@@ -116,10 +116,10 @@
   (when-not (empty? tasks)
     (let [header [""
                   "### Disabled Tasks"
-                  "| Task | Reason |"
-                  "| :--- | :--- |"]
+                  ""]
+          indent "&nbsp;&nbsp;&nbsp;&nbsp;"
           * (fn [task]
-              (str "| " (:name task) " | " (:enabled-reason task) " |"))
+              (str indent "**" (:name task) "**" " - " (:enabled-reason task) "<br>"))
           list (map * tasks)]
       (string/join \newline (concat header list)))))
 
