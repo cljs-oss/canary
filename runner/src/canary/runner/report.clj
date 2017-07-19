@@ -14,11 +14,19 @@
 (def options-file "options.edn")
 (def tasks-file "tasks.edn")
 
+; -- helpers ----------------------------------------------------------------------------------------------------------------
+
 (defn write-file-to-workdir! [content name options]
   (let [workdir (:workdir options)
         path (str workdir "/" name)]
     (fs/mkdirs workdir)
     (spit path content)))
+
+(defn wrap-as-failed [text]
+  (str "<b style='color:red'>" text "</b>"))
+
+(defn wrap-as-passed [text]
+  (str "<b style='color:green'>" text "</b>"))
 
 ; -- commit script ----------------------------------------------------------------------------------------------------------
 
@@ -93,7 +101,11 @@
           render-check-mark (fn [task]
                               (if (tasks/task-passed? task) "&#x2714;" "&#x2718;"))
           * (fn [task]
-              (str "\n" "#### " (render-check-mark task) " " (:name task) "\n" (get-in task [:result :report])))
+              (let [task-title (str (render-check-mark task) " " (:name task))
+                    colored-task-title (if (tasks/task-passed? task)
+                                         (wrap-as-passed task-title)
+                                         (wrap-as-failed task-title))]
+                (str "\n" "#### " colored-task-title "\n" (get-in task [:result :report]))))
           list (map * tasks)]
       (string/join \newline (concat header list)))))
 
@@ -124,8 +136,9 @@
                              (str "[" name "](#-" (utils/url-encode name) ")")))
         failed-links (string/join " | " (map failed-linkifier failed-tasks))
         face (if all-passed? "☺" "☹")
+        summary-title (str face " Summary")
         lines [""
-               (str "### " face " Summary")
+               (str "### " (if all-passed? (wrap-as-passed summary-title) (wrap-as-failed summary-title)))
                ""
                (if all-passed?
                  (str happy-msg " " passed-msg)

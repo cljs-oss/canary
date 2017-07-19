@@ -9,7 +9,8 @@
             [canary.runner.i18n :as i18n]
             [canary.runner.utils :as utils]
             [canary.runner.print :as print]
-            [canary.runner.travis-mocks :as travis-mocks])
+            [canary.runner.travis-mocks :as travis-mocks]
+            [canary.runner.report :as report])
   (:import (java.util.concurrent TimeUnit)))
 
 (defn launch! [cmd args options]
@@ -188,11 +189,14 @@
 
 (defn prepare-report [slug report-data options]
   (let [{:keys [builds]} report-data
+        indent "&nbsp;&nbsp;&nbsp;&nbsp;"
         render-check-mark (fn [build]
                             (let [passed? (build-passed? (:state build))]
-                              (if passed? "&#x2714;" "&#x2718;")))
+                              (if passed?
+                                (report/wrap-as-passed "&#x2713;")
+                                (report/wrap-as-failed "&#x2717;"))))
         render-item (fn [build]
-                      (str "  " (render-check-mark build) " "
+                      (str indent (render-check-mark build) " "
                            "Travis build "
                            "[" slug "#" (:number build) "](" (travis-build-url slug (:id build)) ")"
                            "<br>"))
