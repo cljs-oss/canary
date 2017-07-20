@@ -3,9 +3,8 @@
   (:require [clojure.java.io :as io]
             [clojure.edn :as edn]
             [canary.runner.utils :as utils]
-            [canary.runner.i18n :as i18n]))
-
-(def default-env-file ".env")
+            [canary.runner.i18n :as i18n]
+            [canary.runner.defaults :as defaults]))
 
 (defn- read-env-file [path]
   (let [full-path (utils/canonical-path path)]
@@ -20,7 +19,7 @@
 
 (defn get-env-vars []
   (merge {}
-         (read-env-file default-env-file)
+         (read-env-file defaults/env-file)
          (System/getenv)
          (System/getProperties)))
 

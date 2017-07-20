@@ -7,12 +7,8 @@
             [clojure.string :as string]
             [canary.runner.i18n :as i18n]
             [me.raynes.fs :as fs]
-            [canary.runner.tasks :as tasks]))
-
-(def commit-script-path "scripts/commit_report.sh")
-(def report-file "README.md")
-(def options-file "options.edn")
-(def tasks-file "tasks.edn")
+            [canary.runner.tasks :as tasks]
+            [canary.runner.defaults :as defaults]))
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 
@@ -35,7 +31,7 @@
 
 (defn launch-commit-report-script! [commit-task report-status options]
   ; note it seemed to be easier to resort to shell
-  (let [script (io/file (utils/canonical-path commit-script-path))
+  (let [script (io/file (utils/canonical-path defaults/commit-script-path))
         env {"CANARY_RESULT_DIR" (:workdir options)
              "CANARY_VERBOSITY"  (str (:verbosity options))
              "CANARY_PRODUCTION" (str (:production options))
@@ -178,9 +174,9 @@
   (let [{:keys [test]} options
         report (prepare-complete-report tasks options)]
     (announce (i18n/report-dump-msg report) 1 options)
-    (write-file-to-workdir! (utils/pp options) options-file options)
-    (write-file-to-workdir! (utils/pp tasks) tasks-file options)
-    (write-file-to-workdir! (:content report) report-file options)
+    (write-file-to-workdir! (utils/pp options) defaults/options-file options)
+    (write-file-to-workdir! (utils/pp tasks) defaults/tasks-file options)
+    (write-file-to-workdir! (:content report) defaults/report-file options)
     (if test
       (do
         (announce (i18n/skipping-report-commit-msg))

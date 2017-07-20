@@ -7,27 +7,20 @@
             [canary.runner.cli :refer [timeout-cli-option normal-cli-option verbosity-cli-option]]
             [canary.runner.output :as output]
             [canary.runner.i18n :as i18n]
+            [canary.runner.defaults :as defaults]
             [me.raynes.fs :as fs])
   (:gen-class))
 
-(def default-compiler-rev "master")
-(def default-compiler-repo "https://github.com/clojure/clojurescript.git")
-(def default-projects-dir "src/canary/projects")
-(def default-work-dir ".workdir")
-(def default-cache-dir ".cachedir")
-(def default-timeout (utils/seconds-to-msec (* 60 60)))                                                                       ; 60min
-(def default-polling-interval (utils/seconds-to-msec (* 60 5)))                                                               ; 5min, travis kills a job when no output is presented in last 10min
-
 (def cli-options
-  [(normal-cli-option ["-r" "--compiler-rev REV" (i18n/compiler-rev-cli-desc) :default default-compiler-rev])
-   (normal-cli-option [nil "--compiler-repo URL" (i18n/compiler-repo-cli-desc) :default default-compiler-repo])
-   (normal-cli-option ["-p" "--projects DIR" (i18n/projects-cli-desc) :default default-projects-dir])
-   (normal-cli-option [nil "--workdir DIR" (i18n/workdir-cli-desc) :default default-work-dir])
-   (normal-cli-option [nil "--cachedir DIR" (i18n/cachedir-cli-desc) :default default-cache-dir])
+  [(normal-cli-option ["-r" "--compiler-rev REV" (i18n/compiler-rev-cli-desc) :default defaults/compiler-rev])
+   (normal-cli-option [nil "--compiler-repo URL" (i18n/compiler-repo-cli-desc) :default defaults/compiler-repo])
+   (normal-cli-option ["-p" "--projects DIR" (i18n/projects-cli-desc) :default defaults/projects-dir])
+   (normal-cli-option [nil "--workdir DIR" (i18n/workdir-cli-desc) :default defaults/work-dir])
+   (normal-cli-option [nil "--cachedir DIR" (i18n/cachedir-cli-desc) :default defaults/cache-dir])
    (normal-cli-option [nil "--only SUBSTR" (i18n/only-cli-desc)])
    (normal-cli-option [nil "--job-id ID" (i18n/job-id-cli-desc) :default "0"])
-   (timeout-cli-option [nil "--polling-interval SECONDS" (i18n/polling-interval-cli-desc) :default default-polling-interval])
-   (timeout-cli-option [nil "--timeout SECONDS" (i18n/timeout-cli-desc) :default default-timeout])
+   (timeout-cli-option [nil "--polling-interval SECONDS" (i18n/polling-interval-cli-desc) :default defaults/polling-interval])
+   (timeout-cli-option [nil "--timeout SECONDS" (i18n/timeout-cli-desc) :default defaults/timeout])
    (normal-cli-option [nil "--production" (i18n/production-cli-desc)])
    (normal-cli-option ["-t" "--test" (i18n/test-cli-desc)])
    (verbosity-cli-option ["-v" nil (i18n/verbosity-cli-desc)])

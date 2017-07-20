@@ -2,14 +2,10 @@
   (:require [clojure.string :as string]
             [canary.runner.output :as output]
             [cuerdas.core :as cuerdas]
-            [clansi])
+            [clansi]
+            [canary.runner.defaults :as defaults])
   (:import (java.text SimpleDateFormat)
            (java.util Date)))
-
-(def palette (cycle [:green :blue :yellow :magenta :red]))
-(def job-label-padding 10)
-(def task-label-padding 20)
-(def default-time-format "mm:ss.SSS")
 
 ; -- announcement printing --------------------------------------------------------------------------------------------------
 
@@ -64,7 +60,7 @@
 (def time-formatter (memoize make-time-formatter))
 
 (defn format-time [time & [format]]
-  (.format (time-formatter (or format default-time-format)) time))
+  (.format (time-formatter (or format defaults/time-format)) time))
 
 (defn mark-errors [kind options content]
   (if (:mark-errors options)
@@ -84,7 +80,7 @@
 ; -- job printing -----------------------------------------------------------------------------------------------------------
 
 (defn format-job-line [time label style content verbosity]
-  (let [padded-label (cuerdas/pad label {:length job-label-padding
+  (let [padded-label (cuerdas/pad label {:length defaults/job-label-padding
                                          :type   :right})
         prefix (case verbosity
                  0 "*"
@@ -117,7 +113,7 @@
 ; -- task printing ----------------------------------------------------------------------------------------------------------
 
 (defn format-task-line [label style content]
-  (let [padded-label (cuerdas/pad label {:length task-label-padding
+  (let [padded-label (cuerdas/pad label {:length defaults/task-label-padding
                                          :type   :right})
         styles (if (sequential? style) style [style])]
     (str (apply clansi/style padded-label styles) " |" content)))

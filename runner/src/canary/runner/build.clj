@@ -6,9 +6,8 @@
             [canary.runner.utils :as utils]
             [canary.runner.shell :as shell]
             [canary.runner.env :as env]
-            [canary.runner.i18n :as i18n]))
-
-(def build-script-path "scripts/build_compiler.sh")
+            [canary.runner.i18n :as i18n]
+            [canary.runner.defaults :as defaults]))
 
 (defn read-build-result [workdir]
   (let [result-file-path (str workdir "/result.edn")
@@ -22,7 +21,7 @@
 
 (defn launch-compiler-build-script! [build-task compiler-rev compiler-repo options]
   ; note it seemed to be easier to resort to shell for building the compiler
-  (let [script (io/file (utils/canonical-path build-script-path))
+  (let [script (io/file (utils/canonical-path defaults/build-script-path))
         env {"CANARY_COMPILER_REPO" compiler-repo
              "CANARY_COMPILER_REV"  compiler-rev
              "CANARY_RESULT_DIR"    (:workdir options)

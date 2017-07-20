@@ -2,20 +2,18 @@
   "Localizable messages."
   (:require [clojure.string :as string]
             [canary.runner.print :as print]
-            [canary.runner.utils :as utils]))
+            [canary.runner.utils :as utils]
+            [canary.runner.defaults :as defaults]))
 
 ; -- pluralization ----------------------------------------------------------------------------------------------------------
 
 ; poor man's solution to pluralization
 ; didn't want to bring in full-features inflections library as a new dependency
 
-(def pluralization-table
-  {"task" "tasks"})
-
 (defn ^:dynamic pluralize [name count]
   (if (= count 1)
     name
-    (if-let [plural-form (get pluralization-table name)]
+    (if-let [plural-form (get defaults/pluralization-table name)]
       plural-form
       (do
         (assert false (str "Missing plural form for '" name "'. Please update pluralization-table."))

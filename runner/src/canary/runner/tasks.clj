@@ -2,7 +2,8 @@
   "Tools for working with clojure tasks."
   (:require [canary.runner.utils :as utils]
             [clojure.string :as string]
-            [canary.runner.print :as print]))
+            [canary.runner.print :as print]
+            [canary.runner.defaults :as defaults]))
 
 (defn task-passed? [task]
   (= (get-in task [:result :status]) :passed))
@@ -43,7 +44,7 @@
       :else (filter-default task))))
 
 (defn assign-task-colors [tasks]
-  (map #(assoc %1 :color %2) tasks print/palette))
+  (map #(assoc %1 :color %2) tasks defaults/palette))
 
 (defn activate-tasks-based-on-options [tasks options]
   (map (partial task-filter options) tasks))

@@ -6,16 +6,15 @@
             [canary.runner.print :refer [announce]]
             [canary.runner.utils :as utils]
             [canary.runner.i18n :as i18n]
-            [clojure.java.io :as io])
+            [clojure.java.io :as io]
+            [canary.runner.defaults :as defaults])
   (:import (java.io InputStream)))
-
-(def max-output-buffer 1000000)
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 
 (defn mark-stream! [^InputStream stream & [max-buffer]]
   (assert (.markSupported stream))
-  (.mark stream (or max-buffer max-output-buffer)))
+  (.mark stream (or max-buffer defaults/max-output-buffer)))
 
 (defn reset-stream! [^InputStream stream]
   (assert (.markSupported stream))

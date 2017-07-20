@@ -10,7 +10,8 @@
             [canary.runner.utils :as utils]
             [canary.runner.print :as print]
             [canary.runner.travis-mocks :as travis-mocks]
-            [canary.runner.report :as report])
+            [canary.runner.report :as report]
+            [canary.runner.defaults :as defaults])
   (:import (java.util.concurrent TimeUnit)))
 
 (defn launch! [cmd args options]
@@ -79,7 +80,7 @@
 
 (defn monitoring-wait-time [options]
   (if (:production options)
-    30                                                                                                                        ; TODO: make this configurable
+    defaults/travis-polling-timeout
     1))
 
 ; https://github.com/travis-ci/travis-api/blob/master/lib/travis/model/build/states.rb
