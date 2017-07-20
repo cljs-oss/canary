@@ -160,9 +160,9 @@
                          "Usage: ./run.sh [action] [options]"
                          ""
                          "Actions:"
-                         "  job         Run a job with given options"
-                         "  list        List available tasks (possibly matching filters from options)"
-                         "  help        Print usage info"
+                         "  job         Run a new job with given options"
+                         "  list        List available tasks (and test filters from options)"
+                         "  help        Print this usage info"
                          ""
                          "Options:"
                          options-summary]))
