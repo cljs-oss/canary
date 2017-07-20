@@ -16,7 +16,7 @@ echo_cmd() {
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 if [[ "$1" == "job" || "$1" == "list" || "$1" == "help" ]]; then
-  echo_cmd lein run -- $@
+  echo_cmd lein run -- "$@"
   exit $?
 fi
 
