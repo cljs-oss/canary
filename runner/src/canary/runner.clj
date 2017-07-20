@@ -18,6 +18,7 @@
    (normal-cli-option [nil "--workdir DIR" (i18n/workdir-cli-desc) :default defaults/work-dir])
    (normal-cli-option [nil "--cachedir DIR" (i18n/cachedir-cli-desc) :default defaults/cache-dir])
    (normal-cli-option [nil "--only SUBSTR" (i18n/only-cli-desc)])
+   (normal-cli-option [nil "--include REGEX" (i18n/include-cli-desc)])
    (normal-cli-option [nil "--job-id ID" (i18n/job-id-cli-desc) :default "0"])
    (timeout-cli-option [nil "--polling-interval SECONDS" (i18n/polling-interval-cli-desc) :default defaults/polling-interval])
    (timeout-cli-option [nil "--timeout SECONDS" (i18n/timeout-cli-desc) :default defaults/timeout])

@@ -191,6 +191,9 @@
 (defn ^:dynamic only-cli-desc []
   "Enable only tasks matching a substring (or any of space separated substrings)")
 
+(defn ^:dynamic include-cli-desc []
+  "Enable only tasks matching a regex")
+
 (defn ^:dynamic job-id-cli-desc []
   "Optional job id")
 

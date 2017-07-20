@@ -25,24 +25,38 @@
        (filter var-fn?)))
 
 (defn filter-via-only [task only]
-  (let [candidates (string/split only #"\s+")
-        active? (some #(.contains (:name task) %) candidates)
-        reason (if active?
-                 (str "included because matching --only '" only "'")
-                 (str "excluded because not matching --only '" only "'"))]
-    (assoc task :enabled active?
-                :enabled-reason reason)))
+  (let [task-name (:name task)
+        candidates (string/split only #"\s+")
+        match (some #(if (.contains task-name %) %) candidates)]
+    (if match
+      (assoc task :enabled true
+                  :enabled-reason (if (not= match only)
+                                    (str "enabled because matching '" match "' via --only '" only "'")
+                                    (str "enabled because matching --only '" only "'")))
+      task)))
 
-(defn filter-default [task]
+(defn filter-via-include [task include]
+  (let [task-name (:name task)
+        matching? (some? (re-matches (re-pattern include) task-name))]
+    (if matching?
+      (assoc task :enabled true
+                  :enabled-reason (str "enabled because matching regex --include '" include "'"))
+      task)))
+
+(defn set-positive-filter [task]
   (assoc task :enabled true
-              :enabled-reason "included by default"))
+              :enabled-reason "enabled by default"))
+
+(defn set-negative-filter [task]
+  (assoc task :enabled false
+              :enabled-reason "disabled because not matching --only or --include options"))
 
 (defn task-filter [options task]
-  (let [{:keys [only]} options]
-    (cond
-      (some? only) (filter-via-only task only)
-      ; TODO: implement regex based exclusion/inclusion
-      :else (filter-default task))))
+  (let [{:keys [only include except exclude]} options]
+    (cond-> (set-positive-filter task)
+            (or (some? only) (some? include)) (set-negative-filter)
+            (some? only) (filter-via-only only)
+            (some? include) (filter-via-include include))))
 
 (defn assign-task-colors [tasks]
   (map #(assoc %1 :color %2) tasks defaults/palette))
