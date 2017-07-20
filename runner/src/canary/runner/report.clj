@@ -164,9 +164,6 @@
          "Exception: " stacktrace "\n"
          "```")))
 
-(defn prepare-dummy-report [task]
-  (str "a dummy report from task " (:name task)))
-
 (defn prepare-and-commit-complete-report! [tasks options]
   (let [report (prepare-complete-report tasks options)]
     (announce (i18n/report-dump-msg report) 1 options)
