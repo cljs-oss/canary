@@ -19,14 +19,15 @@ Also look into [GitHub releases of this repo](https://github.com/cljs-oss/canary
 
 ```bash
 ./scripts/docker-build.sh
-./scripts/docker-run.sh job --help
-./scripts/docker-run.sh job -v
+./scripts/docker-run.sh help
+./scripts/docker-run.sh list
+./scripts/docker-run.sh job
 ```
 
 ### directly
 
 ```bash
-./runner/run.sh job -v -r afe65a0
+./runner/run.sh job -v -r master
 ```
 
 ### Vocabulary
