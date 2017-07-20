@@ -11,4 +11,5 @@
                  [clansi "1.0.0"]
                  [funcool/cuerdas "2.0.3"]]
   :source-paths ["src"]
+  :test-paths ["test"]
   :main canary.runner)
