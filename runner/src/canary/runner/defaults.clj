@@ -15,9 +15,6 @@
 
 (def env-file ".env")
 
-(def pluralization-table
-  {"task" "tasks"})
-
 (def palette (cycle [:green :blue :yellow :magenta :cyan]))
 (def job-label-padding 10)
 (def task-label-padding 20)
