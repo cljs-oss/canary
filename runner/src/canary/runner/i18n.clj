@@ -165,10 +165,21 @@
 (defn ^:dynamic cli-usage-msg [options-summary]
   (string/join \newline ["Exercises ClojureScript projects with a pinned ClojureScript version."
                          ""
-                         "Usage: ./run.sh job [options]"
+                         "Usage: ./run.sh [action] [options]"
+                         ""
+                         "Actions:"
+                         "  job         Run a job with given options"
+                         "  list        List available tasks (possibly matching filters from options)"
+                         "  help        Print usage info"
                          ""
                          "Options:"
                          options-summary]))
+
+(defn ^:dynamic no-cli-actions []
+  "Received no command-line action argument. See `./run.sh help` for available actions.")
+
+(defn ^:dynamic too-many-cli-actions [arguments]
+  (str "Received too many command-line actions: " (vec arguments) ". See `./run.sh help` for available actions.\""))
 
 (defn ^:dynamic compiler-rev-cli-desc []
   "Pin ClojureScript compiler to specific revision")
@@ -183,7 +194,7 @@
   "Path to working directory")
 
 (defn ^:dynamic cachedir-cli-desc []
-  "Path to caching directory. Persists state between runs for speedup.")
+  "Path to caching directory. Persists state between runs for speedup")
 
 (defn ^:dynamic only-cli-desc []
   "Run only tasks matching a substring")
@@ -201,7 +212,7 @@
   "Will not commit into results branch")
 
 (defn ^:dynamic test-cli-desc []
-  "Do not launch any tasks. Useful for testing which task will be executed.")
+  "Do not launch any tasks. Useful for testing which task will be executed")
 
 (defn ^:dynamic verbosity-cli-desc []
   "Verbosity level; may be specified multiple times")

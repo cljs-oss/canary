@@ -10,4 +10,5 @@
                  [me.raynes/fs "1.4.6"]
                  [clansi "1.0.0"]
                  [funcool/cuerdas "2.0.3"]]
-  :source-paths ["src"])
+  :source-paths ["src"]
+  :main canary.runner)

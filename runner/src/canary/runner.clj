@@ -46,18 +46,28 @@
     (if-not (empty? issues)
       issues)))
 
-(defn run-job! [options]
+(defn run-job-action! [options]
   (let [sanitized-options (sanitize-options options)
         validation-errors (validate-options sanitized-options)]
     (if (some? validation-errors)
       (utils/exit! 2 (i18n/cli-validation-msg validation-errors))
       (jobs/run! sanitized-options))))
 
+(defn run-list-action! [options]
+  ; TODO: implement this
+  0)
+
 ; -- main entry point -------------------------------------------------------------------------------------------------------
 
 (defn -main [& args]
-  (let [{:keys [options errors summary]} (cli/parse-opts args cli-options)]
+  (let [{:keys [arguments options errors summary]} (cli/parse-opts args cli-options)
+        action (first arguments)]
     (cond
       errors (utils/exit! 1 (i18n/cli-errors-msg errors))
+      (zero? (count arguments)) (utils/exit! 3 (i18n/no-cli-actions))
+      (> (count arguments) 1) (utils/exit! 3 (i18n/too-many-cli-actions arguments))
       (:help options) (utils/exit! 0 (i18n/cli-usage-msg summary))
-      :else (utils/exit! (run-job! options)))))
+      :else (case action
+              "job" (utils/exit! (run-job-action! options))
+              "list" (utils/exit! (run-list-action! options))
+              "help" (utils/exit! 0 (i18n/cli-usage-msg summary))))))
