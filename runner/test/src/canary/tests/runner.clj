@@ -1,18 +1,12 @@
 (ns canary.tests.runner
   (:require [clojure.test :refer :all]
+            [canary.tests.helpers :refer :all]
             [canary.runner :refer :all]
             [canary.runner.defaults :as defaults])
   (:import (java.util.regex Pattern)))
 
 (deftest test-sanitize-and-validate-options
-  (let [prefix (System/getProperty "user.dir")
-        default-options {:projects         defaults/projects-dir
-                         :workdir          defaults/work-dir
-                         :cachedir         defaults/cache-dir
-                         :verbosity        0
-                         :job-id           "0"
-                         :timeout          defaults/timeout
-                         :polling-interval defaults/polling-interval}]
+  (let [prefix (System/getProperty "user.dir")]
     (testing "paths canonization"
       (let [[options errors] (sanitize-and-validate-options default-options)]
         (is (empty? errors))
