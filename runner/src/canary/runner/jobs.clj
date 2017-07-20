@@ -17,24 +17,15 @@
 (defn dev? []
   (some? (env/get "CANARY_DEBUG")))
 
-(defn just-test-task [task options]
-  (announce (i18n/dummy-test-task-msg))
-  {:report (report/prepare-dummy-report task)})
-
 (defn execute-task! [task options]
   (let [task-fn (:fn task)]
     ; TODO: validate task result here for cases when tasks return nothing or malformed result
     (task-fn (with-meta options task))))
 
-(defn run-task! [task options]
-  (if (:test options)
-    (just-test-task task options)
-    (execute-task! task options)))
-
-(defn try-run-task! [task options]
+(defn try-execute-task! [task options]
   (with-task-printing task options
     (try
-      (run-task! task options)
+      (execute-task! task options)
       (catch Throwable e
         (if (dev?)
           (throw e)
@@ -44,7 +35,7 @@
              :report (report/prepare-report-for-exception e)}))))))
 
 (defn spawn-task! [task options]
-  (async/thread (utils/kill-process-on-failure (try-run-task! task options))))
+  (async/thread (utils/kill-process-on-failure (try-execute-task! task options))))
 
 (defn launch-task! [task options]
   (announce (i18n/running-task-msg task (:verbosity options)))

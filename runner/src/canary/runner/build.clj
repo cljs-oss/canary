@@ -37,14 +37,9 @@
       (throw (utils/ex (i18n/compiler-build-failed exit-code))))))
 
 (defn build-compiler! [options]
-  (let [{:keys [compiler-rev compiler-repo test]} options
+  (let [{:keys [compiler-rev compiler-repo]} options
         build-task {:name  "compiler build"
                     :color :cyan}]
-    (if test
-      (do
-        (announce (i18n/skipping-building-compiler-msg compiler-rev compiler-repo))
-        {:build-id "1.9.000-deadbeef"})
-      (do
-        (announce (i18n/building-compiler-msg compiler-rev compiler-repo))
-        (with-task-printing build-task options
-          (launch-compiler-build-script! build-task compiler-rev compiler-repo options))))))
+    (announce (i18n/building-compiler-msg compiler-rev compiler-repo))
+    (with-task-printing build-task options
+      (launch-compiler-build-script! build-task compiler-rev compiler-repo options))))

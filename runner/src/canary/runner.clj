@@ -22,7 +22,6 @@
    (timeout-cli-option [nil "--polling-interval SECONDS" (i18n/polling-interval-cli-desc) :default defaults/polling-interval])
    (timeout-cli-option [nil "--timeout SECONDS" (i18n/timeout-cli-desc) :default defaults/timeout])
    (normal-cli-option [nil "--production" (i18n/production-cli-desc)])
-   (normal-cli-option ["-t" "--test" (i18n/test-cli-desc)])
    (verbosity-cli-option ["-v" nil (i18n/verbosity-cli-desc)])
    (normal-cli-option ["-h" "--help"])])
 

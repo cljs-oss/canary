@@ -168,18 +168,13 @@
   (str "a dummy report from task " (:name task)))
 
 (defn prepare-and-commit-complete-report! [tasks options]
-  (let [{:keys [test]} options
-        report (prepare-complete-report tasks options)]
+  (let [report (prepare-complete-report tasks options)]
     (announce (i18n/report-dump-msg report) 1 options)
     (write-file-to-workdir! (utils/pp options) defaults/options-file options)
     (write-file-to-workdir! (utils/pp tasks) defaults/tasks-file options)
     (write-file-to-workdir! (:content report) defaults/report-file options)
-    (if test
-      (do
-        (announce (i18n/skipping-report-commit-msg))
-        nil)
-      (let [commit-task {:name  "commit report"
-                         :color :red}]
-        (announce (i18n/performing-report-commit-msg))
-        (with-task-printing commit-task options
-          (launch-commit-report-script! commit-task (:status report) options))))))
+    (let [commit-task {:name  "commit report"
+                       :color :red}]
+      (announce (i18n/performing-report-commit-msg))
+      (with-task-printing commit-task options
+        (launch-commit-report-script! commit-task (:status report) options)))))

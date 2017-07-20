@@ -40,9 +40,6 @@
 (defn ^:dynamic job-timeout-error-msg [timeout]
   (str "Job timeouted (after " timeout "ms)"))
 
-(defn ^:dynamic dummy-test-task-msg []
-  (str "Not executing, just providing a dummy report (due to --test flag)"))
-
 (defn ^:dynamic completed-task-msg [task]
   (str (print/emphasize "completed") " task " (print/task-name task)))
 
@@ -213,9 +210,6 @@
 
 (defn ^:dynamic production-cli-desc []
   "Will not commit into results branch")
-
-(defn ^:dynamic test-cli-desc []
-  "Do not launch any tasks. Useful for testing which task will be executed")
 
 (defn ^:dynamic verbosity-cli-desc []
   "Verbosity level; may be specified multiple times")
