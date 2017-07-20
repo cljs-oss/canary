@@ -24,6 +24,14 @@
        (filter var-task?)
        (filter var-fn?)))
 
+(defn set-positive-filter [task]
+  (assoc task :enabled true
+              :enabled-reason "enabled by default"))
+
+(defn set-negative-filter [task]
+  (assoc task :enabled false
+              :enabled-reason "disabled because not matching --only or --include options"))
+
 (defn filter-via-only [task only]
   (let [task-name (:name task)
         candidates (string/split only #"\s+")
@@ -35,6 +43,17 @@
                                     (str "enabled because matching --only '" only "'")))
       task)))
 
+(defn filter-via-except [task except]
+  (let [task-name (:name task)
+        candidates (string/split except #"\s+")
+        match (some #(if (.contains task-name %) %) candidates)]
+    (if match
+      (assoc task :enabled false
+                  :enabled-reason (if (not= match except)
+                                    (str "disabled because matching '" match "' via --except '" except "'")
+                                    (str "disabled because matching --except '" except "'")))
+      task)))
+
 (defn filter-via-include [task include]
   (let [task-name (:name task)
         matching? (some? (re-matches (re-pattern include) task-name))]
@@ -43,20 +62,23 @@
                   :enabled-reason (str "enabled because matching regex --include '" include "'"))
       task)))
 
-(defn set-positive-filter [task]
-  (assoc task :enabled true
-              :enabled-reason "enabled by default"))
-
-(defn set-negative-filter [task]
-  (assoc task :enabled false
-              :enabled-reason "disabled because not matching --only or --include options"))
+(defn filter-via-exclude [task exclude]
+  (let [task-name (:name task)
+        matching? (some? (re-matches (re-pattern exclude) task-name))]
+    (if matching?
+      (assoc task :enabled false
+                  :enabled-reason (str "disabled because matching regex --exclude '" exclude "'"))
+      task)))
 
 (defn task-filter [options task]
-  (let [{:keys [only include except exclude]} options]
+  (let [{:keys [only except include exclude]} options]
+    ; note that the order is important here, exclusion filters go after inclusion filters
     (cond-> (set-positive-filter task)
             (or (some? only) (some? include)) (set-negative-filter)
             (some? only) (filter-via-only only)
-            (some? include) (filter-via-include include))))
+            (some? include) (filter-via-include include)
+            (some? except) (filter-via-except except)
+            (some? exclude) (filter-via-exclude exclude))))
 
 (defn assign-task-colors [tasks]
   (map #(assoc %1 :color %2) tasks defaults/palette))
