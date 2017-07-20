@@ -4,7 +4,7 @@
             [clojure.string :as string]
             [clojure.core.async :as async])
   (:import (java.util.concurrent TimeUnit)
-           (java.io StringWriter PrintWriter)
+           (java.io StringWriter PrintWriter Writer)
            (java.net URLEncoder)))
 
 (defn pp [data & [level length]]
@@ -71,6 +71,18 @@
 
 (defn url-encode [s]
   (URLEncoder/encode s "UTF-8"))
+
+(defn flush-outputs! []
+  ; TODO: how to make sure our piped writers get properly flushed?
+  (.flush ^Writer *out*)
+  (.flush ^Writer *err*)
+  (.sleep TimeUnit/SECONDS 1))
+
+(defn exit! [status & [msg]]
+  (if (some? msg)
+    (println msg))
+  (flush-outputs!)
+  (System/exit status))
 
 (defmacro kill-process-on-failure [& body]
   `(try

@@ -1,5 +1,5 @@
 (ns canary.job
-  "Command-line interface and the main entry point."
+  "Command-line interface for the job command."
   (:require [clojure.string :as string]
             [clojure.tools.cli :as cli]
             [canary.runner.jobs :as jobs]
@@ -26,12 +26,6 @@
    (verbosity-cli-option ["-v" nil (i18n/verbosity-cli-desc)])
    (normal-cli-option ["-h" "--help"])])
 
-(defn exit! [status & [msg]]
-  (if (some? msg)
-    (println msg))
-  (output/flush-outputs!)
-  (System/exit status))
-
 (defn expand-paths [options]
   (assoc options
     :projects (utils/canonical-path (:projects options))
@@ -56,7 +50,7 @@
   (let [sanitized-options (sanitize-options options)
         validation-errors (validate-options sanitized-options)]
     (if (some? validation-errors)
-      (exit! 2 (i18n/cli-validation-msg validation-errors))
+      (utils/exit! 2 (i18n/cli-validation-msg validation-errors))
       (jobs/run! sanitized-options))))
 
 ; -- main entry point -------------------------------------------------------------------------------------------------------
@@ -64,6 +58,6 @@
 (defn main! [& args]
   (let [{:keys [options errors summary]} (cli/parse-opts args cli-options)]
     (cond
-      errors (exit! 1 (i18n/cli-errors-msg errors))
-      (:help options) (exit! 0 (i18n/cli-usage-msg summary))
-      :else (exit! (run-job! options)))))
+      errors (utils/exit! 1 (i18n/cli-errors-msg errors))
+      (:help options) (utils/exit! 0 (i18n/cli-usage-msg summary))
+      :else (utils/exit! (run-job! options)))))

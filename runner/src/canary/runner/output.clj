@@ -1,9 +1,8 @@
 (ns canary.runner.output
   (:require [clojure.java.io :as io]
             [canary.runner.utils :as utils])
-  (:import (java.util.concurrent TimeUnit)
-           (java.util Scanner NoSuchElementException)
-           (java.io Writer PipedReader PipedWriter PrintWriter)))
+  (:import (java.util Scanner NoSuchElementException)
+           (java.io PipedReader PipedWriter PrintWriter)))
 
 ; -- line-based streaming ---------------------------------------------------------------------------------------------------
 
@@ -43,11 +42,3 @@
         writer (PipedWriter. stream)]
     (print-stream-as-lines! stream (synchronized-printer printer target))
     (PrintWriter. writer)))
-
-; -- flushing ---------------------------------------------------------------------------------------------------------------
-
-(defn flush-outputs! []
-  ; TODO: how to make sure our piped writers get properly flushed?
-  (.flush ^Writer *out*)
-  (.flush ^Writer *err*)
-  (.sleep TimeUnit/SECONDS 1))
