@@ -27,10 +27,13 @@
     (task-name :clj last-ns-segment name)))
 
 (defn task-description-from-var [task-var]
-  (let [var-meta (meta task-var)
-        name (:name var-meta)
-        ns (:ns var-meta)]
-    (str "a Clojure function " name " from " ns)))
+  (let [{:keys [name doc file line]} (meta task-var)
+        position (if (some? line) (str ":" line))
+        location (if (some? file) (str file position))
+        generated-doc (str "a function " name " from " location)]
+    (if (some? doc)
+      (str (first (cuerdas/lines doc)) " - " generated-doc)
+      generated-doc)))
 
 (defn make-clojure-task [task-var]
   {:name        (task-name-from-var task-var)
