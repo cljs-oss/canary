@@ -30,7 +30,7 @@
   (let [{:keys [name doc file line]} (meta task-var)
         position (if (some? line) (str ":" line))
         location (if (some? file) (str file position))
-        generated-doc (str "a function " name " from " location)]
+        generated-doc (str "function " name " from " location)]
     (if (some? doc)
       (str (first (cuerdas/lines doc)) " - " generated-doc)
       generated-doc)))
@@ -69,7 +69,7 @@
 (defn shell-tasks-for-file [options file]
   (let [normalized-name (cuerdas/kebab (utils/remove-extension (.getName file)))]
     [{:name        (task-name :sh "shell" normalized-name)
-      :description (str "a shell script at '" (str file) "'")
+      :description (str "shell script at '" (str file) "'")
       :fn          (task-result-maker (shell/make-shell-launcher file))}]))
 
 (defn collect-all-shell-tasks [options dir-path]
