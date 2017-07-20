@@ -8,8 +8,12 @@
             [canary.runner.output :as output]
             [canary.runner.i18n :as i18n]
             [canary.runner.defaults :as defaults]
-            [me.raynes.fs :as fs])
-  (:gen-class))
+            [me.raynes.fs :as fs]
+            [cuerdas.core :as cuerdas])
+  (:gen-class)
+  (:import (java.util.regex PatternSyntaxException)))
+
+; -- command-line options ---------------------------------------------------------------------------------------------------
 
 (def cli-options
   [(normal-cli-option ["-r" "--compiler-rev REV" (i18n/compiler-rev-cli-desc) :default defaults/compiler-rev])
@@ -28,32 +32,56 @@
    (verbosity-cli-option ["-v" nil (i18n/verbosity-cli-desc)])
    (normal-cli-option ["-h" "--help"])])
 
+; -- options validation -----------------------------------------------------------------------------------------------------
+
 (defn expand-paths [options]
   (assoc options
     :projects (utils/canonical-path (:projects options))
     :workdir (utils/canonical-path (:workdir options))
     :cachedir (utils/canonical-path (:cachedir options))))
 
-(defn sanitize-options [options]
-  (-> options
-      (expand-paths)))
+(defn make-regex [val]
+  (try
+    (re-pattern (str val))
+    (catch PatternSyntaxException e
+      ; a map value represents an error for check-filters
+      {:val     val
+       :message (first (cuerdas/lines (.getMessage e)))})))
 
-(defn validate-options [options]
-  (let [projects-dir (:projects options)
-        issues (cond-> []
-                       (not (fs/exists? projects-dir)) (conj (i18n/projects-dir-not-exists-msg projects-dir))
-                       (and (fs/exists? projects-dir)
-                            (or (not (fs/directory? projects-dir))
-                                (not (fs/readable? projects-dir)))) (conj (i18n/projects-dir-not-dir-msg projects-dir)))]
-    (if-not (empty? issues)
-      issues)))
+(defn make-regexs [options]
+  (cond-> options
+          (some? (:include options)) (update :include make-regex)
+          (some? (:exclude options)) (update :exclude make-regex)))
+
+(defn check-projects-dir [options]
+  (let [projects-dir (:projects options)]
+    (cond-> []
+            (not (fs/exists? projects-dir)) (conj (i18n/projects-dir-not-exists-msg projects-dir))
+            (and (fs/exists? projects-dir)
+                 (or (not (fs/directory? projects-dir))
+                     (not (fs/readable? projects-dir)))) (conj (i18n/projects-dir-not-dir-msg projects-dir)))))
+
+(defn check-filters [options]
+  (let [{:keys [include exclude]} options]
+    (cond-> []
+            (map? include) (conj (str "Invalid regex pattern --include '" (:val include) "': " (:message include)))
+            (map? exclude) (conj (str "Invalid regex pattern --exclude '" (:val exclude) "': " (:message exclude))))))
+
+(defn sanitize-options [options]
+  (let [sanitized-options (-> options
+                              (expand-paths)
+                              (make-regexs))
+        issues (concat (check-projects-dir sanitized-options)
+                       (check-filters sanitized-options))]
+    [sanitized-options issues]))
 
 (defn sanitize-and-validate-options! [options]
-  (let [sanitized-options (sanitize-options options)
-        validation-errors (validate-options sanitized-options)]
-    (if (some? validation-errors)
-      (utils/exit! 2 (i18n/cli-validation-msg validation-errors))
-      sanitized-options)))
+  (let [[sanitized-options validation-errors] (sanitize-options options)]
+    (if (empty? validation-errors)
+      sanitized-options
+      (utils/exit! 2 (i18n/cli-validation-msg validation-errors)))))
+
+; -- actions ----------------------------------------------------------------------------------------------------------------
 
 (defn perform-job-action! [options]
   (let [sanitized-options (sanitize-and-validate-options! (assoc options :action :job))]
