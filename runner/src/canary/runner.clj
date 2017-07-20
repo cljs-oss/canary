@@ -67,16 +67,16 @@
             (map? include) (conj (str "Invalid regex pattern --include '" (:val include) "': " (:message include)))
             (map? exclude) (conj (str "Invalid regex pattern --exclude '" (:val exclude) "': " (:message exclude))))))
 
-(defn sanitize-options [options]
+(defn sanitize-and-validate-options [options]
   (let [sanitized-options (-> options
                               (expand-paths)
                               (make-regexs))
-        issues (concat (check-projects-dir sanitized-options)
+        errors (concat (check-projects-dir sanitized-options)
                        (check-filters sanitized-options))]
-    [sanitized-options issues]))
+    [sanitized-options errors]))
 
-(defn sanitize-and-validate-options! [options]
-  (let [[sanitized-options validation-errors] (sanitize-options options)]
+(defn check-options! [options]
+  (let [[sanitized-options validation-errors] (sanitize-and-validate-options options)]
     (if (empty? validation-errors)
       sanitized-options
       (utils/exit! 2 (i18n/cli-validation-msg validation-errors)))))
@@ -84,11 +84,11 @@
 ; -- actions ----------------------------------------------------------------------------------------------------------------
 
 (defn perform-job-action! [options]
-  (let [sanitized-options (sanitize-and-validate-options! (assoc options :action :job))]
+  (let [sanitized-options (check-options! (assoc options :action :job))]
     (jobs/run! sanitized-options)))
 
 (defn perform-list-action! [options]
-  (let [sanitized-options (sanitize-and-validate-options! (assoc options :action :list))]
+  (let [sanitized-options (check-options! (assoc options :action :list))]
     (jobs/list! sanitized-options)))
 
 ; -- main entry point -------------------------------------------------------------------------------------------------------
