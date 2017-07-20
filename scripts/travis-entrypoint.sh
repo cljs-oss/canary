@@ -15,7 +15,7 @@ pushd "$ROOT"
 
 MASTER_SHORT_REV=`git rev-parse --short HEAD`
 
-echo "Travis entry point git revision $MASTER_SHORT_REV located at '$(pwd)'"
+echo "Canary git revision $MASTER_SHORT_REV at '$(pwd)'"
 
 JOB_ARGS=$(git show -s --format=%B "jobs" | head -n 1)
 
