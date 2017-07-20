@@ -58,11 +58,6 @@
 (defn ^:dynamic list-options-msg [options]
   (str "List options:\n" (print/dump (utils/pp options))))
 
-(defn ^:dynamic skipping-building-compiler-msg [compiler-rev compiler-repo]
-  (str (print/emphasize "Skipping building")
-       " compiler rev " (print/rev compiler-rev)
-       " from " (print/url compiler-repo)))
-
 (defn ^:dynamic building-compiler-msg [compiler-rev compiler-repo]
   (str (print/emphasize "Building")
        " compiler rev " (print/rev compiler-rev)
@@ -73,9 +68,6 @@
 
 (defn ^:dynamic report-dump-msg [report]
   (str "Report dump:\n" (print/dump (utils/pp report))))
-
-(defn ^:dynamic skipping-report-commit-msg []
-  (str (print/emphasize "Skipping") " report commit"))
 
 (defn ^:dynamic performing-report-commit-msg []
   (str (print/emphasize "Performing") " report commit"))
