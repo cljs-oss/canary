@@ -25,7 +25,8 @@
        (filter var-fn?)))
 
 (defn filter-via-only [task only]
-  (let [active? (.contains (:name task) only)
+  (let [candidates (string/split only #"\s+")
+        active? (some #(.contains (:name task) %) candidates)
         reason (if active?
                  (str "included because matching --only '" only "'")
                  (str "excluded because not matching --only '" only "'"))]

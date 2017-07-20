@@ -189,7 +189,7 @@
   "Path to caching directory. Persists state between runs for speedup")
 
 (defn ^:dynamic only-cli-desc []
-  "Run only tasks matching a substring")
+  "Enable only tasks matching a substring (or any of space separated substrings)")
 
 (defn ^:dynamic job-id-cli-desc []
   "Optional job id")
