@@ -73,7 +73,7 @@
                 :env        {:global (prepare-build-env options)}}                                                            ; https://docs.travis-ci.com/user/environment-variables/#Global-Variables
         body {:request
               {:branch  (or (:travis-branch options) "master")
-               :message (str "canary build with ClojureScript " (:build-id build-result))
+               :message (str "Canary test with ClojureScript " (:build-id build-result))
                :config  (utils/deep-merge config (or (:travis-config options) {}))}}
         request-body (utils/deep-merge body (or (:travis-body options) {}))]
     (post-to-travis-api! api-endpoint token request-body options)))
