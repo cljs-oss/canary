@@ -25,24 +25,32 @@ Each completed job should produce a report page with results. You can find archi
 
 #### Available parameters
 
-```
-> ./scripts/docker-run.sh job --help
-(in /runner) $ lein run -- --help
+```text
+> ./scripts/docker-run.sh help
+(in /runner) $ lein run -- help
 Exercises ClojureScript projects with a pinned ClojureScript version.
 
-Usage: ./run.sh job [options]
+Usage: ./run.sh [action] [options]
+
+Actions:
+  job         Run a job with given options
+  list        List available tasks (possibly matching filters from options)
+  help        Print usage info
 
 Options:
   -r, --compiler-rev REV          master                                        Pin ClojureScript compiler to specific revision
       --compiler-repo URL         https://github.com/clojure/clojurescript.git  Git repo to fetch compiler sources from
   -p, --projects DIR              src/canary/projects                           Path to projects directory
       --workdir DIR               .workdir                                      Path to working directory
-      --cachedir DIR              .cachedir                                     Path to caching directory. Persists state between runs for speedup.
-      --only SUBSTR                                                             Run only tasks matching a substring
+      --cachedir DIR              .cachedir                                     Path to caching directory. Persists state between runs for speedup
+      --only SUBSTR                                                             Enable tasks matching a substring (or any of space separated substrings)
+      --except SUBSTR                                                           Disable tasks matching a substring (or any of space separated substrings)
+      --include REGEX                                                           Enable tasks matching a regex
+      --exclude REGEX                                                           Disable tasks matching a regex
       --job-id ID                 0                                             Optional job id
       --polling-interval SECONDS  300000                                        Polling interval for job status (in seconds)
       --timeout SECONDS           3600000                                       Total timeout for job to complete (in seconds)
       --production                                                              Will not commit into results branch
-  -t, --test                                                                    Do not launch any tasks. Useful for testing which task will be executed.
   -v                                                                            Verbosity level; may be specified multiple times
-  -h, --help  ```
+  -h, --help
+```
