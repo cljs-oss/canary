@@ -11,8 +11,7 @@
             [canary.runner.print :as print]
             [canary.runner.travis-mocks :as travis-mocks]
             [canary.runner.report :as report]
-            [canary.runner.defaults :as defaults])
-  (:import (java.util.concurrent TimeUnit)))
+            [canary.runner.defaults :as defaults]))
 
 (defn launch! [cmd args options]
   (announce (i18n/curl-command-msg args) 2 options)
@@ -78,10 +77,10 @@
         request-body (utils/deep-merge body (or (:travis-body options) {}))]
     (post-to-travis-api! api-endpoint token request-body options)))
 
-(defn monitoring-wait-time [options]
+(defn polling-timeout [options]
   (if (:production options)
     defaults/travis-polling-timeout
-    1))
+    (utils/seconds-to-msec 1)))
 
 ; https://github.com/travis-ci/travis-api/blob/master/lib/travis/model/build/states.rb
 (def possible-build-states #{:created :received :started :passed :failed :errored :canceled})
@@ -172,7 +171,7 @@
     (if (= request-state :done)
       report-data
       (do
-        (.sleep TimeUnit/SECONDS (monitoring-wait-time options))
+        (Thread/sleep (polling-timeout options))
         (let [request-response (poll-request-status! slug request-id token options)
               new-request-state (determine-request-state request-response)
               new-report-data (if (= new-request-state request-state)
