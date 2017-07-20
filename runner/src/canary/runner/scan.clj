@@ -78,7 +78,7 @@
 ; -- main API ---------------------------------------------------------------------------------------------------------------
 
 (defn collect-all-tasks! [options]
-  (let [dir-path (utils/canonical-path (:projects options))]
+  (let [dir-path (:projects options)]
     (concat (collect-all-clojure-tasks! options dir-path)
             (collect-all-shell-tasks options dir-path))))
 
