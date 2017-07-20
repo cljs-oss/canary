@@ -58,6 +58,9 @@
 (defn ^:dynamic job-options-msg [options]
   (str "Job options:\n" (print/dump (utils/pp options))))
 
+(defn ^:dynamic list-options-msg [options]
+  (str "List options:\n" (print/dump (utils/pp options))))
+
 (defn ^:dynamic skipping-building-compiler-msg [compiler-rev compiler-repo]
   (str (print/emphasize "Skipping building")
        " compiler rev " (print/rev compiler-rev)

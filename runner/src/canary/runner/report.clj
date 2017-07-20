@@ -18,9 +18,6 @@
     (fs/mkdirs workdir)
     (spit path content)))
 
-(def passed-symbol "&#x2713;")
-(def failed-symbol "&#x2717;")
-
 (defn wrap-as-failed [text]
   (str "<b style='color:red'>" text "</b>"))
 
@@ -98,7 +95,7 @@
                   "### Executed Tasks"
                   ]
           render-check-mark (fn [task]
-                              (if (tasks/task-passed? task) passed-symbol failed-symbol))
+                              (if (tasks/task-passed? task) defaults/passed-symbol defaults/failed-symbol))
           * (fn [task]
               (let [task-title (str (render-check-mark task) " " (:name task))
                     colored-task-title (if (tasks/task-passed? task)

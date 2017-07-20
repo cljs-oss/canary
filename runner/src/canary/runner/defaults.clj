@@ -30,3 +30,6 @@
 (def max-output-buffer 1000000)
 
 (def travis-polling-timeout 30)                                                                                               ; TODO: make this configurable
+
+(def passed-symbol "&#x2713;")
+(def failed-symbol "&#x2717;")

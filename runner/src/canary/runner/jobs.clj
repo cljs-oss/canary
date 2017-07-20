@@ -10,7 +10,9 @@
             [canary.runner.report :as report]
             [canary.runner.print :as print :refer [announce with-job-printing with-task-printing]]
             [canary.runner.i18n :as i18n]
-            [canary.runner.env :as env]))
+            [canary.runner.env :as env]
+            [cuerdas.core :as cuerdas]
+            [canary.runner.defaults :as defaults]))
 
 (defn dev? []
   (some? (env/get "CANARY_DEBUG")))
@@ -95,7 +97,7 @@
 (defn run-naked! [options]
   (with-job-printing options
     (announce (i18n/running-job-msg (:job-id options)))
-    (announce (i18n/job-options-msg options) 1 options)
+    (announce (i18n/job-options-msg options) 2 options)
     (let [options-with-build-result (build-compiler-if-needed! options)
           analyzed-tasks (scan/collect-and-analyze-all-tasks! options-with-build-result)
           running-runner (spawn-runner! analyzed-tasks options-with-build-result)
@@ -122,3 +124,28 @@
         (do
           (announce (i18n/job-failed-due-exception-msg e))
           9)))))
+
+(defn list! [options]
+  (announce (i18n/list-options-msg options) 2 options)
+  (let [tasks (scan/collect-and-analyze-all-tasks! options)]
+    (println (str "Available tasks found at '" (:projects options) "'"))
+    (doseq [task tasks]
+      (let [padded-name (cuerdas/pad (:name task) {:type   :right
+                                                   :length defaults/task-label-padding})
+            enabled-marker (if (:enabled task) "\u2713" "\u2717")]
+        (println (str "  " enabled-marker " " padded-name "  " (:description task)))))
+    (if (zero? (:verbosity options))
+      (do
+        (println)
+        (println "Tasks marked with \u2713 would be executed. They are matching your filtering options.")
+        (print "You may run this command in verbose mode to see the exact reason."))
+      (do
+        (println)
+        (println "Reasons for filtering:")
+        (doseq [task tasks]
+          (let [padded-name (cuerdas/pad (:name task) {:type   :right
+                                                       :length defaults/task-label-padding})
+                enabled-marker (if (:enabled task) "\u2713" "\u2717")]
+            (println (str "  " enabled-marker " " padded-name "  " (:enabled-reason task)))))))
+    (println)
+    0))
