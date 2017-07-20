@@ -1,6 +1,6 @@
 (defproject cljs-oss/canary "0.1.0-SNAPSHOT"
-  :description "TODO"
-  :url "TODO"
+  :description "A tool for smoke-testing ClojureScript projects with a pinned ClojureScript version."
+  :url "https://github.com/cljs-oss/canary"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/core.async "0.3.443"]
                  [org.clojure/tools.cli "0.3.5"]
