@@ -46,17 +46,17 @@
 (defn assign-task-colors [tasks]
   (map #(assoc %1 :color %2) tasks defaults/palette))
 
-(defn activate-tasks-based-on-options [tasks options]
+(defn enable-tasks-based-on-options [tasks options]
   (map (partial task-filter options) tasks))
 
-(defn sort-active-first [tasks]
+(defn sort-enabled-first [tasks]
   (let [swap? (fn [x y] (and (:enabled y) (not (:enabled x))))]
     (sort (comparator swap?) tasks)))
 
 (defn analyze-tasks [tasks options]
   (-> tasks
-      (activate-tasks-based-on-options options)
-      (sort-active-first)
+      (enable-tasks-based-on-options options)
+      (sort-enabled-first)
       (assign-task-colors)))
 
 ; -- tests ------------------------------------------------------------------------------------------------------------------
