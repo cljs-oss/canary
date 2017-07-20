@@ -16,7 +16,7 @@ echo_cmd() {
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 if [ "$1" = "job" ]; then
-  echo_cmd lein run -- ${@:2}
+  echo_cmd lein run -m canary.job/main! -- ${@:2}
   exit $?
 fi
 

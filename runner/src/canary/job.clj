@@ -1,4 +1,4 @@
-(ns canary.runner
+(ns canary.job
   "Command-line interface and the main entry point."
   (:require [clojure.string :as string]
             [clojure.tools.cli :as cli]
@@ -68,7 +68,7 @@
 
 ; -- main entry point -------------------------------------------------------------------------------------------------------
 
-(defn -main [& args]
+(defn main! [& args]
   (let [{:keys [options errors summary]} (cli/parse-opts args cli-options)]
     (cond
       errors (exit! 1 (i18n/cli-errors-msg errors))
