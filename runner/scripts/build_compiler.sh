@@ -282,7 +282,9 @@ else # production mode
       GITHUB_RELEASE_ID="${BASH_REMATCH[1]}"
     else
       echo "ERROR!"
-      echo -e "Invalid upload_url returned from github api\n$RELEASE_RESPONSE\n\ninput data:\n$DATA"
+      echo -e "Invalid upload_url returned from github api: '$UPLOAD_URL'\n$RELEASE_RESPONSE\n\ninput data:\n$DATA"
+      mkdir -p "$CANARY_RESULT_DIR"
+      echo "$RELEASE_RESPONSE" > "$CANARY_RESULT_DIR/release.response.json"
       exit 5
     fi
 
@@ -307,7 +309,9 @@ else # production mode
 
     if [[ ! "$BUILD_DOWNLOAD_URL" =~ ^https://github\.com/cljs-oss/canary/releases/download.*$ ]]; then
       echo "ERROR!"
-      echo -e "Invalid browser_download_url returned from github api\n$UPLOAD_RESPONSE"
+      echo -e "Invalid browser_download_url returned from github api: '$BUILD_DOWNLOAD_URL'\n$UPLOAD_RESPONSE"
+      mkdir -p "$CANARY_RESULT_DIR"
+      echo "$UPLOAD_RESPONSE" > "$CANARY_RESULT_DIR/upload.response.json"
       exit 6
     fi
     echo "Download URL: $BUILD_DOWNLOAD_URL"
