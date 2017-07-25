@@ -28,6 +28,10 @@ RUN yes y | lein upgrade
 RUN apt-get -y install maven
 RUN mvn --version
 
+# for internal canary scripts
+RUN apt-get -y install python
+RUN python --version
+
 VOLUME ["/root/.m2"]
 VOLUME ["/var/cache"]
 VOLUME ["/runner"]
