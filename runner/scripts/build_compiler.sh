@@ -34,6 +34,10 @@ travis_fold() {
 }
 
 json_val() {
+  python -c "import json,sys;sys.stdout.write(json.dumps(json.load(sys.stdin)$1))"
+}
+
+silent_json_val() {
   python -c "import json,sys;sys.stdout.write(json.dumps(json.load(sys.stdin)$1))" 2> /dev/null;
 }
 
@@ -265,7 +269,7 @@ else # production mode
   fi
 
   set +e
-  RELEASE_ERROR=`json_val [\"errors\"][0][\"code\"] <<< "$RELEASE_RESPONSE" | sed -e 's/^"//' -e 's/"$//'`
+  RELEASE_ERROR=`silent_json_val [\"errors\"][0][\"code\"] <<< "$RELEASE_RESPONSE" | sed -e 's/^"//' -e 's/"$//'`
   set -e
 
   if [[ "$RELEASE_ERROR" == "already_exists" ]]; then
