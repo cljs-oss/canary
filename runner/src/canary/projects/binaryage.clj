@@ -6,3 +6,6 @@
 
 (defn ^:task chromex [options]
   (travis/request-build! "binaryage/chromex" "CANARY_CHROMEX_TRAVIS_TOKEN" options))
+
+(defn ^:task cljs-oops [options]
+  (travis/request-build! "binaryage/cljs-oops" "CANARY_CLJS_OOPS_TRAVIS_TOKEN" options))
