@@ -1,0 +1,20 @@
+({:name "chromex",
+  :description "function chromex from canary/projects/binaryage.clj:7",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "cljs-devtools",
+  :description "function cljs-devtools from canary/projects/binaryage.clj:4",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "planck",
+  :description "function planck from canary/projects/mfikes.clj:4",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "cljs-oops",
+  :description "function cljs-oops from canary/projects/binaryage.clj:10",
+  :enabled true,
+  :enabled-reason "enabled because matching --only 'cljs-oops'",
+  :result
+  {:status :failed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:red'>&#x2717;</b> Travis build [binaryage/cljs-oops#209](https://travis-ci.org/binaryage/cljs-oops/builds/264928885)<br>"}})
