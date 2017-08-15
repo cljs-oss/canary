@@ -2,26 +2,25 @@
 ## Canary jobs
 
 Canary is responsible for smoke testing [participating ClojureScript projects](https://github.com/cljs-oss/canary/tree/master/runner/src/canary/projects) with a pinned ClojureScript version.
-You can read more about Canary in the [master readme](https://github.com/cljs-oss/canary/tree/master).
+You can read more about Canary runner in the [master readme](https://github.com/cljs-oss/canary/tree/master).
 
-You could run it locally, but that would be old-school. And frankly you would not have some secret tokens
-needed for talking to GitHub and Travis APIs. Instead you can trigger Canary jobs by committing into this branch. We use git messages as  Travis will pick it up and execute your job. 
-The commit can be empty and the message is [expected](https://github.com/cljs-oss/canary/blob/3a555f984f27dea52af2d756df28647af208b08d/scripts/travis-entrypoint.sh#L16) 
-to contain command-line arguments you would normally use `job [arg1] [arg2] [...]`.
+You can trigger Canary jobs by committing into this branch. We extract git commit message and use it as command-line arguments to execute your job. 
 
-For example `job -r master` will run the job for bleeding-edge [ClojureScript master](https://github.com/clojure/clojurescript/tree/master).
+For example `job` commit message will run a job for bleeding-edge official [ClojureScript master](https://github.com/clojure/clojurescript/tree/master).
 
 To execute above command personally I would run this from command-line:
 
 ```bash
 git clone --branch jobs git@github.com:cljs-oss/canary.git
 cd canary
-git commit --allow-empty -m "job -r master"
+git commit --allow-empty -m "job"
+git push
 ```
 
-Please note that `--production` and `--job-id` parameters are not available to you. They are [forced by our launcher script](https://github.com/cljs-oss/canary/blob/3a555f984f27dea52af2d756df28647af208b08d/scripts/travis-entrypoint.sh#L31).
+The commit can be empty and the message is [expected](https://github.com/cljs-oss/canary/blob/3a555f984f27dea52af2d756df28647af208b08d/scripts/travis-entrypoint.sh#L16) 
+to contain command-line arguments you would normally use `job [action] [arg1] [arg2] [...]`.
 
-Each completed job should produce a report page with results. You can find archived reports in the [results branch](https://github.com/cljs-oss/canary/tree/results).
+Each completed job should finally commit a report page with results. You can find archived reports in the [results branch](https://github.com/cljs-oss/canary/tree/results).
 
 #### Available parameters
 
@@ -54,3 +53,5 @@ Options:
   -v                                                                            Verbosity level; may be specified multiple times
   -h, --help
 ```
+
+Please note that `--production` and `--job-id` parameters are not available to you. They get [overridden by our launcher script](https://github.com/cljs-oss/canary/blob/3a555f984f27dea52af2d756df28647af208b08d/scripts/travis-entrypoint.sh#L31).
