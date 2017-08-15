@@ -4,6 +4,7 @@ This branch contains reports from canary [jobs](https://github.com/cljs-oss/cana
 
 #### Recent reports
 
+&nbsp;&nbsp;&nbsp;&nbsp;☺ [reports/2017/08/15/job-000074-1.9.904-3567cc0](reports/2017/08/15/job-000074-1.9.904-3567cc0)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;☺ [reports/2017/08/15/job-000073-1.9.897-f5af28f](reports/2017/08/15/job-000073-1.9.897-f5af28f)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;☺ [reports/2017/08/15/job-000072-1.9.895-190f3fa](reports/2017/08/15/job-000072-1.9.895-190f3fa)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;☹ [reports/2017/08/10/job-000071-1.9.880-fe77a13](reports/2017/08/10/job-000071-1.9.880-fe77a13)<br>
