@@ -4,6 +4,7 @@ This branch contains reports from canary [jobs](https://github.com/cljs-oss/cana
 
 #### Recent reports
 
+&nbsp;&nbsp;&nbsp;&nbsp;☺ [reports/2017/08/19/job-000081-1.9.915-adc7dea](reports/2017/08/19/job-000081-1.9.915-adc7dea)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;☺ [reports/2017/08/19/job-000080-1.9.915-adc7dea](reports/2017/08/19/job-000080-1.9.915-adc7dea)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;☺ [reports/2017/08/17/job-000079-1.9.908-70fa3e9](reports/2017/08/17/job-000079-1.9.908-70fa3e9)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;☺ [reports/2017/08/16/job-000078-1.9.906-56a880c](reports/2017/08/16/job-000078-1.9.906-56a880c)<br>
@@ -13,7 +14,6 @@ This branch contains reports from canary [jobs](https://github.com/cljs-oss/cana
 &nbsp;&nbsp;&nbsp;&nbsp;☺ [reports/2017/08/15/job-000074-1.9.904-3567cc0](reports/2017/08/15/job-000074-1.9.904-3567cc0)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;☺ [reports/2017/08/15/job-000073-1.9.897-f5af28f](reports/2017/08/15/job-000073-1.9.897-f5af28f)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;☺ [reports/2017/08/15/job-000072-1.9.895-190f3fa](reports/2017/08/15/job-000072-1.9.895-190f3fa)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;☹ [reports/2017/08/10/job-000071-1.9.880-fe77a13](reports/2017/08/10/job-000071-1.9.880-fe77a13)<br>
 
 All job reports are available under [reports](reports).
 
