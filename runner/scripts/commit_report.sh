@@ -15,11 +15,18 @@ CANARY_JOB_ID=${CANARY_JOB_ID}
 CANARY_JOB_STATUS=${CANARY_JOB_STATUS}
 CANARY_BUILD_ID=${CANARY_BUILD_ID}
 CANARY_RESULT_DIR=${CANARY_RESULT_DIR:-`pwd`}
+CANARY_ROOT_DIR=${CANARY_ROOT_DIR}
 CANARY_REPORT_FILE=${CANARY_REPORT_FILE:-"$CANARY_RESULT_DIR/README.md"}
 CANARY_TASKS_FILE=${CANARY_TASKS_FILE:-"$CANARY_RESULT_DIR/tasks.edn"}
 CANARY_OPTIONS_FILE=${CANARY_OPTIONS_FILE:-"$CANARY_RESULT_DIR/options.edn"}
 
 CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
+
+if [[ -z "$CANARY_ROOT_DIR" ]]; then
+  echo "ERROR!"
+  echo "CANARY_ROOT_DIR env var must be specified"
+  exit 3
+fi
 
 # -- functions --------------------------------------------------------------------------------------------------------------
 
@@ -92,6 +99,8 @@ cp "$CANARY_TASKS_FILE" .
 cp "$CANARY_OPTIONS_FILE" .
 
 popd
+
+# -- update root readme -----------------------------------------------------------------------------------------------------
 
 if [[ "$CANARY_JOB_STATUS" == "passed" ]]; then
   REPORT_FACE="☺"

@@ -30,12 +30,13 @@
   ; note it seemed to be easier to resort to shell
   (let [script (io/file (utils/canonical-path defaults/commit-script-path))
         env {"CANARY_RESULT_DIR" (:workdir options)
+             "CANARY_ROOT_DIR"   (:rootdir options)
              "CANARY_VERBOSITY"  (str (:verbosity options))
              "CANARY_PRODUCTION" (str (:production options))
              "CANARY_JOB_ID"     (str (:job-id options))
              "CANARY_BUILD_ID"   (str (get-in options [:build-result :build-id]))
              "CANARY_JOB_STATUS" (name report-status)
-             "CANARY_REPO_TOKEN" (env/get "CANARY_REPO_TOKEN")}                                                               ; we want to get advantage of .env files
+             "CANARY_REPO_TOKEN" (env/get "CANARY_REPO_TOKEN")}                                                               ; we want to get advantage of .env files for development
         build-launcher (shell/make-shell-launcher script env)
         result (build-launcher (with-meta options commit-task))
         exit-code (:exit-code result)]
