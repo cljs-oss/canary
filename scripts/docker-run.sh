@@ -20,7 +20,8 @@ docker run \
   -e "TRAVIS_BUILD_ID=$TRAVIS_BUILD_ID" \
   -v "$DOCKER_VOLUMES_DIR/root/.m2:/root/.m2" \
   -v "$DOCKER_VOLUMES_DIR/var/cache:/var/cache" \
-  -v "$RUNNER_DIR:/runner" \
+  -v "$RUNNER_DIR:/canary/runner" \
+  -v "$RGEN_DIR:/canary/rgen" \
   --rm \
   -it "$DOCKER_IMAGE_NAME" \
   "$@"

@@ -34,7 +34,8 @@ RUN python --version
 
 VOLUME ["/root/.m2"]
 VOLUME ["/var/cache"]
-VOLUME ["/runner"]
+VOLUME ["/canary/runner"]
+VOLUME ["/canary/rgen"]
 
-WORKDIR "/runner"
-ENTRYPOINT ["/runner/run.sh"]
+WORKDIR "/canary/runner"
+ENTRYPOINT ["/canary/runner/run.sh"]
