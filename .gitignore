@@ -8,3 +8,6 @@
 /docker/.inherited-env-with-secrets
 /.compiler-build
 /scripts/test.sh
+/rgen/.env
+/rgen/target
+/rgen/.nrepl-port
