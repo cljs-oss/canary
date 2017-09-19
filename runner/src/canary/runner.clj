@@ -67,10 +67,18 @@
             (map? include) (conj (str "Invalid regex pattern --include '" (:val include) "': " (:message include)))
             (map? exclude) (conj (str "Invalid regex pattern --exclude '" (:val exclude) "': " (:message exclude))))))
 
+(defn add-root-dir [options]
+  (let [root-dir (utils/canonical-path (str (System/getProperty "user.dir") "/.."))]                                          ; user.dir should be the 'runner' directory
+    (assert (and (not (empty? root-dir))
+                 (fs/directory? root-dir)
+                 (fs/exists? (str root-dir "/runner/run.sh"))))
+    (assoc options :rootdir root-dir)))
+
 (defn sanitize-and-validate-options [options]
   (let [sanitized-options (-> options
                               (expand-paths)
-                              (make-regexs))
+                              (make-regexs)
+                              (add-root-dir))
         errors (concat (check-projects-dir sanitized-options)
                        (check-filters sanitized-options))]
     [sanitized-options errors]))
