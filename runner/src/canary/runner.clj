@@ -9,7 +9,8 @@
             [canary.runner.i18n :as i18n]
             [canary.runner.defaults :as defaults]
             [me.raynes.fs :as fs]
-            [cuerdas.core :as cuerdas])
+            [cuerdas.core :as cuerdas]
+            [clojure.java.io :as io])
   (:gen-class)
   (:import (java.util.regex PatternSyntaxException)))
 
@@ -68,7 +69,7 @@
             (map? exclude) (conj (str "Invalid regex pattern --exclude '" (:val exclude) "': " (:message exclude))))))
 
 (defn add-root-dir [options]
-  (let [root-dir (utils/canonical-path (str (System/getProperty "user.dir") "/.."))]                                          ; user.dir should be the 'runner' directory
+  (let [root-dir (utils/canonical-path (str (.getCanonicalFile (io/file ".")) "/.."))]
     (assert (and (not (empty? root-dir))
                  (fs/directory? root-dir)
                  (fs/exists? (str root-dir "/runner/run.sh"))))

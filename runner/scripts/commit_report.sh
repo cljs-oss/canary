@@ -107,7 +107,7 @@ popd
 RGEN_RUN_SCRIPT="$CANARY_ROOT_DIR/rgen/run.sh"
 OVERVIEW_TABLE_FILE="$WORK_DIR/overview-table.md"
 
-${RGEN_RUN_SCRIPT} -r reports -c 10 -o "${OVERVIEW_TABLE_FILE}"
+"${RGEN_RUN_SCRIPT}" -r reports -c 10 -o "${OVERVIEW_TABLE_FILE}"
 
 # patch root readme with most recent reports
 ROOT_README_NAME="README.md"

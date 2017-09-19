@@ -8,7 +8,8 @@
             [canary.rgen.defaults :as defaults]
             [canary.rgen.overview :as overview]
             [me.raynes.fs :as fs]
-            [cuerdas.core :as cuerdas])
+            [cuerdas.core :as cuerdas]
+            [clojure.java.io :as io])
   (:gen-class))
 
 ; -- command-line options ---------------------------------------------------------------------------------------------------
@@ -28,7 +29,7 @@
     :reports (utils/canonical-path (:reports options))))
 
 (defn add-root-dir [options]
-  (let [root-dir (utils/canonical-path (str (System/getProperty "user.dir") "/.."))]                                          ; user.dir should be the 'rgen' directory
+  (let [root-dir (utils/canonical-path (str (.getCanonicalFile (io/file ".")) "/.."))]
     (assert (and (not (empty? root-dir))
                  (fs/directory? root-dir)
                  (fs/exists? (str root-dir "/rgen/run.sh"))))
