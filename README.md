@@ -2,6 +2,8 @@
 
 This branch contains reports from canary [jobs](https://github.com/cljs-oss/canary/tree/jobs).
 
+[//]: # (begin_overview_table)
+
 #### Recent reports
 
 &nbsp;&nbsp;&nbsp;&nbsp;☹ [reports/2017/09/18/job-000083-1.9.930-7a8803e](reports/2017/09/18/job-000083-1.9.930-7a8803e)<br>
@@ -14,6 +16,8 @@ This branch contains reports from canary [jobs](https://github.com/cljs-oss/cana
 &nbsp;&nbsp;&nbsp;&nbsp;☹ [reports/2017/08/16/job-000076-1.9.905-6130143](reports/2017/08/16/job-000076-1.9.905-6130143)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;☹ [reports/2017/08/15/job-000075-1.9.904-3567cc0](reports/2017/08/15/job-000075-1.9.904-3567cc0)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;☺ [reports/2017/08/15/job-000074-1.9.904-3567cc0](reports/2017/08/15/job-000074-1.9.904-3567cc0)<br>
+
+[//]: # (end_overview_table)
 
 All job reports are available under [reports](reports).
 
