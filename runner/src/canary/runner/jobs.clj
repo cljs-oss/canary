@@ -103,8 +103,10 @@
               all-passed? (every? tasks/task-passed? enabled-tasks)]
           (announce (i18n/job-completed-msg result-tasks) 1 options-with-build-result)
           ; TODO: add timing info
-          (report/prepare-and-commit-complete-report! result-tasks options-with-build-result)
-          (if all-passed? 0 1))))))
+          (let [report-ok? (report/prepare-and-commit-complete-report! result-tasks options-with-build-result)]
+            (if report-ok?
+              (if all-passed? 0 1)
+              33)))))))
 
 (defn run! [options]
   (try
