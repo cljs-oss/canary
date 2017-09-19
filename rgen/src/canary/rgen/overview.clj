@@ -65,6 +65,15 @@
 (defn task-passed? [task]
   (= (get-in task [:result :status]) :passed))
 
+(defn task-failed? [task]
+  (= (get-in task [:result :status]) :failed))
+
+(defn task-errored? [task]
+  (= (get-in task [:result :status]) :errored))
+
+(defn task-canceled? [task]
+  (= (get-in task [:result :status]) :canceled))
+
 (defn generate-status-matrix-cell [jobs task-name job-id]
   (let [selected-job (get-job-with-id jobs job-id)
         _ (assert (some? selected-job))
@@ -73,7 +82,10 @@
       (nil? selected-task) :missing
       (nil? (task-result selected-task)) :disabled
       (task-passed? selected-task) :passed
-      :else :failed)))
+      (task-failed? selected-task) :failed
+      (task-errored? selected-task) :errored
+      (task-canceled? selected-task) :canceled
+      :else :unknown)))
 
 (defn generate-status-matrix-row [jobs job-ids task-name]
   (map (partial generate-status-matrix-cell jobs task-name) job-ids))
