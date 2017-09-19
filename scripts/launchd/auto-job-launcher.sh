@@ -8,4 +8,4 @@ git fetch
 git reset --hard origin/master
 
 # run auto-job
-./scripts/launchd/auto-job.sh
+./scripts/launchd/auto-job.sh 2>&1
