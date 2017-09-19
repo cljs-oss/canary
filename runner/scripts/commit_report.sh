@@ -19,6 +19,7 @@ CANARY_ROOT_DIR=${CANARY_ROOT_DIR}
 CANARY_REPORT_FILE=${CANARY_REPORT_FILE:-"$CANARY_RESULT_DIR/README.md"}
 CANARY_TASKS_FILE=${CANARY_TASKS_FILE:-"$CANARY_RESULT_DIR/tasks.edn"}
 CANARY_OPTIONS_FILE=${CANARY_OPTIONS_FILE:-"$CANARY_RESULT_DIR/options.edn"}
+WORK_DIR=`pwd`
 
 CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
 
@@ -101,20 +102,18 @@ cp "$CANARY_OPTIONS_FILE" .
 popd
 
 # -- update root readme -----------------------------------------------------------------------------------------------------
+# we are currently in working directory of the 'results' branch
 
-if [[ "$CANARY_JOB_STATUS" == "passed" ]]; then
-  REPORT_FACE="☺"
-else
-  REPORT_FACE="☹"
-fi
+RGEN_RUN_SCRIPT="$CANARY_ROOT_DIR/rgen/run.sh"
+OVERVIEW_TABLE_FILE="$WORK_DIR/overview-table.md"
+
+${RGEN_RUN_SCRIPT} -r reports -c 10 -o "${OVERVIEW_TABLE_FILE}"
 
 # patch root readme with most recent reports
 ROOT_README_NAME="README.md"
-OLD_RECENT_LIST=`perl -pe 'BEGIN{undef $/;} s/.*Recent reports\n\n(.*)\n\nAll job reports.*/$1/smg' "$ROOT_README_NAME"`
-NEW_RECENT_LIST=`echo -e "&nbsp;&nbsp;&nbsp;&nbsp;$REPORT_FACE [$REPORT_DIR]($REPORT_DIR)<br>\n$OLD_RECENT_LIST" | head -n 10`
-README_WITH_MARKER=`perl -pe 'BEGIN{undef $/;} s/Recent reports\n\n(.*)\n\nAll job reports/Recent reports\n\nRECENT_REPORTS_MARKER\n\nAll job reports/smg' "$ROOT_README_NAME"`
-NEW_README="${README_WITH_MARKER/RECENT_REPORTS_MARKER/$NEW_RECENT_LIST}"
-
+README_WITH_MARKER=`perl -pe 'BEGIN{undef $/;} s/\(begin_overview_table\)\n.*\n(.*?)\(end_overview_table\)/(begin_overview_table)\n\nOVERVIEW_TABLE_MARKER\n\n$1(end_overview_table)/smg' "$ROOT_README_NAME"`
+NEW_OVERVIEW_TABLE=`cat "${OVERVIEW_TABLE_FILE}"`
+NEW_README="${README_WITH_MARKER/OVERVIEW_TABLE_MARKER/$NEW_OVERVIEW_TABLE}"
 echo "$NEW_README" > "$ROOT_README_NAME"
 
 # -- commit to git ----------------------------------------------------------------------------------------------------------
