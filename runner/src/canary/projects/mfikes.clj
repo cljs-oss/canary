@@ -13,3 +13,6 @@
                                    :exclude [{:env "TRAVIS_4681_WORKAROUND=1"}]}}
         options (assoc options :travis-config config-overrides)]
     (travis/request-build! "mfikes/planck" "CANARY_PLANCK_TRAVIS_TOKEN" options)))
+
+(defn ^:task coal-mine [options]
+  (travis/request-build! "mfikes/coal-mine" "CANARY_COAL_MINE_TRAVIS_TOKEN" options))
