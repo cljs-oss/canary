@@ -1,0 +1,23 @@
+{:projects "/canary/runner/src/canary/projects",
+ :compiler-repo "https://github.com/clojure/clojurescript.git",
+ :only "coal-mine",
+ :rootdir "/canary",
+ :compiler-rev "master",
+ :verbosity 0,
+ :job-id "190",
+ :polling-interval 300000,
+ :production true,
+ :cachedir "/canary/runner/.cachedir",
+ :action :job,
+ :workdir "/canary/runner/.workdir",
+ :build-result
+ {:build-id "1.9.999-4a24d18",
+  :build-jar-path "/canary/runner/.workdir/clojurescript-1.9.999-4a24d18.jar",
+  :build-download-url
+  "https://github.com/cljs-oss/canary/releases/download/r1.9.999-4a24d18/clojurescript-1.9.999-4a24d18.jar",
+  :github-release-name "ClojureScript 1.9.999-4a24d18",
+  :github-release-tag "r1.9.999-4a24d18",
+  :compiler-rev-url "https://github.com/clojure/clojurescript/commit/4a24d18ca86ba9f41856cc37314cfa4d4797a3b1",
+  :canary-job-commit-url "https://github.com/cljs-oss/canary/commit/2421f3d4d6b6199a88bf7954582722c037bbbcc5",
+  :travis-build-url "https://travis-ci.org/cljs-oss/canary/builds/322254139"},
+ :timeout 3600000}
