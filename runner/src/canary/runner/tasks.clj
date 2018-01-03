@@ -87,14 +87,14 @@
   (map (partial task-filter options) tasks))
 
 (defn sort-enabled-first [tasks]
-  (let [swap? (fn [x y] (and (:enabled y) (not (:enabled x))))]
+  (let [swap? (fn [task1 task2] (and (:enabled task2) (not (:enabled task1))))]
     (sort (comparator swap?) tasks)))
 
 (defn sort-by-priority [tasks]
-  (let [swap? (fn [x y]
-                (let [x-priority (or (:priority x) -1)
-                      y-priority (or (:priority y) -1)]
-                  (< x-priority y-priority)))]
+  (let [swap? (fn [task1 task2]
+                (let [task1-priority (or (:priority task1) -1)
+                      task2-priority (or (:priority task2) -1)]
+                  (< task1-priority task2-priority)))]
     (sort (comparator swap?) tasks)))
 
 (defn sort-by-name [tasks]
