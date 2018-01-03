@@ -67,7 +67,7 @@
         (let [[result completed-channel] (async/alts!! all-channels)]
           (if (= completed-channel timeout-channel)
             (do
-              (announce (i18n/waiting-for-tasks-msg (vals running-tasks-mapping)))
+              (announce (i18n/waiting-for-tasks-msg (tasks/sort-tasks (vals running-tasks-mapping))))
               (recur running-tasks-mapping completed-tasks))
             (let [completed-task (dissoc (get running-tasks-mapping completed-channel) :running)
                   new-running-tasks (dissoc running-tasks-mapping completed-channel)
