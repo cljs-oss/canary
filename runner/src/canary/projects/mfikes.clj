@@ -14,17 +14,8 @@
         options (assoc options :travis-config config-overrides)]
     (travis/request-build! "mfikes/planck" "CANARY_PLANCK_TRAVIS_TOKEN" options)))
 
-(defn deep-merge-with [f & maps]
-  (apply
-    (fn m [& maps]
-      (if (every? map? maps)
-        (apply merge-with m maps)
-        (apply f maps)))
-    maps))
-
 (defn add-partition-filter [options filter]
-  (deep-merge-with merge options
-    {:travis-config {:env {:global {"PARTITION_FILTER" "1"}}}}))
+  (assoc options :travis-config {:env {:global {"PARTITION_FILTER" filter}}}))
 
 (defn ^:task coal-mine-01 [options]
   (travis/request-build! "mfikes/coal-mine" "CANARY_COAL_MINE_TRAVIS_TOKEN"
