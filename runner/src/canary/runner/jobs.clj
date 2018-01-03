@@ -8,7 +8,7 @@
             [canary.runner.utils :as utils]
             [canary.runner.build :as build]
             [canary.runner.report :as report]
-            [canary.runner.print :as print :refer [announce with-job-printing with-task-printing]]
+            [canary.runner.print :refer [announce with-job-printing with-task-printing]]
             [canary.runner.i18n :as i18n]
             [canary.runner.env :as env]
             [cuerdas.core :as cuerdas]

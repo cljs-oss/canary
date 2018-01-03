@@ -1,8 +1,6 @@
 (ns canary.runner.tasks
   "Tools for working with clojure tasks."
-  (:require [canary.runner.utils :as utils]
-            [clojure.string :as string]
-            [canary.runner.print :as print]
+  (:require [clojure.string :as string]
             [canary.runner.defaults :as defaults]))
 
 (defn task-passed? [task]

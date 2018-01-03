@@ -2,7 +2,7 @@
   "A special task for building ClojureScript compiler."
   (:require [clojure.edn :as edn]
             [clojure.java.io :as io]
-            [canary.runner.print :as print :refer [announce with-task-printing]]
+            [canary.runner.print :refer [announce with-task-printing]]
             [canary.runner.utils :as utils]
             [canary.runner.shell :as shell]
             [canary.runner.env :as env]

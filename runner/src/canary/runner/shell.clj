@@ -6,7 +6,6 @@
             [canary.runner.print :refer [announce]]
             [canary.runner.utils :as utils]
             [canary.runner.i18n :as i18n]
-            [clojure.java.io :as io]
             [canary.runner.defaults :as defaults])
   (:import (java.io InputStream)))
 

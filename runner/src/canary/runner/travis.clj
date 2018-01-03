@@ -8,7 +8,6 @@
             [canary.runner.env :as env]
             [canary.runner.i18n :as i18n]
             [canary.runner.utils :as utils]
-            [canary.runner.print :as print]
             [canary.runner.travis-mocks :as travis-mocks]
             [canary.runner.report :as report]
             [canary.runner.defaults :as defaults]))

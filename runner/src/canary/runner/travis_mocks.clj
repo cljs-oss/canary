@@ -1,7 +1,6 @@
 (ns canary.runner.travis-mocks
   "Quick & dirty solution for mocking Travis requests at curl level."
   (:require [clojure.data.json :as json]
-            [clojure.string :as string]
             [canary.runner.utils :as utils]
             [canary.runner.i18n :as i18n]))
 

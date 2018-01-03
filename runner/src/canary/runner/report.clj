@@ -1,5 +1,5 @@
 (ns canary.runner.report
-  (:require [canary.runner.print :as print :refer [announce with-task-printing]]
+  (:require [canary.runner.print :refer [announce with-task-printing]]
             [canary.runner.shell :as shell]
             [clojure.java.io :as io]
             [canary.runner.utils :as utils]

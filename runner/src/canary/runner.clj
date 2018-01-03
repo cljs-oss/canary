@@ -1,11 +1,9 @@
 (ns canary.runner
   "Command-line interface for runner."
-  (:require [clojure.string :as string]
-            [clojure.tools.cli :as cli]
+  (:require [clojure.tools.cli :as cli]
             [canary.runner.jobs :as jobs]
             [canary.runner.utils :as utils]
             [canary.runner.cli :refer [timeout-cli-option normal-cli-option verbosity-cli-option]]
-            [canary.runner.output :as output]
             [canary.runner.i18n :as i18n]
             [canary.runner.defaults :as defaults]
             [me.raynes.fs :as fs]
