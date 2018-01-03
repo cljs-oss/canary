@@ -221,7 +221,7 @@
   "Delay between spawning individual tasks (in seconds)")
 
 (defn ^:dynamic production-cli-desc []
-  "Will not commit into results branch")
+  "Commit into results branch only with this flag")
 
 (defn ^:dynamic verbosity-cli-desc []
   "Verbosity level; may be specified multiple times")
