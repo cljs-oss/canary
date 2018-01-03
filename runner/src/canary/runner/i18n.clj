@@ -43,7 +43,7 @@
   (str "Job timeouted (after " timeout "ms)"))
 
 (defn ^:dynamic completed-task-msg [task]
-  (str (print/emphasize "completed") " task " (print/task-name task)))
+  (str (print/emphasize "Completed") " task " (print/task-name task)))
 
 (defn ^:dynamic job-completed-msg [result-tasks]
   (str "Job completed:\n" (print/dump (utils/pp result-tasks))))
