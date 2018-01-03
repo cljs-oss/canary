@@ -1,0 +1,112 @@
+({:name "coal-mine-01",
+  :description "function coal-mine-01 from canary/projects/mfikes.clj:20",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state '' {}\n\tat clojure.core$ex_info.invokeStatic(core.clj:4617)\n\tat clojure.core$ex_info.invoke(core.clj:4617)\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:39)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:36)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:121)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:112)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:176)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:167)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:209)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:206)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:224)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:219)\n\tat canary.projects.mfikes$coal_mine_01.invokeStatic(mfikes.clj:21)\n\tat canary.projects.mfikes$coal_mine_01.invoke(mfikes.clj:20)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:23)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:20)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:28)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:25)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__9753.invoke(jobs.clj:38)\n\tat clojure.core.async$thread_call$fn__6061.invoke(async.clj:442)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n\tat java.lang.Thread.run(Thread.java:748)\n\n```"}}
+ {:name "coal-mine-03",
+  :description "function coal-mine-03 from canary/projects/mfikes.clj:28",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state '' {}\n\tat clojure.core$ex_info.invokeStatic(core.clj:4617)\n\tat clojure.core$ex_info.invoke(core.clj:4617)\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:39)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:36)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:121)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:112)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:176)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:167)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:209)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:206)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:224)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:219)\n\tat canary.projects.mfikes$coal_mine_03.invokeStatic(mfikes.clj:29)\n\tat canary.projects.mfikes$coal_mine_03.invoke(mfikes.clj:28)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:23)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:20)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:28)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:25)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__9753.invoke(jobs.clj:38)\n\tat clojure.core.async$thread_call$fn__6061.invoke(async.clj:442)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n\tat java.lang.Thread.run(Thread.java:748)\n\n```"}}
+ {:name "coal-mine-06",
+  :description "function coal-mine-06 from canary/projects/mfikes.clj:40",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state '' {}\n\tat clojure.core$ex_info.invokeStatic(core.clj:4617)\n\tat clojure.core$ex_info.invoke(core.clj:4617)\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:39)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:36)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:121)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:112)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:176)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:167)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:209)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:206)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:224)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:219)\n\tat canary.projects.mfikes$coal_mine_06.invokeStatic(mfikes.clj:41)\n\tat canary.projects.mfikes$coal_mine_06.invoke(mfikes.clj:40)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:23)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:20)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:28)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:25)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__9753.invoke(jobs.clj:38)\n\tat clojure.core.async$thread_call$fn__6061.invoke(async.clj:442)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n\tat java.lang.Thread.run(Thread.java:748)\n\n```"}}
+ {:name "coal-mine-07",
+  :description "function coal-mine-07 from canary/projects/mfikes.clj:44",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state '' {}\n\tat clojure.core$ex_info.invokeStatic(core.clj:4617)\n\tat clojure.core$ex_info.invoke(core.clj:4617)\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:39)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:36)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:121)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:112)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:176)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:167)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:209)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:206)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:224)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:219)\n\tat canary.projects.mfikes$coal_mine_07.invokeStatic(mfikes.clj:45)\n\tat canary.projects.mfikes$coal_mine_07.invoke(mfikes.clj:44)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:23)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:20)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:28)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:25)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__9753.invoke(jobs.clj:38)\n\tat clojure.core.async$thread_call$fn__6061.invoke(async.clj:442)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n\tat java.lang.Thread.run(Thread.java:748)\n\n```"}}
+ {:name "coal-mine-02",
+  :description "function coal-mine-02 from canary/projects/mfikes.clj:24",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state '' {}\n\tat clojure.core$ex_info.invokeStatic(core.clj:4617)\n\tat clojure.core$ex_info.invoke(core.clj:4617)\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:39)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:36)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:121)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:112)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:176)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:167)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:209)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:206)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:224)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:219)\n\tat canary.projects.mfikes$coal_mine_02.invokeStatic(mfikes.clj:25)\n\tat canary.projects.mfikes$coal_mine_02.invoke(mfikes.clj:24)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:23)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:20)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:28)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:25)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__9753.invoke(jobs.clj:38)\n\tat clojure.core.async$thread_call$fn__6061.invoke(async.clj:442)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n\tat java.lang.Thread.run(Thread.java:748)\n\n```"}}
+ {:name "coal-mine-08",
+  :description "function coal-mine-08 from canary/projects/mfikes.clj:48",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state '' {}\n\tat clojure.core$ex_info.invokeStatic(core.clj:4617)\n\tat clojure.core$ex_info.invoke(core.clj:4617)\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:39)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:36)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:121)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:112)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:176)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:167)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:209)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:206)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:224)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:219)\n\tat canary.projects.mfikes$coal_mine_08.invokeStatic(mfikes.clj:49)\n\tat canary.projects.mfikes$coal_mine_08.invoke(mfikes.clj:48)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:23)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:20)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:28)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:25)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__9753.invoke(jobs.clj:38)\n\tat clojure.core.async$thread_call$fn__6061.invoke(async.clj:442)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n\tat java.lang.Thread.run(Thread.java:748)\n\n```"}}
+ {:name "coal-mine-04",
+  :description "function coal-mine-04 from canary/projects/mfikes.clj:32",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state '' {}\n\tat clojure.core$ex_info.invokeStatic(core.clj:4617)\n\tat clojure.core$ex_info.invoke(core.clj:4617)\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:39)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:36)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:121)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:112)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:176)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:167)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:209)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:206)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:224)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:219)\n\tat canary.projects.mfikes$coal_mine_04.invokeStatic(mfikes.clj:33)\n\tat canary.projects.mfikes$coal_mine_04.invoke(mfikes.clj:32)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:23)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:20)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:28)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:25)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__9753.invoke(jobs.clj:38)\n\tat clojure.core.async$thread_call$fn__6061.invoke(async.clj:442)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n\tat java.lang.Thread.run(Thread.java:748)\n\n```"}}
+ {:name "coal-mine-05",
+  :description "function coal-mine-05 from canary/projects/mfikes.clj:36",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state '' {}\n\tat clojure.core$ex_info.invokeStatic(core.clj:4617)\n\tat clojure.core$ex_info.invoke(core.clj:4617)\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:39)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:36)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:121)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:112)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:176)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:167)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:209)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:206)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:224)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:219)\n\tat canary.projects.mfikes$coal_mine_05.invokeStatic(mfikes.clj:37)\n\tat canary.projects.mfikes$coal_mine_05.invoke(mfikes.clj:36)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:23)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:20)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:28)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:25)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__9753.invoke(jobs.clj:38)\n\tat clojure.core.async$thread_call$fn__6061.invoke(async.clj:442)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n\tat java.lang.Thread.run(Thread.java:748)\n\n```"}}
+ {:name "coal-mine-09",
+  :description "function coal-mine-09 from canary/projects/mfikes.clj:52",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state '' {}\n\tat clojure.core$ex_info.invokeStatic(core.clj:4617)\n\tat clojure.core$ex_info.invoke(core.clj:4617)\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:39)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:36)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:121)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:112)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:176)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:167)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:209)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:206)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:224)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:219)\n\tat canary.projects.mfikes$coal_mine_09.invokeStatic(mfikes.clj:53)\n\tat canary.projects.mfikes$coal_mine_09.invoke(mfikes.clj:52)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:23)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:20)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:28)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:25)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__9753.invoke(jobs.clj:38)\n\tat clojure.core.async$thread_call$fn__6061.invoke(async.clj:442)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n\tat java.lang.Thread.run(Thread.java:748)\n\n```"}}
+ {:name "chromex",
+  :description "function chromex from canary/projects/binaryage.clj:7",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/chromex#583](https://travis-ci.org/binaryage/chromex/builds/324721179)<br>"}}
+ {:name "cljs-devtools",
+  :description "function cljs-devtools from canary/projects/binaryage.clj:4",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-devtools#472](https://travis-ci.org/binaryage/cljs-devtools/builds/324721183)<br>"}}
+ {:name "coal-mine-10",
+  :description "function coal-mine-10 from canary/projects/mfikes.clj:56",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#59](https://travis-ci.org/mfikes/coal-mine/builds/324721118)<br>"}}
+ {:name "planck",
+  :description "function planck from canary/projects/mfikes.clj:4",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/planck#1329](https://travis-ci.org/mfikes/planck/builds/324721129)<br>"}}
+ {:name "cljs-oops",
+  :description "function cljs-oops from canary/projects/binaryage.clj:10",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-oops#336](https://travis-ci.org/binaryage/cljs-oops/builds/324721181)<br>"}})
