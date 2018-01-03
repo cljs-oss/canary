@@ -217,6 +217,9 @@
 (defn ^:dynamic timeout-cli-desc []
   "Total timeout for job to complete (in seconds)")
 
+(defn ^:dynamic spawning-delay-cli-desc []
+  "Delay between spawning individual tasks (in seconds)")
+
 (defn ^:dynamic production-cli-desc []
   "Will not commit into results branch")
 

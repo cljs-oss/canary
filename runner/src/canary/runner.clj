@@ -29,6 +29,7 @@
    (normal-cli-option [nil "--job-id ID" (i18n/job-id-cli-desc) :default "0"])
    (timeout-cli-option [nil "--polling-interval SECONDS" (i18n/polling-interval-cli-desc) :default defaults/polling-interval])
    (timeout-cli-option [nil "--timeout SECONDS" (i18n/timeout-cli-desc) :default defaults/timeout])
+   (timeout-cli-option [nil "--spawning-delay SECONDS" (i18n/spawning-delay-cli-desc) :default defaults/spawning-delay])
    (normal-cli-option [nil "--production" (i18n/production-cli-desc)])
    (verbosity-cli-option ["-v" nil (i18n/verbosity-cli-desc)])
    (normal-cli-option ["-h" "--help"])])

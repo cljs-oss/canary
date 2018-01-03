@@ -9,4 +9,5 @@
    :verbosity        0
    :job-id           "0"
    :timeout          defaults/timeout
-   :polling-interval defaults/polling-interval})
+   :polling-interval defaults/polling-interval
+   :spawning-delay   defaults/spawning-delay})

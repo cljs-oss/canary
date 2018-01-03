@@ -9,6 +9,7 @@
 (def cache-dir ".cachedir")
 (def timeout (utils/seconds-to-msec (* 60 60)))                                                                               ; 60min
 (def polling-interval (utils/seconds-to-msec (* 60 5)))                                                                       ; 5min, travis kills a job when no output is presented in last 10min
+(def spawning-delay (utils/seconds-to-msec 1))                                                                                ; 1sec, to help determinism when running jobs
 
 (def build-script-path "scripts/build_compiler.sh")
 (def commit-script-path "scripts/commit_report.sh")
