@@ -84,26 +84,30 @@
 (defn enable-tasks-based-on-options [tasks options]
   (map (partial task-filter options) tasks))
 
-(defn sort-enabled-first [tasks]
+(defn sort-enabled-tasks-first [tasks]
   (let [swap? (fn [task1 task2] (and (:enabled task2) (not (:enabled task1))))]
     (sort (comparator swap?) tasks)))
 
-(defn sort-by-priority [tasks]
+(defn sort-tasks-by-priority [tasks]
   (let [swap? (fn [task1 task2]
                 (let [task1-priority (or (:priority task1) -1)
                       task2-priority (or (:priority task2) -1)]
                   (< task1-priority task2-priority)))]
     (sort (comparator swap?) tasks)))
 
-(defn sort-by-name [tasks]
+(defn sort-tasks-by-name [tasks]
   (sort-by :name tasks))
+
+(defn sort-tasks [tasks]
+  (-> tasks
+      (sort-tasks-by-name)
+      (sort-tasks-by-priority)
+      (sort-enabled-tasks-first)))
 
 (defn analyze-tasks [tasks options]
   (-> tasks
-      (sort-by-name)
-      (sort-by-priority)
       (enable-tasks-based-on-options options)
-      (sort-enabled-first)
+      (sort-tasks)
       (assign-task-colors)))
 
 ; -- tests ------------------------------------------------------------------------------------------------------------------

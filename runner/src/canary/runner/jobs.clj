@@ -102,7 +102,7 @@
         (do
           (announce (i18n/job-timeout-error-msg (:timeout options-with-build-result)))
           2)
-        (let [result-tasks (cleanup-result-tasks result)
+        (let [result-tasks (tasks/sort-tasks (cleanup-result-tasks result))
               enabled-tasks (filter :enabled result-tasks)
               all-passed? (every? tasks/task-passed? enabled-tasks)]
           (announce (i18n/job-completed-msg result-tasks) 1 options-with-build-result)
