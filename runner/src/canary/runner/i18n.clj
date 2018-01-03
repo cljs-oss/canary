@@ -35,9 +35,15 @@
 
 (defn ^:dynamic waiting-for-tasks-msg [running-tasks]
   (let [task-count (count running-tasks)
-        remaining-info (str task-count " remaining " (pluralize "task" task-count))]
+        remaining-count (str task-count " remaining " (pluralize "task" task-count))
+        remaining-tasks-list-items (map print/task-name running-tasks)
+        remaining-tasks-list (if (> task-count 1)
+                               (str (string/join ", " (butlast remaining-tasks-list-items))
+                                    " and "
+                                    (last remaining-tasks-list-items))
+                               (first remaining-tasks-list-items))]
     (assert (pos? task-count))
-    (str "Still waiting for " remaining-info "...")))
+    (str "Still waiting for " remaining-count "... (" remaining-tasks-list ")")))
 
 (defn ^:dynamic job-timeout-error-msg [timeout]
   (str "Job timeouted (after " timeout "ms)"))
