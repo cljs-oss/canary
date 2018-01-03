@@ -90,8 +90,20 @@
   (let [swap? (fn [x y] (and (:enabled y) (not (:enabled x))))]
     (sort (comparator swap?) tasks)))
 
+(defn sort-by-priority [tasks]
+  (let [swap? (fn [x y]
+                (let [x-priority (or (:priority x) -1)
+                      y-priority (or (:priority y) -1)]
+                  (< x-priority y-priority)))]
+    (sort (comparator swap?) tasks)))
+
+(defn sort-by-name [tasks]
+  (sort-by :name tasks))
+
 (defn analyze-tasks [tasks options]
   (-> tasks
+      (sort-by-name)
+      (sort-by-priority)
       (enable-tasks-based-on-options options)
       (sort-enabled-first)
       (assign-task-colors)))
