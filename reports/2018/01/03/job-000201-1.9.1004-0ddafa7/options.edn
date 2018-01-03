@@ -1,0 +1,22 @@
+{:projects "/canary/runner/src/canary/projects",
+ :compiler-repo "https://github.com/clojure/clojurescript.git",
+ :rootdir "/canary",
+ :compiler-rev "master",
+ :verbosity 0,
+ :job-id "201",
+ :polling-interval 300000,
+ :production true,
+ :cachedir "/canary/runner/.cachedir",
+ :action :job,
+ :workdir "/canary/runner/.workdir",
+ :build-result
+ {:build-id "1.9.1004-0ddafa7",
+  :build-jar-path "/canary/runner/.workdir/clojurescript-1.9.1004-0ddafa7.jar",
+  :build-download-url
+  "https://github.com/cljs-oss/canary/releases/download/r1.9.1004-0ddafa7/clojurescript-1.9.1004-0ddafa7.jar",
+  :github-release-name "ClojureScript 1.9.1004-0ddafa7",
+  :github-release-tag "r1.9.1004-0ddafa7",
+  :compiler-rev-url "https://github.com/clojure/clojurescript/commit/0ddafa7792efa1ef885b10c96f171a704890e7d7",
+  :canary-job-commit-url "https://github.com/cljs-oss/canary/commit/0a91d1891b19441327a5733ab3876d049eee88bd",
+  :travis-build-url "https://travis-ci.org/cljs-oss/canary/builds/324707227"},
+ :timeout 3600000}

@@ -1,0 +1,112 @@
+({:name "coal-mine-08",
+  :description "function coal-mine-08 from canary/projects/mfikes.clj:57",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Travis API responded with invalid JSON: JSON error (unexpected character): F\nForbidden\n {}\n\tat clojure.core$ex_info.invokeStatic(core.clj:4617)\n\tat clojure.core$ex_info.invoke(core.clj:4617)\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:39)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:36)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$parse_response.invokeStatic(travis.clj:26)\n\tat canary.runner.travis$parse_response.invoke(travis.clj:22)\n\tat canary.runner.travis$inspect_api_response.invokeStatic(travis.clj:29)\n\tat canary.runner.travis$inspect_api_response.invoke(travis.clj:28)\n\tat canary.runner.travis$talk_to_travis_api_BANG_.invokeStatic(travis.clj:36)\n\tat canary.runner.travis$talk_to_travis_api_BANG_.invoke(travis.clj:33)\n\tat canary.runner.travis$post_to_travis_api_BANG_.invokeStatic(travis.clj:51)\n\tat canary.runner.travis$post_to_travis_api_BANG_.invoke(travis.clj:44)\n\tat canary.runner.travis$trigger_build_BANG_.invokeStatic(travis.clj:78)\n\tat canary.runner.travis$trigger_build_BANG_.invoke(travis.clj:65)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:207)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:206)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:224)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:219)\n\tat canary.projects.mfikes$coal_mine_08.invokeStatic(mfikes.clj:58)\n\tat canary.projects.mfikes$coal_mine_08.invoke(mfikes.clj:57)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:23)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:20)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:28)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:25)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__9753.invoke(jobs.clj:38)\n\tat clojure.core.async$thread_call$fn__6061.invoke(async.clj:442)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n\tat java.lang.Thread.run(Thread.java:748)\n\n```"}}
+ {:name "coal-mine-05",
+  :description "function coal-mine-05 from canary/projects/mfikes.clj:45",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#50](https://travis-ci.org/mfikes/coal-mine/builds/324708832)<br>"}}
+ {:name "coal-mine-03",
+  :description "function coal-mine-03 from canary/projects/mfikes.clj:37",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#52](https://travis-ci.org/mfikes/coal-mine/builds/324708838)<br>"}}
+ {:name "coal-mine-09",
+  :description "function coal-mine-09 from canary/projects/mfikes.clj:61",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#51](https://travis-ci.org/mfikes/coal-mine/builds/324708836)<br>"}}
+ {:name "coal-mine-04",
+  :description "function coal-mine-04 from canary/projects/mfikes.clj:41",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#53](https://travis-ci.org/mfikes/coal-mine/builds/324708864)<br>"}}
+ {:name "cljs-devtools",
+  :description "function cljs-devtools from canary/projects/binaryage.clj:4",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-devtools#471](https://travis-ci.org/binaryage/cljs-devtools/builds/324708827)<br>"}}
+ {:name "chromex",
+  :description "function chromex from canary/projects/binaryage.clj:7",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/chromex#582](https://travis-ci.org/binaryage/chromex/builds/324708816)<br>"}}
+ {:name "coal-mine-10",
+  :description "function coal-mine-10 from canary/projects/mfikes.clj:65",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#54](https://travis-ci.org/mfikes/coal-mine/builds/324708876)<br>"}}
+ {:name "coal-mine-02",
+  :description "function coal-mine-02 from canary/projects/mfikes.clj:33",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :failed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:red'>&#x2717;</b> Travis build [mfikes/coal-mine#55](https://travis-ci.org/mfikes/coal-mine/builds/324708878)<br>"}}
+ {:name "coal-mine-06",
+  :description "function coal-mine-06 from canary/projects/mfikes.clj:49",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#56](https://travis-ci.org/mfikes/coal-mine/builds/324708880)<br>"}}
+ {:name "planck",
+  :description "function planck from canary/projects/mfikes.clj:4",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/planck#1328](https://travis-ci.org/mfikes/planck/builds/324708868)<br>"}}
+ {:name "coal-mine-07",
+  :description "function coal-mine-07 from canary/projects/mfikes.clj:53",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#57](https://travis-ci.org/mfikes/coal-mine/builds/324708889)<br>"}}
+ {:name "coal-mine-01",
+  :description "function coal-mine-01 from canary/projects/mfikes.clj:29",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#58](https://travis-ci.org/mfikes/coal-mine/builds/324708893)<br>"}}
+ {:name "cljs-oops",
+  :description "function cljs-oops from canary/projects/binaryage.clj:10",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-oops#335](https://travis-ci.org/binaryage/cljs-oops/builds/324708833)<br>"}})
