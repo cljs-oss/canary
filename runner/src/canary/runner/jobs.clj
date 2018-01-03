@@ -44,7 +44,10 @@
 (defn launch-tasks! [tasks options]
   (let [enabled-tasks (filter :enabled tasks)
         * (fn [tasks task]
-            (assoc tasks (launch-task! task options) (assoc task :running true)))]
+            (assoc tasks (launch-task! task options) (assoc task :running true))
+            (let [delay (:spawning-delay options)]
+              (if (pos? delay)
+                (Thread/sleep delay))))]
     (doall (reduce * {} enabled-tasks))))
 
 (defn report-disabled-tasks [tasks options]
