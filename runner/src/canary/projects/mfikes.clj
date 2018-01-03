@@ -17,42 +17,22 @@
 (defn add-partition-filter [options filter]
   (assoc options :travis-config {:env {:global {"PARTITION_FILTER" filter}}}))
 
-(defn ^:task coal-mine-01 [options]
+(defn ^:task coal-mine-1 [options]
   (travis/request-build! "mfikes/coal-mine" "CANARY_COAL_MINE_TRAVIS_TOKEN"
     (add-partition-filter options "1")))
 
-(defn ^:task coal-mine-02 [options]
+(defn ^:task coal-mine-2 [options]
   (travis/request-build! "mfikes/coal-mine" "CANARY_COAL_MINE_TRAVIS_TOKEN"
     (add-partition-filter options "2")))
 
-(defn ^:task coal-mine-03 [options]
+(defn ^:task coal-mine-3 [options]
   (travis/request-build! "mfikes/coal-mine" "CANARY_COAL_MINE_TRAVIS_TOKEN"
     (add-partition-filter options "3")))
 
-(defn ^:task coal-mine-04 [options]
+(defn ^:task coal-mine-4 [options]
   (travis/request-build! "mfikes/coal-mine" "CANARY_COAL_MINE_TRAVIS_TOKEN"
     (add-partition-filter options "4")))
 
-(defn ^:task coal-mine-05 [options]
+(defn ^:task coal-mine-5 [options]
   (travis/request-build! "mfikes/coal-mine" "CANARY_COAL_MINE_TRAVIS_TOKEN"
     (add-partition-filter options "5")))
-
-(defn ^:task coal-mine-06 [options]
-  (travis/request-build! "mfikes/coal-mine" "CANARY_COAL_MINE_TRAVIS_TOKEN"
-    (add-partition-filter options "6")))
-
-(defn ^:task coal-mine-07 [options]
-  (travis/request-build! "mfikes/coal-mine" "CANARY_COAL_MINE_TRAVIS_TOKEN"
-    (add-partition-filter options "7")))
-
-(defn ^:task coal-mine-08 [options]
-  (travis/request-build! "mfikes/coal-mine" "CANARY_COAL_MINE_TRAVIS_TOKEN"
-    (add-partition-filter options "8")))
-
-(defn ^:task coal-mine-09 [options]
-  (travis/request-build! "mfikes/coal-mine" "CANARY_COAL_MINE_TRAVIS_TOKEN"
-    (add-partition-filter options "9")))
-
-(defn ^:task coal-mine-10 [options]
-  (travis/request-build! "mfikes/coal-mine" "CANARY_COAL_MINE_TRAVIS_TOKEN"
-    (add-partition-filter options "10")))
