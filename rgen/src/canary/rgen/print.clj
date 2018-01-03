@@ -1,6 +1,5 @@
 (ns canary.rgen.print
-  (:require [clojure.string :as string]
-            [cuerdas.core :as cuerdas]
+  (:require [cuerdas.core :as cuerdas]
             [clansi]))
 
 ; -- announcement printing --------------------------------------------------------------------------------------------------

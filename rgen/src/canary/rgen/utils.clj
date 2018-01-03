@@ -1,7 +1,6 @@
 (ns canary.rgen.utils
   "Shared utility functions."
-  (:require [clojure.pprint :refer [pprint]]
-            [clojure.string :as string])
+  (:require [clojure.pprint :refer [pprint]])
   (:import (java.util.concurrent TimeUnit)
            (java.io Writer)))
 

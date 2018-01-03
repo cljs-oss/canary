@@ -1,14 +1,12 @@
 (ns canary.rgen
   "Command-line interface for rgen."
-  (:require [clojure.string :as string]
-            [clojure.tools.cli :as cli]
+  (:require [clojure.tools.cli :as cli]
             [canary.rgen.utils :as utils]
             [canary.rgen.cli :refer [normal-cli-option count-cli-option verbosity-cli-option]]
             [canary.rgen.i18n :as i18n]
             [canary.rgen.defaults :as defaults]
             [canary.rgen.overview :as overview]
             [me.raynes.fs :as fs]
-            [cuerdas.core :as cuerdas]
             [clojure.java.io :as io])
   (:gen-class))
 
