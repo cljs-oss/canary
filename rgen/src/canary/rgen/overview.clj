@@ -180,5 +180,5 @@
       (let [output-path (utils/canonical-path output)
             exit-code (try-write-output output-path status-table-markup)]
         (if (zero? exit-code)
-          (announce (str "wrote generated overview to " (print/file-path output-path))))
+          (announce (str "Wrote generated overview to " (print/file-path output-path))))
         exit-code))))
