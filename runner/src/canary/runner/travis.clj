@@ -1,7 +1,6 @@
 (ns canary.runner.travis
   "Supporting Travis functionality for tasks."
-  (:require [me.raynes.conch.low-level :as sh]
-            [clojure.data.json :as json]
+  (:require [clojure.data.json :as json]
             [clojure.string :as string]
             [canary.runner.shell :as shell]
             [canary.runner.print :refer [announce]]
@@ -10,7 +9,9 @@
             [canary.runner.utils :as utils]
             [canary.runner.travis-mocks :as travis-mocks]
             [canary.runner.report :as report]
-            [canary.runner.defaults :as defaults]))
+            [canary.runner.defaults :as defaults]
+            [indole.core :refer [make-rate-limiter can-charge?!]]
+            [clojure.core.async :as async]))
 
 (defn launch! [cmd args options]
   (announce (i18n/curl-command-msg args) 2 options)
@@ -40,7 +41,7 @@
    "-H" "Travis-API-Version: 3"
    "-H" (str "Authorization: token " token)])
 
-(defn post-to-travis-api! [api-endpoint token request-body options]
+(defn non-throttled-post-to-travis-api! [api-endpoint token request-body options]
   (let [curl-args (concat (common-curl-args token)
                           ["-s" "-X" "POST"
                            "-H" "Content-Type: application/json"
@@ -48,6 +49,22 @@
                            "-d" (json/write-str request-body)
                            api-endpoint])]
     (talk-to-travis-api! curl-args options)))
+
+; we should throttle our POST requests to Travis
+; they ban us after: 10 POST requests within 30 seconds
+; see https://github.com/travis-ci/travis-api/blob/f196f597be5e9415daba3731dc6b4356d0673daf/lib/travis/api/attack.rb#L89
+; we want to make up to 9 requests per each 30 seconds bucket
+(def travis-post-api-limiter (make-rate-limiter (utils/seconds-to-msec 30) 9))
+
+(defn throttled-post-to-travis-api! [& args]
+  (loop []
+    (if (can-charge?! travis-post-api-limiter)
+      (apply non-throttled-post-to-travis-api! args)
+      (do
+        (Thread/sleep 1000)
+        (recur)))))
+
+(def post-to-travis-api! throttled-post-to-travis-api!)
 
 (defn get-from-travis-api! [api-endpoint token options]
   (let [curl-args (concat (common-curl-args token)

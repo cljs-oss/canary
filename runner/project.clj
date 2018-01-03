@@ -9,7 +9,8 @@
                  [me.raynes/conch "0.8.0"]
                  [me.raynes/fs "1.4.6"]
                  [clansi "1.0.0"]
-                 [funcool/cuerdas "2.0.4"]]
+                 [funcool/cuerdas "2.0.4"]
+                 [indole "0.2.0"]]
   :source-paths ["src"]
   :test-paths ["test/src" "test/fixtures/projects"]
   :main canary.runner)
