@@ -105,11 +105,11 @@
 (defn ^:dynamic travis-request-is-done-msg [request-response]
   (str "Travis request " (print/request-label request-response) " is done"))
 
-(defn ^:dynamic travis-build-update-msg [slug build-number build-state]
-  (str "Travis build " (print/repo-slug slug) (print/travis-build-number build-number) " => " build-state))
-
-(defn ^:dynamic travis-build-url-msg [url]
-  (str "Travis build url: " (print/travis-url url)))
+(defn ^:dynamic travis-build-update-msg [slug build-number build-state & [extra]]
+  (let [extra-info (if (some? extra)
+                     (str " " extra)
+                     "")]
+    (str "Travis build " (print/repo-slug slug) (print/travis-build-number build-number) " => " build-state extra-info)))
 
 (defn ^:dynamic travis-report-data-dump-msg [report-data]
   (str "Travis report data:\n" (print/dump (utils/pp report-data))))

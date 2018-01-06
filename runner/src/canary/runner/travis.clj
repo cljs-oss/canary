@@ -3,15 +3,14 @@
   (:require [clojure.data.json :as json]
             [clojure.string :as string]
             [canary.runner.shell :as shell]
-            [canary.runner.print :refer [announce]]
+            [canary.runner.print :as print :refer [announce]]
             [canary.runner.env :as env]
             [canary.runner.i18n :as i18n]
             [canary.runner.utils :as utils]
             [canary.runner.travis-mocks :as travis-mocks]
             [canary.runner.report :as report]
             [canary.runner.defaults :as defaults]
-            [indole.core :refer [make-rate-limiter can-charge?!]]
-            [clojure.core.async :as async]))
+            [indole.core :refer [make-rate-limiter can-charge?!]]))
 
 (defn launch! [cmd args options]
   (announce (i18n/curl-command-msg args) 2 options)
@@ -175,9 +174,10 @@
             build-state (get build "state")]
         (assert build-id)
         (when (not= build-state (get announced-builds build-id))
-          (announce (i18n/travis-build-update-msg slug build-number build-state))
-          (when (= build-state "created")
-            (announce (i18n/travis-build-url-msg (travis-build-url slug build-id)))))))
+          (let [extra-info (case build-state
+                             "created" (str "@ " (print/travis-url (travis-build-url slug build-id)))
+                             nil)]
+            (announce (i18n/travis-build-update-msg slug build-number build-state extra-info))))))
     (into {} (for [build builds] [(get build "id") (get build "state")]))))
 
 (defn monitor-request-status! [slug request-id token options]
