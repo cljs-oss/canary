@@ -336,6 +336,7 @@ fi
 RESULT=`cat <<EDN
 {
   :build-id "${BUILD_ID}"
+  :build-rev "${BUILD_REV}"
   :build-jar-path "${RESULT_JAR_PATH}"
   :build-download-url "${BUILD_DOWNLOAD_URL}"
   :github-release-name "${GITHUB_RELEASE_NAME}"
