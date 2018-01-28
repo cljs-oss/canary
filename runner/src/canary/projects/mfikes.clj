@@ -36,3 +36,6 @@
 (defn ^:task coal-mine-5 [options]
   (travis/request-build! "mfikes/coal-mine" "CANARY_COAL_MINE_TRAVIS_TOKEN"
     (add-partition-filter options "5")))
+
+(defn ^:task andare [options]
+  (travis/request-build! "mfikes/andare" "CANARY_ANDARE_TRAVIS_TOKEN" options))
