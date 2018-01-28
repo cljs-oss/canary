@@ -42,6 +42,11 @@ If you are using Travis for CI, participating in Canary builds involves four sim
     ```    
 
 
+After setting this up, you can force an out-of-cycle test of your job going into the `jobs` branch and making a commit like this (replacing `your-project`) and pushing it:
+```
+git commit --allow-empty -m "job --only your-project"
+```
+
 # More Details
 
 Canary provides a script which can be used to run a job. Each job is assigned a ClojureScript compiler version. 
