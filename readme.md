@@ -5,7 +5,7 @@ The goal is to have some smoke tests which allow us to detect issues early befor
 
 ## How to Participate
 
-If you are using Travis for CI, participating in Canary builds involves four simple steps:
+If you are using Travis for CI, participating in Canary builds involves four simple steps. (Before doing this, ask someone in the `cljs-oss` organization for commit rights.)
 
 1. Revise your `.travis.yml` to fetch the Canary-built ClojureScript JAR.
 
