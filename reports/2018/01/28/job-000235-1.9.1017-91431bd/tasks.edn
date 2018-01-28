@@ -1,0 +1,44 @@
+({:name "chromex",
+  :description "function chromex from canary/projects/binaryage.clj:7",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "cljs-devtools",
+  :description "function cljs-devtools from canary/projects/binaryage.clj:4",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "cljs-oops",
+  :description "function cljs-oops from canary/projects/binaryage.clj:10",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "coal-mine-1",
+  :description "function coal-mine-1 from canary/projects/mfikes.clj:20",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "coal-mine-2",
+  :description "function coal-mine-2 from canary/projects/mfikes.clj:24",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "coal-mine-3",
+  :description "function coal-mine-3 from canary/projects/mfikes.clj:28",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "coal-mine-4",
+  :description "function coal-mine-4 from canary/projects/mfikes.clj:32",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "coal-mine-5",
+  :description "function coal-mine-5 from canary/projects/mfikes.clj:36",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "planck",
+  :description "function planck from canary/projects/mfikes.clj:4",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "andare",
+  :description "function andare from canary/projects/mfikes.clj:40",
+  :enabled true,
+  :enabled-reason "enabled because matching --only 'andare'",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/andare#32](https://travis-ci.org/mfikes/andare/builds/334439389)<br>"}})
