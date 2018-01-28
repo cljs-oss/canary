@@ -2,6 +2,8 @@
 
 This branch contains reports from canary [jobs](https://github.com/cljs-oss/canary/tree/jobs).
 
+> If you maintain an open source library targeting ClojureScript consider [adding it to Canary](https://github.com/cljs-oss/canary/tree/master#how-to-participate). This will help ensure that no changes to the ClojureScript compiler results in breakage of your project. And if you use a library that is important to you, consider helping the maintainers accomplish this.
+
 [//]: # (begin_overview_table)
 
 | task \ job | <a href="reports/2018/01/28/job-000233-1.9.1017-91431bd" title="job #233 finished on 2018-01-28">233</a> | <a href="reports/2018/01/28/job-000232-1.9.1014-5daa572" title="job #232 finished on 2018-01-28">232</a> | <a href="reports/2018/01/27/job-000231-1.9.1014-5daa572" title="job #231 finished on 2018-01-27">231</a> | <a href="reports/2018/01/26/job-000229-1.9.1014-5daa572" title="job #229 finished on 2018-01-26">229</a> | <a href="reports/2018/01/26/job-000228-1.9.1011-9ddd356" title="job #228 finished on 2018-01-26">228</a> | <a href="reports/2018/01/25/job-000227-1.9.1011-9ddd356" title="job #227 finished on 2018-01-25">227</a> | <a href="reports/2018/01/24/job-000226-1.9.1011-9ddd356" title="job #226 finished on 2018-01-24">226</a> | <a href="reports/2018/01/23/job-000225-1.9.1011-9ddd356" title="job #225 finished on 2018-01-23">225</a> | <a href="reports/2018/01/22/job-000224-1.9.1011-9ddd356" title="job #224 finished on 2018-01-22">224</a> | <a href="reports/2018/01/21/job-000223-1.9.1011-9ddd356" title="job #223 finished on 2018-01-21">223</a> |
@@ -20,5 +22,3 @@ This branch contains reports from canary [jobs](https://github.com/cljs-oss/cana
 [//]: # (end_overview_table)
 
 All job reports are available under [reports](reports).
-
-Want to participate? The code lives on [master](https://github.com/cljs-oss/canary/tree/master).
