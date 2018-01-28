@@ -3,6 +3,47 @@
 This project provides a tool for exercising participating projects with a pinned bleeding-edge ClojureScript compiler version. 
 The goal is to have some smoke tests which allow us to detect issues early before releasing a new ClojureScript version.
 
+## How to Participate
+
+If you are using Travis for CI, participating in Canary builds involves four simple steps:
+
+1. Revise your `.travis.yml` to fetch the Canary-built ClojureScript JAR.
+
+    ```
+    before_install:
+      - curl -sSL https://raw.githubusercontent.com/cljs-oss/canary/master/scripts/install-canary.sh | bash
+    ```  
+
+2. Configure your project's build so that it honors the `CANARY_CLOJURESCRIPT_VERSION` environment variable. If using Leiningen, this can be accomplished by revising your ClojureScript dependency in `project.clj` to look like:
+
+    ```
+    [org.clojure/clojurescript ~(or (System/getenv "CANARY_CLOJURESCRIPT_VERSION") "1.9.946")]
+    ```
+
+3. Set up Canary with a Travis access token. Replace `YOUR_PROJECT` with the name of your project and `deadbeef` below with your Travis [access token](https://blog.travis-ci.com/2013-01-28-token-token-token), which you can obtain by doing `gem install travis && travis login && travis token`. 
+
+    ```
+    git clone --branch jobs git@github.com:cljs-oss/canary.git
+    cd canary
+    travis encrypt CANARY_YOUR_PROJECT_TRAVIS_TOKEN=deadbeef --add env.global
+    git add .travis.yml
+    git commit -m "add CANARY_YOUR_PROJECT_TRAVIS_TOKEN [ci skip]"
+    git push origin jobs
+    ```
+
+4. Add a Canary task to trigger CI builds of your project. This is done by adding a `^:task` to a namespace in the `master` branch under `runner/src/canary/projects`, like this (replacing `github-yourname`, `your-project` and `YOUR_PROJECT`):
+
+    ```
+    (ns canary.projects.github-yourname
+      (:require [canary.runner.travis :as travis]))
+
+    (defn ^:task your-project [options]
+      (travis/request-build! "github-yourname/your-project" "CANARY_YOUR_PROJECT_TRAVIS_TOKEN" options))
+    ```    
+
+
+# More Details
+
 Canary provides a script which can be used to run a job. Each job is assigned a ClojureScript compiler version. 
 It builds compiler jar, uploads it and then runs exercises of individual projects in parallel (we call them tasks). 
 Finally it waits for task results and generates a report for archiving.
@@ -88,7 +129,7 @@ Please read the readme in the [jobs branch](https://github.com/cljs-oss/canary/t
 
 No problem. You can point Canary to your own fork of ClojureScript by specifying `--compiler-repo` and `--compiler-rev` parameters. 
 
-#### How can I participate with my project?
+#### Can you give me more details on how can I can participate with my project?
 
 You will need to write a new task for your project. First look how existing [projects are implemented](https://github.com/cljs-oss/canary/tree/master/runner/src/canary/projects).
 Ask for commit access. You can write your task as a Clojure function or as a shell script.
