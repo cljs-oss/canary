@@ -26,6 +26,7 @@ CANARY_AUTO_JOB_REPO_TOKEN=${CANARY_AUTO_JOB_REPO_TOKEN}
 CANARY_AUTO_JOB_COMMIT_AUTHOR=${CANARY_AUTO_JOB_COMMIT_AUTHOR}
 CANARY_AUTO_JOB_COMMITTER_NAME=${CANARY_AUTO_JOB_COMMITTER_NAME}
 CANARY_AUTO_JOB_COMMITTER_EMAIL=${CANARY_AUTO_JOB_COMMITTER_EMAIL}
+CANARY_AUTO_JOB_COMMAND=${CANARY_AUTO_JOB_COMMAND:-job}
 
 if [[ -z "$CANARY_AUTO_JOB_REPO_TOKEN" ]]; then
   REPO_URL="git@github.com:cljs-oss/canary.git"
@@ -59,9 +60,9 @@ git reset --hard origin/jobs
 # TODO: we could check if there were recent job requests and skip if hot
 # bash COMMIT_AUTHOR might contain spaces and bash escaping rules are crazy, have to branch
 if [[ ! -z "$GIT_COMMIT_AUTHOR" ]]; then
-  git commit -m "job" --allow-empty "${GIT_COMMIT_AUTHOR}"
+  git commit -m "${CANARY_AUTO_JOB_COMMAND}" --allow-empty "${GIT_COMMIT_AUTHOR}"
 else
-  git commit -m "job" --allow-empty
+  git commit -m "${CANARY_AUTO_JOB_COMMAND}" --allow-empty
 fi
 
 git push
