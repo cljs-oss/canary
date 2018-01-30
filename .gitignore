@@ -11,3 +11,4 @@
 /rgen/.env
 /rgen/target
 /rgen/.nrepl-port
+.canary-jobs-branch
