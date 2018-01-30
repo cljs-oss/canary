@@ -24,6 +24,8 @@ fi
 
 CANARY_AUTO_JOB_REPO_TOKEN=${CANARY_AUTO_JOB_REPO_TOKEN}
 CANARY_AUTO_JOB_COMMIT_AUTHOR=${CANARY_AUTO_JOB_COMMIT_AUTHOR}
+CANARY_AUTO_JOB_COMMITTER_NAME=${CANARY_AUTO_JOB_COMMITTER_NAME}
+CANARY_AUTO_JOB_COMMITTER_EMAIL=${CANARY_AUTO_JOB_COMMITTER_EMAIL}
 
 if [[ -z "$CANARY_AUTO_JOB_REPO_TOKEN" ]]; then
   REPO_URL="git@github.com:cljs-oss/canary.git"
@@ -44,6 +46,13 @@ if [[ ! -d "$JOB_BRANCH_FOLDER" ]]; then
 fi
 
 cd ${JOB_BRANCH_FOLDER}
+
+if [[ ! -z "${CANARY_AUTO_JOB_COMMITTER_NAME}" ]]; then
+  git config user.name "${CANARY_AUTO_JOB_COMMITTER_NAME}"
+fi
+if [[ ! -z "${CANARY_AUTO_JOB_COMMITTER_EMAIL}" ]]; then
+  git config user.email "${CANARY_AUTO_JOB_COMMITTER_EMAIL}"
+fi
 
 git fetch
 git reset --hard origin/jobs
