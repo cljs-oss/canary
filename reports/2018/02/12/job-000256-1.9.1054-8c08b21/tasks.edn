@@ -1,0 +1,96 @@
+({:name "andare",
+  :description "function andare from canary/projects/mfikes.clj:40",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :failed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:red'>&#x2717;</b> Travis build [mfikes/andare#51](https://travis-ci.org/mfikes/andare/builds/340363924)<br>"}}
+ {:name "chromex",
+  :description "function chromex from canary/projects/binaryage.clj:7",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/chromex#652](https://travis-ci.org/binaryage/chromex/builds/340363926)<br>"}}
+ {:name "cljs-devtools",
+  :description "function cljs-devtools from canary/projects/binaryage.clj:4",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-devtools#524](https://travis-ci.org/binaryage/cljs-devtools/builds/340363928)<br>"}}
+ {:name "cljs-oops",
+  :description "function cljs-oops from canary/projects/binaryage.clj:10",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-oops#386](https://travis-ci.org/binaryage/cljs-oops/builds/340363938)<br>"}}
+ {:name "cljs-zones",
+  :description "function cljs-zones from canary/projects/binaryage.clj:16",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-zones#56](https://travis-ci.org/binaryage/cljs-zones/builds/340363940)<br>"}}
+ {:name "coal-mine-1",
+  :description "function coal-mine-1 from canary/projects/mfikes.clj:20",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :failed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:red'>&#x2717;</b> Travis build [mfikes/coal-mine#568](https://travis-ci.org/mfikes/coal-mine/builds/340363942)<br>"}}
+ {:name "coal-mine-2",
+  :description "function coal-mine-2 from canary/projects/mfikes.clj:24",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :failed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:red'>&#x2717;</b> Travis build [mfikes/coal-mine#569](https://travis-ci.org/mfikes/coal-mine/builds/340363944)<br>"}}
+ {:name "coal-mine-3",
+  :description "function coal-mine-3 from canary/projects/mfikes.clj:28",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :failed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:red'>&#x2717;</b> Travis build [mfikes/coal-mine#570](https://travis-ci.org/mfikes/coal-mine/builds/340363946)<br>"}}
+ {:name "coal-mine-4",
+  :description "function coal-mine-4 from canary/projects/mfikes.clj:32",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :failed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:red'>&#x2717;</b> Travis build [mfikes/coal-mine#571](https://travis-ci.org/mfikes/coal-mine/builds/340363974)<br>"}}
+ {:name "coal-mine-5",
+  :description "function coal-mine-5 from canary/projects/mfikes.clj:36",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :failed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:red'>&#x2717;</b> Travis build [mfikes/coal-mine#572](https://travis-ci.org/mfikes/coal-mine/builds/340363976)<br>"}}
+ {:name "env-config",
+  :description "function env-config from canary/projects/binaryage.clj:13",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/env-config#81](https://travis-ci.org/binaryage/env-config/builds/340363990)<br>"}}
+ {:name "planck",
+  :description "function planck from canary/projects/mfikes.clj:4",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/planck#1556](https://travis-ci.org/mfikes/planck/builds/340363995)<br>"}})
