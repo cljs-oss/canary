@@ -1,0 +1,106 @@
+#!/usr/bin/env boot
+
+(set-env! :dependencies   '[[http-kit "2.2.0"]
+                            [cheshire "5.8.0" :exclusions [org.clojure/clojure]]])
+
+(require '[boot.cli :refer [defclifn]]
+         '[boot.util :as bu]
+         '[org.httpkit.client :as http]
+         '[clojure.pprint :as pprint :refer [pprint]]
+         '[cheshire.core :as json])
+
+(def +version+ "0.1.1")
+;; User Agent has to start with Travis 8-O
+;; https://github.com/travis-ci/travis-ci/issues/5649
+(def +user-agent+ (str "TravisGithubCljsOssCanary/" +version+))
+(def +github-api-host+ "https://api.github.com")
+(def +travis-api-host+ "https://api.travis-ci.org")
+
+(defn github-options
+  [user psw payload]
+  {:timeout 2000
+   :user-agent +user-agent+
+   :body (json/generate-string payload)
+   :basic-auth [user psw]
+   :headers {"Accept" "application/vnd.github.v3+json"
+             "Content-Type" "application/json"}})
+
+(defn travis-options
+  [payload]
+  {:timeout 2000
+   :user-agent +user-agent+
+   :body (json/generate-string payload)
+   :headers {"Accept" "application/vnd.travis-ci.2+json"
+             "Content-Type" "application/json"}})
+
+(defn request!
+  "Send request over the wire against at path.
+
+  Op-fn will be called (op-fn endpoint options) and it is supposed to be
+  an http function that returns the response.  The payload is a Clojure
+  map. Return the parsed body as Clojured data or nil if it failed.  It
+  prints out the result of the network call."
+  [op-fn host path options]
+  (let [endpoint (str host "/" path)
+        {:keys [status headers body error]} @(op-fn endpoint options)]
+    (if error
+      (bu/fail "[%s] %s\n" status error)
+      (let [parsed-body (try
+                          (json/parse-string body true)
+                          (catch Exception e
+                            (bu/fail "%s\n" (.getMessage e))
+                            (bu/fail "%s\n" body)))]
+        (bu/dbug* "[%s] %s\n" status (with-out-str (pprint parsed-body)))
+        parsed-body))))
+
+(defn delete-github-token
+  [gh-user gh-psw token-id]
+  (do
+    (request! http/delete
+              +github-api-host+
+              (str "authorizations/" token-id)
+              (github-options gh-user gh-psw {}))
+    (bu/dbug "Temporary Github Token id %s\n" token-id)
+    (bu/info "Temporary Github Token deleted\n")))
+
+(defn get-travis-required-scopes []
+  (some-> (request! http/get
+                    +travis-api-host+
+                    "config"
+                    (travis-options {}))
+          :config
+          :github
+          :scopes))
+
+(defn github-exchange-for-travis-token
+  "Exchange a Github Token (deleting it at the end of the process with a
+  Travis Access Token.  It will either return it or throw an exception."
+  [gh-user gh-psw]
+  (if-let [travis-scopes (get-travis-required-scopes)] ;; ["read:org" "user:email" "repo_deployment" "repo:status" "write:repo_hook"]
+    (let [github-payload {:scopes travis-scopes
+                          :note "Travis for Cljs Canary Testing - Delete me after getting the Travis token."
+                          :fingerprint (str (java.util.UUID/randomUUID))}]
+      (if-let [github-response (request! http/post
+                                         +github-api-host+
+                                         "authorizations"
+                                         (github-options gh-user gh-psw github-payload))]
+        (let [github-token (:token github-response)
+              payload {:github_token github-token}]
+          (bu/info "Temporary Github Token created %s\n" github-token)
+          (bu/info "Attemping exchange with Travis Access Token...\n")
+          (if-let [travis-token (:access_token (request! http/post
+                                                         +travis-api-host+
+                                                         "auth/github"
+                                                         (travis-options payload)))]
+            (do (delete-github-token gh-user gh-psw (:id github-response))
+                (bu/info "You Travis Access Token is %s\n" travis-token))
+            (do (delete-github-token gh-user gh-psw (:id github-response))
+                (throw (ex-info "Could NOT generate the Travis token, please retry." {})))))
+        (throw (ex-info "Could NOT generate the Github token, please retry." {}))))
+    (throw (ex-info "Could NOT get the Travis required scopes, please retry." {}))))
+
+(defclifn -main
+  [u username USR str "The Github username."
+   p password PSW str "The Github password."]
+  (assert (and username password) "Both -u|--username and -p|--password need to be provided.")
+  (github-exchange-for-travis-token username password))

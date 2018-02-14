@@ -20,7 +20,15 @@ If you are using Travis for CI, participating in Canary builds involves four sim
     [org.clojure/clojurescript ~(or (System/getenv "CANARY_CLOJURESCRIPT_VERSION") "1.9.946")]
     ```
 
-3. Set up Canary with a Travis access token. Replace `YOUR_PROJECT` with the name of your project and `deadbeef` below with your Travis [access token](https://blog.travis-ci.com/2013-01-28-token-token-token), which you can obtain by doing `gem install travis && travis login && travis token`. 
+3. Exchange a Github Token for a Travis Access token, you will need [boot](https://github.com/boot-clj) installed:
+
+    ```
+    ./scripts/github-to-travis-token -u your-github-user -p your-github-password
+    ```
+
+    Note that an alternative way to obtain a [Travis Access token](https://blog.travis-ci.com/2013-01-28-token-token-token) is by doing `gem install travis && travis login && travis token`.
+
+4. Set up Canary with a Travis access token. Replace `YOUR_PROJECT` with the name of your project and `deadbeef` below with your Travis Token obtained above.
 
     ```
     git clone --branch jobs git@github.com:cljs-oss/canary.git
