@@ -5,7 +5,7 @@ The goal is to have some smoke tests which allow us to detect issues early befor
 
 ## How to Participate
 
-If you are using Travis for CI, participating in Canary builds involves four simple steps. (Before doing this, ask someone in the `cljs-oss` organization for commit rights.)
+If you are using Travis for CI, participating in Canary builds involves a few simple steps. (Before doing this, ask someone in the `cljs-oss` organization for commit rights.)
 
 1. Revise your `.travis.yml` to fetch the Canary-built ClojureScript JAR.
 
@@ -39,7 +39,10 @@ If you are using Travis for CI, participating in Canary builds involves four sim
     git push origin jobs
     ```
 
-4. Add a Canary task to trigger CI builds of your project. This is done by adding a `^:task` to a namespace in the `master` branch under `runner/src/canary/projects`, like this (replacing `github-yourname`, `your-project` and `YOUR_PROJECT`):
+    Warning: Please make sure that you run `travis encrypt` inside your canary checkout of the jobs branch as shown above. 
+    Running it outside seems to produce some encrypted value but the result is corrupted when actually used by travis.
+
+5. Add a Canary task to trigger CI builds of your project. This is done by adding a `^:task` to a namespace in the `master` branch under `runner/src/canary/projects`, like this (replacing `github-yourname`, `your-project` and `YOUR_PROJECT`):
 
     ```
     (ns canary.projects.github-yourname
