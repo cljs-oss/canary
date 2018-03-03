@@ -211,6 +211,11 @@ else
   BUILD_ID="${BUILD_VERSION}-${BUILD_SHORT_REV}"
 
   # patch JAR's maven version to our SHA-annotated version
+  #
+  #   note that we need to patch version in pom.xml,
+  #   maven seems to be picky about this one and it must match version in jar filename
+  #   please note that there is also pom.properties file which also contains BUILD_VERSION, but have to leave that one intact
+  #   because pom.properties is probably used as real version in local maven repo
   echo "Patching ClojureScript JAR..."
   jar -xf "$BUILD_JAR" "$POM_PATH"
   mv "$POM_PATH" "$POM_PATH.orig"
