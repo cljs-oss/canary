@@ -11,7 +11,6 @@ set -e -o pipefail
 
 CANARY_BUILD=${CANARY_BUILD}
 CANARY_CLOJURESCRIPT_JAR_URL=${CANARY_CLOJURESCRIPT_JAR_URL}
-POM_PATH=${POM_PATH:-"META-INF/maven/org.clojure/clojurescript/pom.xml"}
 
 echo_err() {
   printf "\e[31m%s\e[0m\n" "$*" >&2;
@@ -42,17 +41,9 @@ trap finish EXIT
 echo "Downloading $CANARY_CLOJURESCRIPT_JAR_URL"
 curl -sSL -o "$JAR_PATH" "$CANARY_CLOJURESCRIPT_JAR_URL"
 
-# get the embedded pom.xml
-unzip -q "$JAR_PATH" -d "$TEMP_WORK_DIR"
-POM_LOCATION="$TEMP_WORK_DIR/$POM_PATH"
-
 echo "Installing $CANARY_CLOJURESCRIPT_JAR_URL into local maven repo"
 
-# note that recent version of maven install plugin support direct install respecting embedded pom
-#   https://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html
-# but we cannot rely on this feature because travis machines could have older versions installed by default
 mvn install:install-file \
     --batch-mode \
     --quiet \
-    -Dfile="$JAR_PATH" \
-    -DpomFile="$POM_LOCATION"
+    -Dfile="$JAR_PATH"
