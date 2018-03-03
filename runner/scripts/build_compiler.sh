@@ -204,6 +204,10 @@ else
     exit 3
   fi
 
+  # to distinguish between builds from different forks/repos we append short sha to ClojureScript builds version (BUILD_ID)
+  # this way we can treat them differently up to the point when jar gets installed into local maven repo
+  # since that point we want BUILD_VERSION only (for compatibility reasons because some cljs code might rely on its format)
+  # see --compiler-repo and --compiler-rev command-line options
   BUILD_ID="${BUILD_VERSION}-${BUILD_SHORT_REV}"
 
   # patch JAR's maven version to our SHA-annotated version
