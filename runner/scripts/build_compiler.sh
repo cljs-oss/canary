@@ -184,7 +184,7 @@ else
   LOCAL_MAVEN_REPO=${LOCAL_MAVEN_REPO:-`get_local_maven_repo`}
   rm -rf "$LOCAL_MAVEN_REPO/org/clojure/clojurescript"
 
-  BUILD_JAR=`ls -1 ./target/${CLOJURESCRIPT_MAVEN_ARTIFACT}-*.jar | grep -v aot`
+  BUILD_JAR=`ls -1 ./target/${CLOJURESCRIPT_MAVEN_ARTIFACT}-*.jar | grep -v slim`
 
   if [[ -z "$BUILD_JAR" ]]; then
     echo "ERROR!"
