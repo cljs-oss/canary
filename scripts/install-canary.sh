@@ -46,8 +46,4 @@ echo "Installing $CANARY_CLOJURESCRIPT_JAR_URL into local maven repo"
 mvn install:install-file \
     --batch-mode \
     --quiet \
-    -Dfile="$JAR_PATH" \
-    -DgroupId=org.clojure \
-    -DartifactId=clojurescript \
-    -Dversion="$CANARY_CLOJURESCRIPT_VERSION" \
-    -Dpackaging=jar
+    -Dfile="$JAR_PATH"
