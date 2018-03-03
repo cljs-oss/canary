@@ -127,17 +127,20 @@ BUILD_REV=`git rev-parse HEAD`
 
 COMPILER_REV_URL="${CANARY_COMPILER_REPO/.git//commit}/${BUILD_REV}"
 
-# The command `git describe --match v0.0` will return a string like
-#
-# v0.0-856-g329708b
-#
-# where 856 is the number of commits since the v0.0 tag. It will always
-# find the v0.0 tag and will always return the total number of commits (even
-# if the tag is v0.0.1).
+# to be robust we need to iterate CLOJURESCRIPT_MINOR down to 1 and try to extract first available GIT_CLOJURESCRIPT_REVISION
+# this is required because we support --compiler-repo and --compiler-rev command-line options and those can point to older
+# clojurescript repo version where latest CLOJURESCRIPT_MINOR tags are not present
 
 CLOJURESCRIPT_REVISION=""
 CLOJURESCRIPT_REVISION_PART=""
 while [[ "$CLOJURESCRIPT_MINOR" -gt 0 ]]; do
+  # The command `git describe --match v0.0` will return a string like
+  #
+  # v0.0-856-g329708b
+  #
+  # where 856 is the number of commits since the v0.0 tag. It will always
+  # find the v0.0 tag and will always return the total number of commits (even
+  # if the tag is v0.0.1).
   set +e
   GIT_CLOJURESCRIPT_REVISION=`git --no-replace-objects describe --match v${CLOJURESCRIPT_MAJOR}.${CLOJURESCRIPT_MINOR} 2>/dev/null`
   set -e
