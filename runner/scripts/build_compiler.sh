@@ -14,7 +14,6 @@ CANARY_REPO_TOKEN=${CANARY_REPO_TOKEN}
 TRAVIS_BUILD_ID=${TRAVIS_BUILD_ID}
 CANARY_EXTRA_CURL_OPTS=${CANARY_EXTRA_CURL_OPTS:-"-sS"}
 CANARY_RESULT_DIR=${CANARY_RESULT_DIR:-`pwd`}
-POM_PATH=${POM_PATH:-"META-INF/maven/org.clojure/clojurescript/pom.xml"}
 CANARY_PRODUCTION=${CANARY_PRODUCTION}
 CANARY_CACHE_DIR=${CANARY_CACHE_DIR:-"$(pwd)/.cache"}
 OFFICIAL_COMPILER_REPO=${OFFICIAL_COMPILER_REPO:-"https://github.com/clojure/clojurescript.git"}
@@ -202,13 +201,6 @@ else
   fi
 
   BUILD_ID="${BUILD_VERSION}-${BUILD_SHORT_REV}"
-
-  # patch JAR's maven version to our SHA-annotated version
-  echo "Patching ClojureScript JAR..."
-  jar -xf "$BUILD_JAR" "$POM_PATH"
-  mv "$POM_PATH" "$POM_PATH.orig"
-  cat "$POM_PATH.orig" | sed "s|<version>$BUILD_VERSION</version>|<version>$BUILD_ID</version>|g" > "$POM_PATH"
-  jar -uf "$BUILD_JAR" "$POM_PATH"
 
   # cache build
   mkdir -p "$GIT_BUILD_CACHE_DIR"
