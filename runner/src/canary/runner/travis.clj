@@ -132,7 +132,7 @@
     (case travis-state
       "pending" :pending
       "authorized" :pending
-      "configured" :pending
+      "configured" :done
       "declined" :done                                                                                                        ; this probably does not exist
       "finished" (determine-builds-state builds)                                                                              ; => :running or :done
       (throw (utils/ex (i18n/received-unrecognized-travis-request-state travis-state))))))
