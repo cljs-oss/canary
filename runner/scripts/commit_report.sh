@@ -58,8 +58,13 @@ git clone --branch results https://github.com/cljs-oss/canary results
 cd results
 
 # configure repo
-git config --global user.email "canary-bot@users.noreply.github.com"
-git config --global user.name "Canary Bot"
+if [[ -z "$CANARY_PRODUCTION" ]]; then
+  echo "not tweaking global git config because not in production"
+else
+  git config --global user.email "canary-bot@users.noreply.github.com"
+  git config --global user.name "Canary Bot"
+fi
+
 git remote add up "https://${CANARY_REPO_TOKEN}@github.com/cljs-oss/canary.git"
 
 # -- prepare content --------------------------------------------------------------------------------------------------------
