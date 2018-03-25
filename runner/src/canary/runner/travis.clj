@@ -134,10 +134,10 @@
         builds (get-in request-response ["builds"])]
     ; didn't find any documentation for possible travis request states
     (case travis-state
-      "pending" :pending
-      "authorized" :pending
-      "configured" :done
-      "declined" :done                                                                                                        ; this probably does not exist
+      ("pending" "authorized") :pending
+      ; "configured" state was this weird response when my account got banned for abuse
+      ; see https://travis-ci.org/cljs-oss/canary/builds/357261287#L1017
+      ("configured" "declined") (throw (utils/ex (i18n/travis-build-request-was-rejected (utils/pp request-response))))
       "finished" (determine-builds-state builds)                                                                              ; => :running or :done
       (throw (utils/ex (i18n/received-unrecognized-travis-request-state travis-state))))))
 

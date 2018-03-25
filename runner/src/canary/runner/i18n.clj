@@ -160,6 +160,9 @@
 (defn ^:dynamic received-unrecognized-travis-request-state [travis-state]
   (str "Received unrecognized Travis request state '" travis-state "'"))
 
+(defn ^:dynamic travis-build-request-was-rejected [info]
+  (str "Travis build request was rejected. Your travis account might be banned.\n" info))
+
 ; -- cli --------------------------------------------------------------------------------------------------------------------
 
 (defn ^:dynamic cli-usage-msg [options-summary]
