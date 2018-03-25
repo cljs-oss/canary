@@ -48,8 +48,23 @@
 (defn ^:dynamic job-timeout-error-msg [timeout]
   (str "Job timeouted (after " timeout "ms)"))
 
-(defn ^:dynamic completed-task-msg [task]
-  (str (print/emphasize "Completed") " task " (print/task-name task)))
+(defn ^:dynamic interrupted-task-runner-msg []
+  (str (print/emphasize "Interrupted") " task runner"))
+
+(defn ^:dynamic interrupting-all-tasks-msg []
+  (str "Interrupting all tasks..."))
+
+(defn ^:dynamic mark-interrupted-tasks-msg []
+  (str "Marking all interrupted tasks as timeouted..."))
+
+(defn ^:dynamic interrupted-task-msg [task & [extra]]
+  (str (print/emphasize "Interrupted") " task " (print/task-name task) (if (some? extra) (str "\n" extra))))
+
+(defn ^:dynamic completed-task-msg [task & [extra]]
+  (str (print/emphasize "Completed") " task " (print/task-name task) (if (some? extra) (str "\n" extra))))
+
+(defn ^:dynamic errored-task-msg [task & [extra]]
+  (str (print/emphasize "Errored") " task " (print/task-name task) (if (some? extra) (str "\n" extra))))
 
 (defn ^:dynamic job-completed-msg [result-tasks]
   (str "Job completed:\n" (print/dump (utils/pp result-tasks))))
