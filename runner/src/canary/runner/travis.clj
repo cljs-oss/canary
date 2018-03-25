@@ -102,14 +102,18 @@
 (def possible-build-states #{:created :received :started :passed :failed :errored :canceled})
 (def done-build-states #{:passed :failed :canceled :errored})
 
-(defn valid-build-state? [build-state]
+(defn build-state-valid? [build-state]
   (some? ((keyword build-state) possible-build-states)))
 
-(defn build-done? [build-state]
+(defn build-state-done? [build-state]
   (some? ((keyword build-state) done-build-states)))
 
-(defn build-passed? [build-state]
+(defn build-state-passed? [build-state]
   (= (keyword build-state) :passed))
+
+(defn build-passed? [build]
+  (assert (:state build))
+  (build-state-passed? (:state build)))
 
 (defn request-slug [request]
   (get-in request ["repository" "slug"]))
@@ -120,8 +124,8 @@
 (defn determine-builds-state [builds]
   ; https://developer.travis-ci.com/resource/builds#Builds
   (let [states (map #(get % "state") builds)]
-    (assert (every? valid-build-state? states) (str "all build states must be valid: " (pr-str states)))
-    (if (every? build-done? states)
+    (assert (every? build-state-valid? states) (str "all build states must be valid: " (pr-str states)))
+    (if (every? build-state-done? states)
       :done
       :running)))
 
@@ -167,7 +171,7 @@
   (assoc report-data :builds (collect-builds-results request-response)
                      :result (get request-response "result")))
 
-(defn announce-builds-progress! [slug announced-builds request-response options]
+(defn announce-builds-progress! [_slug announced-builds request-response _options]
   (let [builds (get request-response "builds")
         slug (request-slug request-response)]
     (doseq [build builds]
@@ -201,18 +205,16 @@
           (recur new-request-state new-announced-builds new-report-data))))))
 
 (defn all-passed? [report-data]
-  (let [{:keys [builds]} report-data
-        builds-states (map :state builds)]
-    (every? build-passed? builds-states)))
+  (let [{:keys [builds]} report-data]
+    (every? build-passed? builds)))
 
-(defn prepare-report [slug report-data options]
+(defn prepare-report [slug report-data _options]
   (let [{:keys [builds]} report-data
         indent "&nbsp;&nbsp;&nbsp;&nbsp;"
         render-check-mark (fn [build]
-                            (let [passed? (build-passed? (:state build))]
-                              (if passed?
-                                (report/wrap-as-passed defaults/passed-symbol)
-                                (report/wrap-as-failed defaults/failed-symbol))))
+                            (if (build-passed? build)
+                              (report/wrap-as-passed defaults/passed-symbol)
+                              (report/wrap-as-failed defaults/failed-symbol)))
         render-item (fn [build]
                       (str indent (render-check-mark build) " "
                            "Travis build "
