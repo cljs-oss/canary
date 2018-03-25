@@ -80,6 +80,18 @@
        (println (stacktrace-str e#))
        (System/exit 99))))                                                                                                    ; instant death
 
+(defmacro catch-exceptions-as-result [& body]
+  `(try
+     ~@body
+     (catch Exception e#
+       e#)))
+
+(defmacro rethrow-exceptions [& body]
+  `(let [result# ~@body]
+     (if (instance? Throwable result#)
+       (throw result#)
+       result#)))
+
 ; -- tests ------------------------------------------------------------------------------------------------------------------
 
 (comment
