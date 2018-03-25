@@ -9,9 +9,17 @@
 
 ; -- announcement printing --------------------------------------------------------------------------------------------------
 
+(def ^:private printing-lock (Object.))
+
+; synchronized printing is only needed in rare cases like when forcibly interrupting threads
+; under normal circumstances all our printing is synchronized via output/synchronized-printer
+(defn- synchronized-println [& args]
+  (locking printing-lock
+    (apply println args)))
+
 (defn announce [message & [verbosity options]]
   (when (or (nil? verbosity) (<= verbosity (:verbosity options)))
-    (println message)))
+    (synchronized-println message)))
 
 ; -- styling wrappers -------------------------------------------------------------------------------------------------------
 
