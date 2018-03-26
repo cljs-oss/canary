@@ -161,6 +161,7 @@ CACHED_JAR_PATH="$GIT_BUILD_CACHE_DIR/clojurescript-${EXPECTED_BUILD_ID}.jar"
 if [[ -f "$CACHED_JAR_PATH" ]]; then
   echo "ClojureScript build $EXPECTED_BUILD_ID is cached => using it"
   BUILD_ID="$EXPECTED_BUILD_ID"
+  BUILD_VERSION=`echo "$BUILD_ID" | cut -d "-" -f 1`
   BUILD_JAR="$CACHED_JAR_PATH"
 else
   echo "ClojureScript build $EXPECTED_BUILD_ID not cached => building it"
