@@ -27,8 +27,9 @@
 (defn try-execute-task! [task options]
   (try
     (announce (i18n/running-task-msg task (:verbosity options)))
-    (execute-task! task options)
-    (announce (i18n/completed-task-msg task))
+    (let [result (execute-task! task options)]
+      (announce (i18n/completed-task-msg task))
+      result)
     (catch InterruptedException e
       (announce (i18n/interrupted-task-msg task (utils/stacktrace-str e)))
       {:status :interrupted})
