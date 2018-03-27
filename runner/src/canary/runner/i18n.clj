@@ -73,7 +73,7 @@
   (str "Job failed due to an exception:\n" (utils/stacktrace-str e)))
 
 (defn ^:dynamic running-job-msg [job-id]
-  (str (print/emphasize "running") " " (print/job-name job-id)))
+  (str (print/emphasize "Running") " " (print/job-name job-id)))
 
 (defn ^:dynamic job-options-msg [options]
   (str "Job options:\n" (print/dump (utils/pp options))))
