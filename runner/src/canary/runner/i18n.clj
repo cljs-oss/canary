@@ -84,6 +84,9 @@
 (defn ^:dynamic list-options-msg [options]
   (str "List options:\n" (print/dump (utils/pp options))))
 
+(defn ^:dynamic runner-state-msg [state]
+  (str "Runner state:\n" (print/dump (utils/pp state))))
+
 (defn ^:dynamic building-compiler-msg [compiler-rev compiler-repo]
   (str (print/emphasize "Building")
        " compiler rev " (print/rev compiler-rev)
