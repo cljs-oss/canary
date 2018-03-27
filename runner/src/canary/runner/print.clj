@@ -124,7 +124,7 @@
   (let [padded-label (cuerdas/pad label {:length defaults/task-label-padding
                                          :type   :right})
         styles (if (sequential? style) style [style])]
-    (str (apply clansi/style padded-label styles) " |" content)))
+    (str "  " (apply clansi/style padded-label styles) " |" content)))
 
 (defn task-printer [target kind task options content]
   (binding [*out* target]
