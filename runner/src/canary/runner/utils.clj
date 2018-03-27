@@ -86,7 +86,7 @@
      (catch Exception e#
        e#)))
 
-(defmacro rethrow-exceptions [& body]
+(defmacro rethrow-result-exceptions [& body]
   `(let [result# ~@body]
      (if (instance? Throwable result#)
        (throw result#)

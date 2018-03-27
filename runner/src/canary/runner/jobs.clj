@@ -88,17 +88,17 @@
               (recur new-running-tasks new-completed-tasks))))))))
 
 (defn try-execute-runner! [tasks state-atom options]
-  (utils/catch-exceptions-as-result
-    (try
-      (run-tasks! tasks state-atom options)
-      (catch InterruptedException _e
-        (announce (i18n/interrupted-task-runner-msg))
-        nil))))
+  (try
+    (run-tasks! tasks state-atom options)
+    (catch InterruptedException _e
+      (announce (i18n/interrupted-task-runner-msg))
+      nil)))
 
 (defn spawn-runner! [tasks state-atom options]
-  (utils/rethrow-exceptions
+  (utils/rethrow-result-exceptions
     (threads/spawn-thread runner-executor
-      (try-execute-runner! tasks state-atom options))))
+      (utils/catch-exceptions-as-result
+        (try-execute-runner! tasks state-atom options)))))
 
 (defn cleanup-result-tasks [tasks]
   (let [cleanup (fn [task]
