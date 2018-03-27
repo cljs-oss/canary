@@ -5,7 +5,8 @@
             [clansi]
             [canary.runner.defaults :as defaults])
   (:import (java.text SimpleDateFormat)
-           (java.util Date)))
+           (java.util Date)
+           (java.io Writer)))
 
 ; -- announcement printing --------------------------------------------------------------------------------------------------
 
@@ -15,7 +16,8 @@
 ; under normal circumstances all our printing is synchronized via output/synchronized-printer
 (defn- synchronized-println [& args]
   (locking printing-lock
-    (apply println args)))
+    (apply println args)
+    (.flush ^Writer *out*)))
 
 (defn announce [message & [verbosity options]]
   (when (or (nil? verbosity) (<= verbosity (:verbosity options)))
