@@ -41,25 +41,22 @@
       {:status :exception
        :report (report/prepare-report-for-exception e)})))
 
-(defn spawn-task! [task options]
+(defn spawn-task! [task delay-ms options]
   (threads/spawn-thread tasks-executor
+    (when (pos? delay-ms)
+      (Thread/sleep delay-ms))
     (try-execute-task! task options)))
 
-(defn launch-task! [task options]
-  (spawn-task! task options))
+(defn launch-task! [task delay-ms options]
+  (spawn-task! task delay-ms options))
 
-(defn launch-tasks! [tasks state-atom options]
-  (let [enabled-tasks (filter :enabled tasks)
-        * (fn [tasks task]
-            (case task
-              ::delay (let [delay (:spawning-delay options)]
-                        (if (pos? delay)
-                          (Thread/sleep delay))
-                        tasks)
-              (let [new-tasks (assoc tasks (launch-task! task options) (assoc task :running true))]
-                (swap! state-atom assoc :running-tasks (vals new-tasks))
-                new-tasks)))]
-    (doall (reduce * {} (interpose ::delay enabled-tasks)))))
+(defn launch-tasks! [tasks options]
+  (let [delay (:spawning-delay options)
+        * (fn [index task]
+            (let [task-delay-ms (* index delay)                                                                               ; we don't want to hit travis limits, so we delay each new task
+                  task-channel (launch-task! task task-delay-ms options)]
+              [task-channel task]))]
+    (doall (into {} (map-indexed * tasks)))))
 
 (defn report-disabled-tasks [tasks options]
   (let [disabled-tasks (remove :enabled tasks)]
@@ -68,24 +65,27 @@
 
 (defn run-tasks! [tasks state-atom options]
   (report-disabled-tasks tasks options)
-  (loop [running-tasks-mapping (launch-tasks! tasks state-atom options)                                                       ; channel -> task mappings
-         completed-tasks (vec (remove :enabled tasks))]                                                                       ; disabled tasks are considered instantly completed
-    (reset! state-atom {:running-tasks   (vals running-tasks-mapping)
-                        :completed-tasks completed-tasks})
-    (if (empty? running-tasks-mapping)
-      completed-tasks
-      (let [timeout-channel (utils/timeout (:polling-interval options))
-            all-channels (concat [timeout-channel] (keys running-tasks-mapping))]
-        (let [[result completed-channel] (async/alts!! all-channels)]
-          (if (= completed-channel timeout-channel)
-            (do
-              (announce (i18n/waiting-for-tasks-msg (tasks/sort-tasks (vals running-tasks-mapping))))
-              (recur running-tasks-mapping completed-tasks))
-            (let [completed-task (dissoc (get running-tasks-mapping completed-channel) :running)
-                  new-running-tasks (dissoc running-tasks-mapping completed-channel)
-                  new-completed-tasks (conj completed-tasks (assoc completed-task
-                                                              :result result))]
-              (recur new-running-tasks new-completed-tasks))))))))
+  (let [enabled-tasks (filter :enabled tasks)
+        disabled-tasks (remove :enabled tasks)]
+    (announce (i18n/launching-tasks-msg))
+    (loop [running-tasks-mapping (launch-tasks! enabled-tasks options)                                                        ; channel -> task mappings
+           completed-tasks (vec disabled-tasks)]                                                                              ; disabled tasks are considered instantly completed
+      (reset! state-atom {:running-tasks   (vals running-tasks-mapping)
+                          :completed-tasks completed-tasks})
+      (if (empty? running-tasks-mapping)
+        completed-tasks
+        (let [timeout-channel (utils/timeout (:polling-interval options))
+              all-channels (concat [timeout-channel] (keys running-tasks-mapping))]
+          (let [[result completed-channel] (async/alts!! all-channels)]
+            (if (= completed-channel timeout-channel)
+              (do
+                (announce (i18n/waiting-for-tasks-msg (tasks/sort-tasks (vals running-tasks-mapping))))
+                (recur running-tasks-mapping completed-tasks))
+              (let [completed-task (dissoc (get running-tasks-mapping completed-channel) :running)
+                    new-running-tasks (dissoc running-tasks-mapping completed-channel)
+                    new-completed-tasks (conj completed-tasks (assoc completed-task
+                                                                :result result))]
+                (recur new-running-tasks new-completed-tasks)))))))))
 
 (defn try-execute-runner! [tasks state-atom options]
   (try
@@ -129,7 +129,9 @@
   (with-job-printing options
     (announce (i18n/running-job-msg (:job-id options)))
     (announce (i18n/job-options-msg options) 2 options)
-    (let [runner-state-atom (atom {:running-tasks   []
+    (let [; runner state atom is needed in case of forcible interruption of the thread
+          ; we want to have access to last known state of the runner to produce at least partial report
+          runner-state-atom (atom {:running-tasks   []
                                    :completed-tasks []})
           options-with-build-result (build-compiler-if-needed! options)
           analyzed-tasks (scan/collect-and-analyze-all-tasks! options-with-build-result)

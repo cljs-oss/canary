@@ -57,6 +57,9 @@
 (defn ^:dynamic mark-interrupted-tasks-msg []
   (str "Marking all interrupted tasks as timeouted..."))
 
+(defn ^:dynamic launching-tasks-msg []
+  (str (print/emphasize "Launching") " tasks..." ))
+
 (defn ^:dynamic interrupted-task-msg [task & [extra]]
   (str (print/emphasize "Interrupted") " task " (print/task-name task) (if (some? extra) (str "\n" extra))))
 
