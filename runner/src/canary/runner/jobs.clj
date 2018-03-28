@@ -68,7 +68,7 @@
     (async/go
       (loop []
         (async/<! (async/timeout interval))
-        (async/put! channel ::timeout-beacon)
+        (async/put! channel ::beacon)
         (recur)))
     (async/chan)))
 
@@ -88,7 +88,7 @@
         completed-tasks
         (let [all-channels (concat [beacon-channel] (keys running-tasks-mapping))
               [result completed-task-channel] (async/alts!! all-channels :priority true)]
-          (if (= result ::timeout-beacon)
+          (if (= result ::beacon)
             (do
               (announce (i18n/waiting-for-tasks-msg (tasks/sort-tasks (vals running-tasks-mapping))))
               (recur running-tasks-mapping completed-tasks))
