@@ -87,7 +87,7 @@
       (if (empty? running-tasks-mapping)
         completed-tasks
         (let [all-channels (concat [beacon-channel] (keys running-tasks-mapping))
-              [result completed-task-channel] (async/alts!! all-channels)]
+              [result completed-task-channel] (async/alts!! all-channels :priority true)]
           (if (= result ::timeout-beacon)
             (do
               (announce (i18n/waiting-for-tasks-msg (tasks/sort-tasks (vals running-tasks-mapping))))
