@@ -8,7 +8,7 @@
 (def work-dir ".workdir")
 (def cache-dir ".cachedir")
 (def timeout (utils/seconds-to-msec (* 30 60)))                                                                               ; 30min - note that travis build gets killed after approx. 45minutes
-(def polling-interval (utils/seconds-to-msec (* 60 5)))                                                                       ; 5min, travis kills a job when no output is presented in last 10min
+(def polling-interval (utils/seconds-to-msec (* 1 60)))                                                                       ; 1min, travis kills a job when no output is presented in last 10min
 (def spawning-delay (utils/seconds-to-msec 1))                                                                                ; 1sec, to help determinism when running jobs
 
 (def build-script-path "scripts/build_compiler.sh")
