@@ -64,12 +64,13 @@
       (announce (i18n/skipping-task-msg task (:verbosity options))))))
 
 (defn start-beacon! [channel interval]
-  (when (pos? interval)
+  (if (pos? interval)
     (async/go
       (loop []
         (async/<! (async/timeout interval))
         (async/put! channel ::timeout-beacon)
-        (recur)))))
+        (recur)))
+    (async/chan)))
 
 (defn run-tasks! [tasks state-atom options]
   (report-disabled-tasks tasks options)
