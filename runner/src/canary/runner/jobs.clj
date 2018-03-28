@@ -76,9 +76,9 @@
   (report-disabled-tasks tasks options)
   (let [enabled-tasks (filter :enabled tasks)
         disabled-tasks (remove :enabled tasks)
-        polling-channel (async/chan)]
+        beacon-channel (async/chan)]
     (announce (i18n/launching-tasks-msg))
-    (start-beacon! polling-channel (:polling-interval options))
+    (start-beacon! beacon-channel (:polling-interval options))
     (loop [running-tasks-mapping (launch-tasks! enabled-tasks options)                                                        ; channel -> task mappings
            completed-tasks (vec disabled-tasks)]                                                                              ; disabled tasks are considered instantly completed
       (reset! state-atom {:running-tasks   (vals running-tasks-mapping)
@@ -86,16 +86,16 @@
       (announce (i18n/runner-state-msg @state-atom) 3 options)
       (if (empty? running-tasks-mapping)
         completed-tasks
-        (let [all-channels (concat [polling-channel] (keys running-tasks-mapping))]
-          (let [[result completed-channel] (async/alts!! all-channels)]
-            (if (= result ::timeout-beacon)
-              (do
-                (announce (i18n/waiting-for-tasks-msg (tasks/sort-tasks (vals running-tasks-mapping))))
-                (recur running-tasks-mapping completed-tasks))
-              (let [completed-task (dissoc (get running-tasks-mapping completed-channel) :running)
-                    new-running-tasks (dissoc running-tasks-mapping completed-channel)
-                    new-completed-tasks (conj completed-tasks (assoc completed-task :result result))]
-                (recur new-running-tasks new-completed-tasks)))))))))
+        (let [all-channels (concat [beacon-channel] (keys running-tasks-mapping))
+              [result completed-task-channel] (async/alts!! all-channels)]
+          (if (= result ::timeout-beacon)
+            (do
+              (announce (i18n/waiting-for-tasks-msg (tasks/sort-tasks (vals running-tasks-mapping))))
+              (recur running-tasks-mapping completed-tasks))
+            (let [completed-task (dissoc (get running-tasks-mapping completed-task-channel) :running)
+                  new-running-tasks (dissoc running-tasks-mapping completed-task-channel)
+                  new-completed-tasks (conj completed-tasks (assoc completed-task :result result))]
+              (recur new-running-tasks new-completed-tasks))))))))
 
 (defn try-execute-runner! [tasks state-atom options]
   (try
