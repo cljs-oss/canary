@@ -3,7 +3,8 @@
             [canary.runner.output :as output]
             [cuerdas.core :as cuerdas]
             [clansi]
-            [canary.runner.defaults :as defaults])
+            [canary.runner.defaults :as defaults]
+            [canary.runner.utils :as utils])
   (:import (java.text SimpleDateFormat)
            (java.util Date)
            (java.io Writer)))
@@ -16,8 +17,7 @@
 ; under normal circumstances all our printing is synchronized via output/synchronized-printer
 (defn- synchronized-println [& args]
   (locking printing-lock
-    (apply println args)
-    (.flush ^Writer *out*)))
+    (apply println args)))
 
 (defn announce [message & [verbosity options]]
   (when (or (nil? verbosity) (<= verbosity (:verbosity options)))
@@ -118,7 +118,8 @@
   `(let [options# ~options]
      (binding [*out* (make-job-print-writer! *out* :out options#)
                *err* (make-job-print-writer! *err* :err options#)]
-       ~@body)))
+       (utils/with-outputs-flushing
+         ~@body))))
 
 ; -- task printing ----------------------------------------------------------------------------------------------------------
 
@@ -142,4 +143,5 @@
          options# ~options]
      (binding [*out* (make-task-print-writer! *out* :out task# options#)
                *err* (make-task-print-writer! *err* :err task# options#)]
-       ~@body)))
+       (utils/with-outputs-flushing
+         ~@body))))

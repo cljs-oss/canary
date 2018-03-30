@@ -63,13 +63,19 @@
 (defn flush-outputs! []
   ; TODO: how to make sure our piped writers get properly flushed?
   (.flush ^Writer *out*)
-  (.flush ^Writer *err*)
-  (.sleep TimeUnit/SECONDS 1))
+  (.flush ^Writer *err*))
+
+(defmacro with-outputs-flushing [& body]
+  `(try
+     ~@body
+     (finally
+       (flush-outputs!))))
 
 (defn exit! [status & [msg]]
   (if (some? msg)
     (println msg))
   (flush-outputs!)
+  (.sleep TimeUnit/SECONDS 1)
   (System/exit status))
 
 (defmacro kill-process-on-failure [& body]

@@ -1,6 +1,7 @@
 (ns canary.runner.threads
   (:require [clojure.core.async :as async]
-            [clojure.core.async.impl.concurrent :as async-concurrent])
+            [clojure.core.async.impl.concurrent :as async-concurrent]
+            [canary.runner.utils :as utils])
   (:import (java.util.concurrent Executors ThreadPoolExecutor TimeUnit)
            (clojure.lang Var)))
 
@@ -24,7 +25,9 @@
     channel))
 
 (defmacro spawn-thread [executor & body]
-  `(spawn-thread-fn ~executor (^:once fn* [] ~@body)))
+  `(spawn-thread-fn ~executor (^:once fn* []
+                                (utils/with-outputs-flushing
+                                  ~@body))))
 
 (defn interrupt-executor [^ThreadPoolExecutor executor timeout-ms]
   (.shutdownNow executor)
