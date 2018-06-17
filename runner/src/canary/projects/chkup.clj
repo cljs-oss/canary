@@ -6,3 +6,6 @@
 
 (defn ^:task specter [options]
   (travis/request-build! "chkup/specter" "CANARY_CHKUP_TRAVIS_TOKEN" options))
+
+(defn ^:task test-check [options]
+  (travis/request-build! "chkup/test.check" "CANARY_CHKUP_TRAVIS_TOKEN" options))
