@@ -10,6 +10,9 @@
 (defn ^:task om [options]
   (travis/request-build! "chkup/om" "CANARY_CHKUP_TRAVIS_TOKEN" options))
 
+(defn ^:task re-frame [options]
+  (travis/request-build! "chkup/re-frame" "CANARY_CHKUP_TRAVIS_TOKEN" options))
+
 (defn ^:task spec-tools [options]
   (travis/request-build! "chkup/spec-tools" "CANARY_CHKUP_TRAVIS_TOKEN" options))
 
