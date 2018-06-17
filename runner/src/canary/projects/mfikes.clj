@@ -27,5 +27,5 @@
 #_(defn ^:task andare [options]
   (travis/request-build! "mfikes/andare" "CANARY_ANDARE_TRAVIS_TOKEN" options))
 
-(defn ^:task closure-latest [options]
-  (travis/request-build! "mfikes/closure-latest" "CANARY_CLOSURE_LATEST_TRAVIS_TOKEN" options))
+(defn ^:task closurelatest [options]
+  (travis/request-build! "mfikes/closurelatest" "CANARY_CLOSURE_LATEST_TRAVIS_TOKEN" options))
