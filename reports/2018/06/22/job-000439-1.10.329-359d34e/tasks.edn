@@ -1,0 +1,168 @@
+({:name "chromex",
+  :description "function chromex from canary/projects/binaryage.clj:7",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/chromex#870](https://travis-ci.org/binaryage/chromex/builds/395637194)<br>"}}
+ {:name "cljs-devtools",
+  :description "function cljs-devtools from canary/projects/binaryage.clj:4",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-devtools#674](https://travis-ci.org/binaryage/cljs-devtools/builds/395637196)<br>"}}
+ {:name "cljs-oops",
+  :description "function cljs-oops from canary/projects/binaryage.clj:10",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-oops#544](https://travis-ci.org/binaryage/cljs-oops/builds/395637203)<br>"}}
+ {:name "cljs-zones",
+  :description "function cljs-zones from canary/projects/binaryage.clj:16",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-zones#199](https://travis-ci.org/binaryage/cljs-zones/builds/395637209)<br>"}}
+ {:name "closurecomp",
+  :description "function closurecomp from canary/projects/mfikes.clj:30",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/closurecomp#124](https://travis-ci.org/mfikes/closurecomp/builds/395637217)<br>"}}
+ {:name "closurelib",
+  :description "function closurelib from canary/projects/mfikes.clj:33",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/closurelib#9](https://travis-ci.org/mfikes/closurelib/builds/395637219)<br>"}}
+ {:name "coal-mine-1",
+  :description "function coal-mine-1 from canary/projects/mfikes.clj:7",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#1375](https://travis-ci.org/mfikes/coal-mine/builds/395637221)<br>"}}
+ {:name "coal-mine-2",
+  :description "function coal-mine-2 from canary/projects/mfikes.clj:11",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#1377](https://travis-ci.org/mfikes/coal-mine/builds/395637265)<br>"}}
+ {:name "coal-mine-3",
+  :description "function coal-mine-3 from canary/projects/mfikes.clj:15",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#1376](https://travis-ci.org/mfikes/coal-mine/builds/395637263)<br>"}}
+ {:name "coal-mine-4",
+  :description "function coal-mine-4 from canary/projects/mfikes.clj:19",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#1378](https://travis-ci.org/mfikes/coal-mine/builds/395637281)<br>"}}
+ {:name "coal-mine-5",
+  :description "function coal-mine-5 from canary/projects/mfikes.clj:23",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#1379](https://travis-ci.org/mfikes/coal-mine/builds/395637292)<br>"}}
+ {:name "cuerdas",
+  :description "function cuerdas from canary/projects/chkup.clj:4",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/cuerdas#13](https://travis-ci.org/chkup/cuerdas/builds/395637296)<br>"}}
+ {:name "env-config",
+  :description "function env-config from canary/projects/binaryage.clj:13",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/env-config#225](https://travis-ci.org/binaryage/env-config/builds/395637398)<br>"}}
+ {:name "garden",
+  :description "function garden from canary/projects/chkup.clj:7",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/garden#11](https://travis-ci.org/chkup/garden/builds/395637308)<br>"}}
+ {:name "om",
+  :description "function om from canary/projects/chkup.clj:10",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/om#10](https://travis-ci.org/chkup/om/builds/395637331)<br>"}}
+ {:name "planck",
+  :description "function planck from canary/projects/planck_repl.clj:4",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [planck-repl/planck#2066](https://travis-ci.org/planck-repl/planck/builds/395637500)<br>"}}
+ {:name "re-frame",
+  :description "function re-frame from canary/projects/chkup.clj:13",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/re-frame#27](https://travis-ci.org/chkup/re-frame/builds/395637412)<br>"}}
+ {:name "side-fx",
+  :description "function side-fx from canary/projects/cljsrn.clj:4",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [cljsrn/side-fx#59](https://travis-ci.org/cljsrn/side-fx/builds/395637483)<br>"}}
+ {:name "spec-tools",
+  :description "function spec-tools from canary/projects/chkup.clj:16",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/spec-tools#10](https://travis-ci.org/chkup/spec-tools/builds/395637455)<br>"}}
+ {:name "specter",
+  :description "function specter from canary/projects/chkup.clj:19",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/specter#13](https://travis-ci.org/chkup/specter/builds/395637390)<br>"}}
+ {:name "test-check",
+  :description "function test-check from canary/projects/chkup.clj:22",
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/test.check#11](https://travis-ci.org/chkup/test.check/builds/395637440)<br>"}})
