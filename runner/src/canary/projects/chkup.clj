@@ -13,6 +13,9 @@
 (defn ^:task re-frame [options]
   (travis/request-build! "chkup/re-frame" "CANARY_CHKUP_TRAVIS_TOKEN" options))
 
+(defn ^:task reagent [options]
+  (travis/request-build! "chkup/reagent" "CANARY_CHKUP_TRAVIS_TOKEN" options))
+
 (defn ^:task spec-tools [options]
   (travis/request-build! "chkup/spec-tools" "CANARY_CHKUP_TRAVIS_TOKEN" options))
 
