@@ -7,6 +7,9 @@
 (defn ^:task garden [options]
   (travis/request-build! "chkup/garden" "CANARY_CHKUP_TRAVIS_TOKEN" options))
 
+(defn ^:task hoplon [options]
+  (travis/request-build! "chkup/hoplon" "CANARY_CHKUP_TRAVIS_TOKEN" options))
+
 (defn ^:task om [options]
   (travis/request-build! "chkup/om" "CANARY_CHKUP_TRAVIS_TOKEN" options))
 
