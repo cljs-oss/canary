@@ -1,6 +1,9 @@
 (ns canary.projects.chkup
   (:require [canary.runner.travis :as travis]))
 
+(defn ^:task clara-rules [options]
+  (travis/request-build! "chkup/clara-rules" "CANARY_CHKUP_TRAVIS_TOKEN" options))
+
 (defn ^:task cuerdas [options]
   (travis/request-build! "chkup/cuerdas" "CANARY_CHKUP_TRAVIS_TOKEN" options))
 
