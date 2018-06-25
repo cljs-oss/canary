@@ -4,6 +4,9 @@
 (defn ^:task cuerdas [options]
   (travis/request-build! "chkup/cuerdas" "CANARY_CHKUP_TRAVIS_TOKEN" options))
 
+(defn ^:task fulcro [options]
+  (travis/request-build! "chkup/fulcro" "CANARY_CHKUP_TRAVIS_TOKEN" options))
+
 (defn ^:task garden [options]
   (travis/request-build! "chkup/garden" "CANARY_CHKUP_TRAVIS_TOKEN" options))
 
