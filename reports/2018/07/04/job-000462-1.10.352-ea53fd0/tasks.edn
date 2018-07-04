@@ -1,0 +1,84 @@
+({:name "chromex",
+  :description "function chromex from canary/projects/binaryage.clj:7",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "clara-rules",
+  :description "function clara-rules from canary/projects/chkup.clj:4",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "cljs-devtools",
+  :description "function cljs-devtools from canary/projects/binaryage.clj:4",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "cljs-oops",
+  :description "function cljs-oops from canary/projects/binaryage.clj:10",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "cljs-zones",
+  :description "function cljs-zones from canary/projects/binaryage.clj:13",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "closurecomp",
+  :description "function closurecomp from canary/projects/mfikes.clj:10",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "closurelib",
+  :description "function closurelib from canary/projects/mfikes.clj:13",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "cuerdas",
+  :description "function cuerdas from canary/projects/chkup.clj:7",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "fulcro",
+  :description "function fulcro from canary/projects/chkup.clj:10",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "garden",
+  :description "function garden from canary/projects/chkup.clj:13",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "hoplon",
+  :description "function hoplon from canary/projects/chkup.clj:16",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "om",
+  :description "function om from canary/projects/chkup.clj:19",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "planck",
+  :description "function planck from canary/projects/planck_repl.clj:4",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "re-frame",
+  :description "function re-frame from canary/projects/chkup.clj:22",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "reagent",
+  :description "function reagent from canary/projects/chkup.clj:25",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "side-fx",
+  :description "function side-fx from canary/projects/cljsrn.clj:4",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "spec-tools",
+  :description "function spec-tools from canary/projects/chkup.clj:28",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "specter",
+  :description "function specter from canary/projects/chkup.clj:31",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "test-check",
+  :description "function test-check from canary/projects/chkup.clj:34",
+  :enabled false,
+  :enabled-reason "disabled because not matching --only or --include options"}
+ {:name "coal-mine",
+  :description "function coal-mine from canary/projects/mfikes.clj:4",
+  :enabled true,
+  :enabled-reason "enabled because matching --only 'coal-mine'",
+  :result
+  {:status :failed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:red'>&#x2717;</b> Travis build [mfikes/coal-mine#1460](https://travis-ci.org/mfikes/coal-mine/builds/400062471)<br>"}})
