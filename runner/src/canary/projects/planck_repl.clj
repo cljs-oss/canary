@@ -1,7 +1,7 @@
 (ns canary.projects.planck-repl
   (:require [canary.runner.travis :as travis]))
 
-(defn ^:task planck [options]
+(defn ^{:task true :homepage "planck-repl/planck"} planck [options]
   ; using just Travis matrix.include will run all default matrix job combinations plus our matrix-job-linux-clang
   ; there seems to be no sane way how to disable default matrix auto-generated jobs
   ; some people proposed various workaround with different trade-offs
