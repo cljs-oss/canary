@@ -3,7 +3,7 @@
   (:require [canary.runner.utils :as utils]))
 
 (def compiler-rev "master")
-(def compiler-repo "https://github.com/clojure/clojurescript.git")
+(def compiler-repo "clojure/clojurescript")
 (def projects-dir "src/canary/projects")
 (def work-dir ".workdir")
 (def cache-dir ".cachedir")

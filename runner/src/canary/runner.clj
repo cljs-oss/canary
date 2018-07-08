@@ -8,7 +8,8 @@
             [canary.runner.defaults :as defaults]
             [me.raynes.fs :as fs]
             [cuerdas.core :as cuerdas]
-            [clojure.java.io :as io])
+            [clojure.java.io :as io]
+            [clojure.string :as string])
   (:gen-class)
   (:import (java.util.regex PatternSyntaxException)))
 
@@ -39,6 +40,16 @@
     :projects (utils/canonical-path (:projects options))
     :workdir (utils/canonical-path (:workdir options))
     :cachedir (utils/canonical-path (:cachedir options))))
+
+(defn expand-compiler-repo [repo]
+  (cond
+    (string/includes? repo "://") repo                                                                                        ; assume full git repo url e.g. https://github.com/clojure/clojurescript.git
+    (string/includes? repo "/") (str "https://github.com/" repo ".git")                                                       ; assume short github repo location e.g. frenchy64/clojurescript
+    :else (str "https://github.com/" repo "/clojurescript.git")))                                                             ; assume github fork name only e.g. frenchy64
+
+(defn resolve-compiler-repo [options]
+  (assoc options
+    :compiler-repo (expand-compiler-repo (:compiler-repo options))))
 
 (defn make-regex [val]
   (try
@@ -77,6 +88,7 @@
 (defn sanitize-and-validate-options [options]
   (let [sanitized-options (-> options
                               (expand-paths)
+                              (resolve-compiler-repo)
                               (make-regexs)
                               (add-root-dir))
         errors (concat (check-projects-dir sanitized-options)

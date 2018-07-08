@@ -209,7 +209,7 @@
   "Pin ClojureScript compiler to specific revision")
 
 (defn ^:dynamic compiler-repo-cli-desc []
-  "Git repo to fetch compiler sources from")
+  "Git repo to fetch compiler sources from (may be full repo url e.g. https://github.com/clojure/clojurescript.git)")
 
 (defn ^:dynamic projects-cli-desc []
   "Path to projects directory")
