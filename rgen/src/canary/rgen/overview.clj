@@ -47,6 +47,16 @@
 (defn job-ids [jobs]
   (map :job-id jobs))
 
+(defn task-name-metadata-pair [task]
+  (when-some [metadata (:meta task)]
+    [(:name task) metadata]))
+
+(defn extract-job-tasks-metadata [job]
+  (map task-name-metadata-pair (:tasks job)))
+
+(defn jobs-tasks-metadata [jobs]
+  (into {} (mapcat extract-job-tasks-metadata jobs)))
+
 (defn job-tasks [job]
   (map :name (:tasks job)))
 
@@ -125,10 +135,18 @@
         status-image-link (str assets-url "/s-" status-name ".svg")]
     (str "<a href=\"" task-link "\"><img title=\"" status-name "\" src=\"" status-image-link "\"><a>")))
 
-(defn render-status-matrix-rows [jobs job-ids task-names status-matrix options]
+(defn render-task-title [task-name all-tasks-metadata]
+  (let [metadata (get all-tasks-metadata task-name {})]
+    (if-some [homepage (:homepage metadata)]
+      (str "[" task-name "](" homepage ")")
+      task-name)))
+
+(defn render-status-matrix-rows [jobs job-ids task-names all-tasks-metadata status-matrix options]
   (assert (= (count task-names) (count status-matrix)))
   (let [* (fn [task-name status-matrix-row]
-            (concat [task-name] (map (partial render-status-matrix-cell options jobs task-name) status-matrix-row job-ids)))]
+            (let [task-title (render-task-title task-name all-tasks-metadata)
+                  task-statuses (map (partial render-status-matrix-cell options jobs task-name) status-matrix-row job-ids)]
+              (concat [task-title] task-statuses)))]
     (map * task-names status-matrix)))
 
 (defn prepare-job-title [job]
@@ -145,9 +163,9 @@
 (defn render-job-links [jobs job-ids]
   (map (partial render-job-link jobs) job-ids))
 
-(defn generate-status-table-markup [jobs task-names job-ids status-matrix options]
+(defn generate-status-table-markup [jobs task-names all-tasks-metadata job-ids status-matrix options]
   (let [header (concat ["task \\ job"] (render-job-links jobs job-ids))
-        body (render-status-matrix-rows jobs job-ids task-names status-matrix options)
+        body (render-status-matrix-rows jobs job-ids task-names all-tasks-metadata status-matrix options)
         table (concat [header] body)]
     (table-to-markup table)))
 
@@ -170,8 +188,9 @@
         jobs (fetch-job-infos-tasks-data relevant-job-infos)
         job-ids (job-ids jobs)
         all-tasks (all-tasks jobs)
+        all-tasks-metadata (jobs-tasks-metadata jobs)
         status-matrix (generate-status-matrix jobs all-tasks job-ids)
-        status-table-markup (generate-status-table-markup jobs all-tasks job-ids status-matrix options)
+        status-table-markup (generate-status-table-markup jobs all-tasks all-tasks-metadata job-ids status-matrix options)
         use-stdout? (or (empty? output) (= output "-"))]
     (if use-stdout?
       (do
