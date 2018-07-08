@@ -150,8 +150,7 @@
     (map * task-names status-matrix)))
 
 (defn prepare-job-title [job]
-  (let [{:keys [job-id date compiler-version compiler-sha]} job
-        compiler (str compiler-version "-" compiler-sha)]
+  (let [{:keys [job-id date]} job]
     (str "job #" job-id " finished on " date)))
 
 (defn render-job-link [jobs job-id]
