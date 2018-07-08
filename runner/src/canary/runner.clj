@@ -16,7 +16,7 @@
 
 (def cli-options
   [(normal-cli-option ["-r" "--compiler-rev REV" (i18n/compiler-rev-cli-desc) :default defaults/compiler-rev])
-   (normal-cli-option [nil "--compiler-repo URL" (i18n/compiler-repo-cli-desc) :default defaults/compiler-repo])
+   (normal-cli-option ["-c" "--compiler-repo URL" (i18n/compiler-repo-cli-desc) :default defaults/compiler-repo])
    (normal-cli-option ["-p" "--projects DIR" (i18n/projects-cli-desc) :default defaults/projects-dir])
    (normal-cli-option [nil "--workdir DIR" (i18n/workdir-cli-desc) :default defaults/work-dir])
    (normal-cli-option [nil "--cachedir DIR" (i18n/cachedir-cli-desc) :default defaults/cache-dir])
