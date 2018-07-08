@@ -35,9 +35,24 @@
       (str (first (cuerdas/lines doc)) " - " generated-doc)
       generated-doc)))
 
+(defn expand-homepage [url]
+  (cond
+    (string/includes? url "://") url                                                                                          ; assume full url e.g. https://github.com/clojure/clojurescript
+    :else (str "https://github.com/" url)))                                                                                   ; assume short github repo location e.g. frenchy64/clojurescript
+
+(defn sanitize-metadata [metadata]
+  (cond-> metadata
+          (some? (:homepage metadata)) (update :homepage expand-homepage)))
+
+(defn task-meta-from-var [task-var]
+  (let [full-meta (or (meta task-var) {})
+        interesting-meta-keys [:homepage]]
+    (sanitize-metadata (select-keys full-meta interesting-meta-keys))))
+
 (defn make-clojure-task [task-var]
   {:name        (task-name-from-var task-var)
    :description (task-description-from-var task-var)
+   :meta        (task-meta-from-var task-var)
    :fn          (var-get task-var)})
 
 (defn collect-clojure-tasks-for-namespace! [options namespace]
