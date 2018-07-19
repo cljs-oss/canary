@@ -32,25 +32,26 @@ Exercises ClojureScript projects with a pinned ClojureScript version.
 Usage: ./run.sh [action] [options]
 
 Actions:
-  job         Run a job with given options
-  list        List available tasks (possibly matching filters from options)
-  help        Print usage info
+  job         Run a new job with given options
+  list        List available tasks (and test filters from options)
+  help        Print this usage info
 
 Options:
-  -r, --compiler-rev REV          master                                        Pin ClojureScript compiler to specific revision
-      --compiler-repo URL         https://github.com/clojure/clojurescript.git  Git repo to fetch compiler sources from
-  -p, --projects DIR              src/canary/projects                           Path to projects directory
-      --workdir DIR               .workdir                                      Path to working directory
-      --cachedir DIR              .cachedir                                     Path to caching directory. Persists state between runs for speedup
-      --only SUBSTR                                                             Enable tasks matching a substring (or any of space separated substrings)
-      --except SUBSTR                                                           Disable tasks matching a substring (or any of space separated substrings)
-      --include REGEX                                                           Enable tasks matching a regex
-      --exclude REGEX                                                           Disable tasks matching a regex
-      --job-id ID                 0                                             Optional job id
-      --polling-interval SECONDS  300000                                        Polling interval for job status (in seconds)
-      --timeout SECONDS           3600000                                       Total timeout for job to complete (in seconds)
-      --production                                                              Will not commit into results branch
-  -v                                                                            Verbosity level; may be specified multiple times
+  -r, --compiler-rev REV          master                 Pin ClojureScript compiler to specific revision
+  -c, --compiler-repo URL         clojure/clojurescript  Git repo to fetch compiler sources from (may be full repo url e.g. https://github.com/clojure/clojurescript.git)
+  -p, --projects DIR              src/canary/projects    Path to projects directory
+      --workdir DIR               .workdir               Path to working directory
+      --cachedir DIR              .cachedir              Path to caching directory. Persists state between runs for speedup
+      --only SUBSTR                                      Enable tasks matching a substring (or any of space separated substrings)
+      --except SUBSTR                                    Disable tasks matching a substring (or any of space separated substrings)
+      --include REGEX                                    Enable tasks matching a regex
+      --exclude REGEX                                    Disable tasks matching a regex
+      --job-id ID                 0                      Optional job id
+      --polling-interval SECONDS  60000                  Polling interval for job status (in seconds)
+      --timeout SECONDS           1800000                Total timeout for job to complete (in seconds)
+      --spawning-delay SECONDS    1000                   Delay between spawning individual tasks (in seconds)
+      --production                                       Commit into results branch only with this flag
+  -v                                                     Verbosity level; may be specified multiple times
   -h, --help
 ```
 
