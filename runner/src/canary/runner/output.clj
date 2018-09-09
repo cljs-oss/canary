@@ -6,7 +6,7 @@
 
 ; -- line-based streaming ---------------------------------------------------------------------------------------------------
 
-(defn print-stream-as-lines! [stream printer]
+(defn print-stream-as-lines-in-background! [stream printer]
   (future
     (utils/kill-process-on-failure
       (try
@@ -37,8 +37,8 @@
     (locking *out*
       (apply println args))))
 
-(defn make-print-writer! [printer target]
+(defn make-streaming-print-writer! [printer target]
   (let [stream (PipedReader.)
         writer (PipedWriter. stream)]
-    (print-stream-as-lines! stream (synchronized-printer printer target))
+    (print-stream-as-lines-in-background! stream (synchronized-printer printer target))
     (PrintWriter. writer)))

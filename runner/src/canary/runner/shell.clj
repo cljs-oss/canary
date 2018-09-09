@@ -20,8 +20,8 @@
   (.reset stream))
 
 (defn stream-proc-output! [proc]
-  (output/print-stream-as-lines! (:out proc) output/synchronized-out-printer)
-  (output/print-stream-as-lines! (:err proc) output/synchronized-err-printer))
+  (output/print-stream-as-lines-in-background! (:out proc) output/synchronized-out-printer)
+  (output/print-stream-as-lines-in-background! (:err proc) output/synchronized-err-printer))
 
 (defn mark-proc-output! [proc]
   (mark-stream! (:out proc))

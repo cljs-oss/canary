@@ -111,13 +111,13 @@
       ; TODO: implement line wrapping for travis web ui?
       (println line))))
 
-(defn make-job-print-writer! [target kind options]
-  (output/make-print-writer! (partial job-printer target kind options) target))
+(defn make-streaming-job-print-writer! [target kind options]
+  (output/make-streaming-print-writer! (partial job-printer target kind options) target))
 
 (defmacro with-job-printing [options & body]
   `(let [options# ~options]
-     (binding [*out* (make-job-print-writer! *out* :out options#)
-               *err* (make-job-print-writer! *err* :err options#)]
+     (binding [*out* (make-streaming-job-print-writer! *out* :out options#)
+               *err* (make-streaming-job-print-writer! *err* :err options#)]
        (utils/with-outputs-flushing
          ~@body))))
 
@@ -135,13 +135,13 @@
           line (format-task-line (:name task) (:color task) (mark-errors kind options printable-content))]
       (println line))))
 
-(defn make-task-print-writer! [target kind task options]
-  (output/make-print-writer! (partial task-printer target kind task options) target))
+(defn make-streaming-task-print-writer! [target kind task options]
+  (output/make-streaming-print-writer! (partial task-printer target kind task options) target))
 
 (defmacro with-task-printing [task options & body]
   `(let [task# ~task
          options# ~options]
-     (binding [*out* (make-task-print-writer! *out* :out task# options#)
-               *err* (make-task-print-writer! *err* :err task# options#)]
+     (binding [*out* (make-streaming-task-print-writer! *out* :out task# options#)
+               *err* (make-streaming-task-print-writer! *err* :err task# options#)]
        (utils/with-outputs-flushing
          ~@body))))
