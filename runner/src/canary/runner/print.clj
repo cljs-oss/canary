@@ -112,7 +112,7 @@
       (println line))))
 
 (defn make-streaming-job-print-writer! [target kind options]
-  (output/make-streaming-print-writer! (partial job-printer target kind options) target))
+  (output/make-streaming-print-writer! (partial job-printer target kind options)))
 
 (defmacro with-job-printing [options & body]
   `(let [options# ~options]
@@ -136,7 +136,7 @@
       (println line))))
 
 (defn make-streaming-task-print-writer! [target kind task options]
-  (output/make-streaming-print-writer! (partial task-printer target kind task options) target))
+  (output/make-streaming-print-writer! (partial task-printer target kind task options)))
 
 (defmacro with-task-printing [task options & body]
   `(let [task# ~task

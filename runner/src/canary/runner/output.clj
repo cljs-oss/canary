@@ -17,28 +17,10 @@
             (recur)))
         (catch NoSuchElementException _)))))                                                                                  ; peacefully finish the thread
 
-; -- synchronized printing --------------------------------------------------------------------------------------------------
+; -- printing from streams --------------------------------------------------------------------------------------------------
 
-; printer functions can be called from different threads printing into same target writer (e.g. *out* aka System/out)
-; that is why we have to synchronize access to target writer
-; http://yellerapp.com/posts/2014-12-11-14-race-condition-in-clojure-println.html
-
-(defn synchronized-printer [printer target]
-  (fn [& args]
-    (locking target
-      (apply printer args))))
-
-(defn synchronized-out-printer [& args]
-  (locking *out*
-    (apply println args)))
-
-(defn synchronized-err-printer [& args]
-  (binding [*out* *err*]
-    (locking *out*
-      (apply println args))))
-
-(defn make-streaming-print-writer! [printer target]
+(defn make-streaming-print-writer! [printer]
   (let [stream (PipedReader.)
         writer (PipedWriter. stream)]
-    (print-stream-as-lines-in-background! stream (synchronized-printer printer target))
+    (print-stream-as-lines-in-background! stream printer)
     (PrintWriter. writer)))
