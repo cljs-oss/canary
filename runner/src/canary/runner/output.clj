@@ -9,13 +9,13 @@
 (defn print-stream-as-lines! [stream printer]
   (future
     (utils/kill-process-on-failure
-      (let [output (io/reader stream)
-            scanner (.useDelimiter (Scanner. output) "\n")]
-        (try
+      (try
+        (let [output (io/reader stream)
+              scanner (Scanner. output)]
           (loop []
-            (printer (.next scanner))
-            (recur))
-          (catch NoSuchElementException e))))))                                                                               ; peacefully finish the thread
+            (printer (.nextLine scanner))
+            (recur)))
+        (catch NoSuchElementException _)))))                                                                                  ; peacefully finish the thread
 
 ; -- synchronized printing --------------------------------------------------------------------------------------------------
 
