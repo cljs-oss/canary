@@ -42,7 +42,7 @@
   (let [string-writer (StringWriter.)
         print-writer (PrintWriter. string-writer)]
     (.printStackTrace ex print-writer)
-    (.toString string-writer)))
+    (str (.toString string-writer) "---\n")))
 
 (defn short-sha [sha]
   (if (< (count sha) 7)                                                                                                       ; prevent exceptions
