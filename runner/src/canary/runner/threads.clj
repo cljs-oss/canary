@@ -25,9 +25,7 @@
     channel))
 
 (defmacro spawn-thread [executor & body]
-  `(spawn-thread-fn ~executor (^:once fn* []
-                                (utils/with-outputs-flushing
-                                  ~@body))))
+  `(spawn-thread-fn ~executor (^:once fn* [] ~@body)))
 
 (defn interrupt-executor [^ThreadPoolExecutor executor timeout-ms]
   (.shutdownNow executor)

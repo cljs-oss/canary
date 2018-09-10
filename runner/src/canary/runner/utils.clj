@@ -4,8 +4,36 @@
             [clojure.string :as string]
             [clojure.core.async :as async])
   (:import (java.util.concurrent TimeUnit)
-           (java.io StringWriter PrintWriter Writer)
+           (java.io StringWriter PrintWriter)
            (java.net URLEncoder)))
+
+; -- raw low-level printing -------------------------------------------------------------------------------------------------
+
+(def ^:private printing-lock (Object.))
+
+; printer functions can be called from different threads / also Thread$UncaughtExceptionHandler can interrupt Clojure printing
+; that is why we want to use lower-level printing with synchronisation to avoid interleaved output
+; http://yellerapp.com/posts/2014-12-11-14-race-condition-in-clojure-println.html
+
+(defmacro with-synchronized-printing [& body]
+  `(locking printing-lock
+     ~@body))
+
+(def ^:dynamic *current-raw-out* System/out)
+
+(defmacro with-raw-stderr-printing [& body]
+  `(binding [*current-raw-out* System/err]
+     ~@body))
+
+(defn raw-println [s]
+  (with-synchronized-printing
+    (.print *current-raw-out* (str s "\n"))))
+
+(defn raw-stderr-println [s]
+  (with-raw-stderr-printing
+    (raw-println s)))
+
+; -- utilities --------------------------------------------------------------------------------------------------------------
 
 (defn pp [data & [level length]]
   (with-out-str
@@ -60,21 +88,9 @@
 (defn url-encode [s]
   (URLEncoder/encode s "UTF-8"))
 
-(defn flush-outputs! []
-  ; TODO: how to make sure our piped writers get properly flushed?
-  (.flush ^Writer *out*)
-  (.flush ^Writer *err*))
-
-(defmacro with-outputs-flushing [& body]
-  `(try
-     ~@body
-     (finally
-       (flush-outputs!))))
-
 (defn exit! [status & [msg]]
   (if (some? msg)
-    (println msg))
-  (flush-outputs!)
+    (raw-println msg))
   (.sleep TimeUnit/SECONDS 1)
   (System/exit status))
 
@@ -82,8 +98,7 @@
   `(try
      ~@body
      (catch Throwable e#
-       (println "FATAL:")
-       (println (stacktrace-str e#))
+       (raw-stderr-println (str "FATAL:\n" (stacktrace-str e#)))
        (System/exit 99))))                                                                                                    ; instant death
 
 (defmacro catch-exceptions-as-result [& body]

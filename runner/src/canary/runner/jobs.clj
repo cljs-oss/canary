@@ -101,6 +101,7 @@
   (try
     (run-tasks! tasks state-atom options)
     (catch InterruptedException _e
+      (Thread/sleep (utils/seconds-to-msec 1))                                                                                ; give other threads some time for printing
       (announce (i18n/interrupted-task-runner-msg))
       nil)))
 

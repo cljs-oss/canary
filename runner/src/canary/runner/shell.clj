@@ -2,12 +2,32 @@
   "High-level utils for working with shell."
   (:require [me.raynes.conch.low-level :as sh]
             [me.raynes.fs :as fs]
-            [canary.runner.output :as output]
+            [clojure.core.async :as async]
             [canary.runner.print :refer [announce]]
             [canary.runner.utils :as utils]
             [canary.runner.i18n :as i18n]
-            [canary.runner.defaults :as defaults])
-  (:import (java.io InputStream)))
+            [canary.runner.defaults :as defaults]
+            [canary.runner.threads :as threads]
+            [canary.runner.print :as print])
+  (:import (java.io InputStream)
+           (java.util Scanner NoSuchElementException)))
+
+; -- line-based streaming ---------------------------------------------------------------------------------------------------
+
+(defonce printing-stream-executor (threads/make-executor "canary-async-shell-printing-%d"))
+
+(defn print-stream-as-lines! [^InputStream stream printer]
+  (try
+    (let [scanner (Scanner. stream)]
+      (loop []
+        (printer (.nextLine scanner))
+        (recur)))
+    (catch NoSuchElementException _)))
+
+(defn spawn-background-printing-stream! [stream printer]
+  (threads/spawn-thread printing-stream-executor
+    (utils/kill-process-on-failure
+      (print-stream-as-lines! stream printer))))
 
 ; -- helpers ----------------------------------------------------------------------------------------------------------------
 
@@ -19,9 +39,14 @@
   (assert (.markSupported stream))
   (.reset stream))
 
-(defn stream-proc-output! [proc]
-  (output/print-stream-as-lines-in-background! (:out proc) println)
-  (output/print-stream-as-lines-in-background! (:err proc) println))
+(defn wait-for-streams-to-finish! [ch]
+  (if (some? (async/<!! ch))
+    (recur ch)))
+
+(defn wait-and-stream-proc-output-via-decorated-printing! [proc options]
+  (let [out-streamer (spawn-background-printing-stream! (:out proc) print/decorated-println)
+        err-streamer (spawn-background-printing-stream! (:err proc) (partial print/decorated-error-println options))]
+    (wait-for-streams-to-finish! (async/merge [out-streamer err-streamer]))))
 
 (defn mark-proc-output! [proc]
   (mark-stream! (:out proc))
@@ -65,7 +90,7 @@
         (let [workdir (prepare-workdir! task options)
               proc (sh/proc path :verbose false :dir workdir :env env)]
           (mark-proc-output! proc)
-          (stream-proc-output! proc)
+          (wait-and-stream-proc-output-via-decorated-printing! proc options)                                                  ; blocking!
           (let [status (sh/exit-code proc)]
             (announce (i18n/shell-task-exit-code name status) 2 options)
             (-> {:exit-code status}
@@ -75,7 +100,7 @@
   (let [proc (apply sh/proc cmd args)]
     (mark-proc-output! proc)
     (when (:stream-output options)
-      (stream-proc-output! proc))
+      (wait-and-stream-proc-output-via-decorated-printing! proc options))                                                     ; blocking!
     (let [status (sh/exit-code proc)]
       (-> {:exit-code status}
           (extract-outputs! proc)))))
