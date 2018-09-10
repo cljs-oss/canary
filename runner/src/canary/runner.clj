@@ -114,6 +114,7 @@
 ; -- main entry point -------------------------------------------------------------------------------------------------------
 
 (defn -main [& args]
+  (utils/install-uncaught-exception-handler!)
   (let [{:keys [arguments options errors summary]} (cli/parse-opts args cli-options)
         action (first arguments)]
     (cond

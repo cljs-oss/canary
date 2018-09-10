@@ -113,6 +113,14 @@
        (throw result#)
        result#)))
 
+; credit: https://stuartsierra.com/2015/05/27/clojure-uncaught-exceptions
+(defn install-uncaught-exception-handler! []
+  (Thread/setDefaultUncaughtExceptionHandler
+    (reify Thread$UncaughtExceptionHandler
+      (uncaughtException [_ thread ex]
+        (future
+          (raw-stderr-println (str "Uncaught " (.getMessage ex) " on thread '" (.getName thread))))))))
+
 ; -- tests ------------------------------------------------------------------------------------------------------------------
 
 (comment
