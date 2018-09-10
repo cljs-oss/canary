@@ -24,8 +24,10 @@
       ; TODO: validate task result here for cases when tasks return nothing or malformed result
       (task-fn (with-meta options task)))))
 
-(defn try-execute-task! [task options]
+(defn try-execute-task! [task options delay-ms]
   (try
+    (when (pos? delay-ms)
+      (Thread/sleep delay-ms))
     (announce (i18n/running-task-msg task (:verbosity options)))
     (let [result (execute-task! task options)]
       (announce (i18n/completed-task-msg task))
@@ -43,9 +45,7 @@
 
 (defn spawn-task! [task delay-ms options]
   (threads/spawn-thread tasks-executor
-    (when (pos? delay-ms)
-      (Thread/sleep delay-ms))
-    (try-execute-task! task options)))
+    (try-execute-task! task options delay-ms)))
 
 (defn launch-task! [task delay-ms options]
   (spawn-task! task delay-ms options))
