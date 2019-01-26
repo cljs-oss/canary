@@ -33,3 +33,6 @@
 
 (defn ^{:task true :homepage "clojure/test.check"} test-check [options]
   (travis/request-build! "chkup/test.check" "CANARY_CHKUP_TRAVIS_TOKEN" options))
+
+(defn ^{:task true :homepage "clojure/core.async"} core-async [options]
+  (travis/request-build! "chkup/core.async" "CANARY_CHKUP_TRAVIS_TOKEN" options))
