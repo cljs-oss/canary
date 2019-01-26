@@ -36,3 +36,6 @@
 
 (defn ^{:task true :homepage "clojure/core.async"} core-async [options]
   (travis/request-build! "chkup/core.async" "CANARY_CHKUP_TRAVIS_TOKEN" options))
+
+(defn ^{:task true :homepage "clojure/core.rrb-vector"} core-rrb-vector [options]
+  (travis/request-build! "chkup/core.rrb-vector" "CANARY_CHKUP_TRAVIS_TOKEN" options))
