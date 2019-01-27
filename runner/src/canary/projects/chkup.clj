@@ -42,3 +42,6 @@
 
 (defn ^{:task true :homepage "clojure/core.match"} core-match [options]
   (travis/request-build! "chkup/core.match" "CANARY_CHKUP_TRAVIS_TOKEN" options))
+
+(defn ^{:task true :homepage "clojure/core.logic"} core-logic [options]
+  (travis/request-build! "chkup/core.logic" "CANARY_CHKUP_TRAVIS_TOKEN" options))
