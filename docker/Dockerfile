@@ -9,11 +9,10 @@ RUN apt-get -y update
 RUN apt-get -y upgrade
 RUN apt-get -y install software-properties-common wget curl git sudo
 
-# install Java 8: http://www.webupd8.org/2012/09/install-oracle-java-8-in-ubuntu-via-ppa.html
-RUN add-apt-repository ppa:webupd8team/java
-RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
-RUN apt-get -y update
-RUN apt-get -y install oracle-java8-installer oracle-java8-set-default
+# install Java 11
+RUN add-apt-repository ppa:openjdk-r/ppa
+RUN apt-get update
+RUN apt install -y openjdk-11-jdk ca-certificates-java
 RUN java -version
 
 # install latest lein
