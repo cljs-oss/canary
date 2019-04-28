@@ -59,7 +59,8 @@ popd() {
 }
 
 get_local_maven_repo() {
-  mvn help:evaluate -Dexpression=settings.localRepository | grep -v '[INFO]' | tr -d '\n'
+  # see https://stackoverflow.com/a/51235328/84283
+  mvn help:evaluate -Dexpression=settings.localRepository -q -DforceStdout
 }
 
 # -- verbosity --------------------------------------------------------------------------------------------------------------
