@@ -118,12 +118,13 @@ git checkout -b canary-build
 
 # -- compiler build ---------------------------------------------------------------------------------------------------------
 
-echo "Effective ClojureScript SHA to be built:"
-git log -1 --pretty=format:"%C(magenta)%h%C(reset) | %C(yellow)%s%C(reset)%n        └ %C(blue)%an%C(reset) | %ad" --date=rfc
-echo
-
 BUILD_SHORT_REV=`git rev-parse --short HEAD`
 BUILD_REV=`git rev-parse HEAD`
+
+BUILD_SHORT_REV_INDENT=`printf "%${#BUILD_SHORT_REV}s"` # short rev can have different length depending on short sha collisions
+echo "Effective ClojureScript compiler SHA to be built:"
+git log -1 --pretty=format:"%C(magenta)%h%C(reset) | %C(yellow)%s%C(reset)%n$BUILD_SHORT_REV_INDENT └ %C(blue)%an%C(reset) | %ad" --date=rfc --color=always
+echo
 
 COMPILER_REV_URL="${CANARY_COMPILER_REPO/.git//commit}/${BUILD_REV}"
 
