@@ -17,7 +17,8 @@
 #_(defn ^{:task true :homepage "mfikes/closurecomp"} closurecomp [options]
   (travis/request-build! "mfikes/closurecomp" "CANARY_CLOSURELATEST_TRAVIS_TOKEN" options))
 
-(defn ^{:task true :homepage "mfikes/closurelib"} closurelib [options]
+; Disable until ClojureScript upgrades to a compatible Closure Compiler
+#_(defn ^{:task true :homepage "mfikes/closurelib"} closurelib [options]
   (travis/request-build! "mfikes/closurelib" "CANARY_CLOSURELATEST_TRAVIS_TOKEN" options))
 
 (defn ^{:task true :homepage "mfikes/ilk"} ilk [options]
