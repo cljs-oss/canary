@@ -13,7 +13,8 @@
 #_(defn ^{:task true :homepage "mfikes/andare"} andare [options]
   (travis/request-build! "mfikes/andare" "CANARY_ANDARE_TRAVIS_TOKEN" options))
 
-(defn ^{:task true :homepage "mfikes/closurecomp"} closurecomp [options]
+; Disable until CLJS-3064 fixed
+#_(defn ^{:task true :homepage "mfikes/closurecomp"} closurecomp [options]
   (travis/request-build! "mfikes/closurecomp" "CANARY_CLOSURELATEST_TRAVIS_TOKEN" options))
 
 (defn ^{:task true :homepage "mfikes/closurelib"} closurelib [options]
