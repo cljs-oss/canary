@@ -186,13 +186,16 @@ else
   LOCAL_MAVEN_REPO=${LOCAL_MAVEN_REPO:-$(get_local_maven_repo)}
   rm -rf "$LOCAL_MAVEN_REPO/org/clojure/clojurescript"
 
+  set +e
   # shellcheck disable=SC2010
   BUILD_JAR=$(ls -1 "./target/${CLOJURESCRIPT_MAVEN_ARTIFACT}-"*.jar | grep -v slim)
+  set -e
 
   if [[ -z "$BUILD_JAR" ]]; then
     echo "ERROR!"
-    echo "ClojureScript JAR was not produced as clojurescript/target/clojurescript-<version>.jar"
-    ls -l ./target
+    echo "ClojureScript JAR was not produced as ./target/${CLOJURESCRIPT_MAVEN_ARTIFACT}-<version>.jar"
+    set -x
+    ls -la ./target
     exit 2
   fi
 
@@ -200,7 +203,7 @@ else
     BUILD_VERSION="${BASH_REMATCH[1]}"
   else
     echo "ERROR!"
-    echo "Unable to determine clojurescript version from $BUILD_JAR"
+    echo "Unable to determine clojurescript version from '$BUILD_JAR'"
     exit 3
   fi
 
