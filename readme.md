@@ -79,12 +79,14 @@ Also look into [GitHub releases of this repo](https://github.com/cljs-oss/canary
 ./scripts/docker-run.sh help
 ./scripts/docker-run.sh list
 ./scripts/docker-run.sh job
+./scripts/docker-clean.sh # to start from scratch
 ```
 
 ### directly
 
 ```bash
 ./runner/run.sh job -v -r master
+./scripts/blow-local-caches.sh # to start from scratch
 ```
 
 ### Vocabulary
