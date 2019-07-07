@@ -14,12 +14,12 @@ CANARY_REPO_TOKEN=${CANARY_REPO_TOKEN}
 CANARY_JOB_ID=${CANARY_JOB_ID}
 CANARY_JOB_STATUS=${CANARY_JOB_STATUS}
 CANARY_BUILD_ID=${CANARY_BUILD_ID}
-CANARY_RESULT_DIR=${CANARY_RESULT_DIR:-`pwd`}
+CANARY_RESULT_DIR=${CANARY_RESULT_DIR:-$(pwd -P)}
 CANARY_ROOT_DIR=${CANARY_ROOT_DIR}
 CANARY_REPORT_FILE=${CANARY_REPORT_FILE:-"$CANARY_RESULT_DIR/README.md"}
 CANARY_TASKS_FILE=${CANARY_TASKS_FILE:-"$CANARY_RESULT_DIR/tasks.edn"}
 CANARY_OPTIONS_FILE=${CANARY_OPTIONS_FILE:-"$CANARY_RESULT_DIR/options.edn"}
-WORK_DIR=`pwd`
+WORK_DIR=$(pwd -P)
 
 CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
 
@@ -36,13 +36,13 @@ pushd() {
 }
 
 popd() {
-    command popd "$@" > /dev/null
+    command popd > /dev/null
 }
 
 # -- clone canary/results branch --------------------------------------------------------------------------------------------
 
 if [[ "$CANARY_VERBOSITY" -gt 1 ]]; then
-  echo "effective settings:\n"
+  printf "effective settings:\n\n"
   # https://unix.stackexchange.com/a/5691/188074
   comm -3 <(declare | sort) <(declare -f | sort)
 fi
@@ -83,9 +83,9 @@ while [ ${#FORMATTED_ID} -lt 6 ]; do
 done
 
 REPORT_SLUG="job-$FORMATTED_ID-$CANARY_BUILD_ID"
-DATE_YEAR=`date +%Y`
-DATE_MONTH=`date +%m`
-DATE_DAY=`date +%d`
+DATE_YEAR=$(date +%Y)
+DATE_MONTH=$(date +%m)
+DATE_DAY=$(date +%d)
 REPORT_DIR="reports/$DATE_YEAR/$DATE_MONTH/$DATE_DAY/$REPORT_SLUG"
 
 if [[ -d "$REPORT_DIR" ]]; then
@@ -113,8 +113,8 @@ REPORTS_DIR="$WORK_DIR/results/reports"
 
 # patch root readme with most recent reports
 ROOT_README_NAME="README.md"
-README_WITH_MARKER=`perl -pe 'BEGIN{undef $/;} s/\(begin_overview_table\)\n.*\n(.*?)\(end_overview_table\)/(begin_overview_table)\n\nOVERVIEW_TABLE_MARKER\n\n$1(end_overview_table)/smg' "$ROOT_README_NAME"`
-NEW_OVERVIEW_TABLE=`cat "${OVERVIEW_TABLE_FILE}"`
+README_WITH_MARKER=$(perl -pe 'BEGIN{undef $/;} s/\(begin_overview_table\)\n.*\n(.*?)\(end_overview_table\)/(begin_overview_table)\n\nOVERVIEW_TABLE_MARKER\n\n$1(end_overview_table)/smg' "$ROOT_README_NAME")
+NEW_OVERVIEW_TABLE=$(cat "${OVERVIEW_TABLE_FILE}")
 NEW_README="${README_WITH_MARKER/OVERVIEW_TABLE_MARKER/$NEW_OVERVIEW_TABLE}"
 echo "$NEW_README" > "$ROOT_README_NAME"
 
