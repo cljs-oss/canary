@@ -1,7 +1,7 @@
 (defproject cljs-oss/canary-rgen "0.1.0-SNAPSHOT"
   :description "A tool for generating readme overview from canary reports."
   :url "https://github.com/cljs-oss/canary"
-  :dependencies [[org.clojure/clojure "1.10.0"]
+  :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.clojure/tools.cli "0.4.2"]
                  [funcool/cuerdas "2.2.0"]
                  [clansi "1.0.0"]
