@@ -13,10 +13,10 @@ CANARY_JOB_COMMIT=${CANARY_JOB_COMMIT:-"jobs"}
 CANARY_REPO_TOKEN=${CANARY_REPO_TOKEN}
 TRAVIS_BUILD_ID=${TRAVIS_BUILD_ID}
 CANARY_EXTRA_CURL_OPTS=${CANARY_EXTRA_CURL_OPTS:-"-sS"}
-CANARY_RESULT_DIR=${CANARY_RESULT_DIR:-`pwd`}
+CANARY_RESULT_DIR=${CANARY_RESULT_DIR:-$(pwd -P)}
 POM_PATH=${POM_PATH:-"META-INF/maven/org.clojure/clojurescript/pom.xml"}
 CANARY_PRODUCTION=${CANARY_PRODUCTION}
-CANARY_CACHE_DIR=${CANARY_CACHE_DIR:-"$(pwd)/.cache"}
+CANARY_CACHE_DIR=${CANARY_CACHE_DIR:-"$(pwd -P)/.cache"}
 OFFICIAL_COMPILER_REPO=${OFFICIAL_COMPILER_REPO:-"https://github.com/clojure/clojurescript.git"}
 CLOJURESCRIPT_MAJOR=${CLOJURESCRIPT_MAJOR:-1}
 CLOJURESCRIPT_MINOR=${CLOJURESCRIPT_MINOR:-10}
@@ -55,7 +55,7 @@ pushd() {
 }
 
 popd() {
-    command popd "$@" > /dev/null
+    command popd > /dev/null
 }
 
 get_local_maven_repo() {
@@ -66,7 +66,7 @@ get_local_maven_repo() {
 # -- verbosity --------------------------------------------------------------------------------------------------------------
 
 if [[ "$CANARY_VERBOSITY" -gt 1 ]]; then
-  echo "effective settings:\n"
+  printf "effective settings:\n\n"
   # https://unix.stackexchange.com/a/5691/188074
   comm -3 <(declare | sort) <(declare -f | sort)
 fi
@@ -119,10 +119,10 @@ git checkout -b canary-build
 
 # -- compiler build ---------------------------------------------------------------------------------------------------------
 
-BUILD_SHORT_REV=`git rev-parse --short HEAD`
-BUILD_REV=`git rev-parse HEAD`
+BUILD_SHORT_REV=$(git rev-parse --short HEAD)
+BUILD_REV=$(git rev-parse HEAD)
 
-BUILD_SHORT_REV_INDENT=`printf "%${#BUILD_SHORT_REV}s"` # short rev can have different length depending on short sha collisions
+BUILD_SHORT_REV_INDENT=$(printf "%${#BUILD_SHORT_REV}s") # short rev can have different length depending on short sha collisions
 echo "Effective ClojureScript compiler SHA to be built:"
 git log -1 --pretty=format:"%C(magenta)%h%C(reset) | %C(yellow)%s%C(reset)%n$BUILD_SHORT_REV_INDENT └ %C(blue)%an%C(reset) | %ad" --date=rfc --color=always
 echo
@@ -144,14 +144,14 @@ while [[ "$CLOJURESCRIPT_MINOR" -gt 0 ]]; do
   # find the v0.0 tag and will always return the total number of commits (even
   # if the tag is v0.0.1).
   set +e
-  GIT_CLOJURESCRIPT_REVISION=`git --no-replace-objects describe --match v${CLOJURESCRIPT_MAJOR}.${CLOJURESCRIPT_MINOR} 2>/dev/null`
+  GIT_CLOJURESCRIPT_REVISION=$(git --no-replace-objects describe --match "v${CLOJURESCRIPT_MAJOR}.${CLOJURESCRIPT_MINOR}" 2>/dev/null)
   set -e
   if [[ "$GIT_CLOJURESCRIPT_REVISION" =~ $CLOJURESCRIPT_REVISION_REGEX ]]; then
     CLOJURESCRIPT_REVISION="${BASH_REMATCH[1]}"
     CLOJURESCRIPT_REVISION_PART=".$CLOJURESCRIPT_REVISION"
     break
   fi
-  CLOJURESCRIPT_MINOR=$[$CLOJURESCRIPT_MINOR-1]
+  CLOJURESCRIPT_MINOR=$((CLOJURESCRIPT_MINOR-1))
 done
 
 EXPECTED_BUILD_ID="${CLOJURESCRIPT_MAJOR}.${CLOJURESCRIPT_MINOR}${CLOJURESCRIPT_REVISION_PART}-${BUILD_SHORT_REV}"
@@ -163,7 +163,7 @@ CACHED_JAR_PATH="$GIT_BUILD_CACHE_DIR/clojurescript-${EXPECTED_BUILD_ID}.jar"
 if [[ -f "$CACHED_JAR_PATH" ]]; then
   echo "ClojureScript build $EXPECTED_BUILD_ID is cached => using it"
   BUILD_ID="$EXPECTED_BUILD_ID"
-  BUILD_VERSION=`echo "$BUILD_ID" | cut -d "-" -f 1`
+  BUILD_VERSION=$(echo "$BUILD_ID" | cut -d "-" -f 1)
   BUILD_JAR="$CACHED_JAR_PATH"
 else
   echo "ClojureScript build $EXPECTED_BUILD_ID not cached => building it"
@@ -187,10 +187,11 @@ else
   travis_fold end clojurescript-build
 
   # purge clojurescript jars from maven, .m2 is cached by travis and that would lead to cache invalidation
-  LOCAL_MAVEN_REPO=${LOCAL_MAVEN_REPO:-`get_local_maven_repo`}
+  LOCAL_MAVEN_REPO=${LOCAL_MAVEN_REPO:-$(get_local_maven_repo)}
   rm -rf "$LOCAL_MAVEN_REPO/org/clojure/clojurescript"
 
-  BUILD_JAR=`ls -1 ./target/${CLOJURESCRIPT_MAVEN_ARTIFACT}-*.jar | grep -v slim`
+  # shellcheck disable=SC2010
+  BUILD_JAR=$(ls -1 "./target/${CLOJURESCRIPT_MAVEN_ARTIFACT}-"*.jar | grep -v slim)
 
   if [[ -z "$BUILD_JAR" ]]; then
     echo "ERROR!"
@@ -222,7 +223,7 @@ else
   echo "Patching ClojureScript JAR..."
   jar -xf "$BUILD_JAR" "$POM_PATH"
   mv "$POM_PATH" "$POM_PATH.orig"
-  cat "$POM_PATH.orig" | sed "s|<version>$BUILD_VERSION</version>|<version>$BUILD_ID</version>|g" > "$POM_PATH"
+  sed "s|<version>$BUILD_VERSION</version>|<version>$BUILD_ID</version>|g" < "$POM_PATH.orig" > "$POM_PATH"
   jar -uf "$BUILD_JAR" "$POM_PATH"
 
   # cache build
@@ -240,17 +241,17 @@ else
   TRAVIS_BUILD_INFO=""
 fi
 
-GITHUB_RELEASE_BODY=`cat <<MARKDOWN
+GITHUB_RELEASE_BODY=$(cat <<MARKDOWN
 A test build of ${COMPILER_REV_URL} via ${CANARY_JOB_COMMIT_URL}.
 ${TRAVIS_BUILD_INFO}
 MARKDOWN
-`
-GITHUB_RELEASE_BODY_ENCODED=`string_encode "${GITHUB_RELEASE_BODY}"`
+)
+GITHUB_RELEASE_BODY_ENCODED=$(string_encode "${GITHUB_RELEASE_BODY}")
 
 GITHUB_RELEASE_NAME="ClojureScript ${BUILD_ID}"
 GITHUB_RELEASE_TAG="r${BUILD_ID}"
 
-DATA=`cat <<JSON
+DATA=$(cat <<JSON
 {
   "tag_name": "${GITHUB_RELEASE_TAG}",
   "target_commitish": "${CANARY_JOB_COMMIT}",
@@ -260,7 +261,7 @@ DATA=`cat <<JSON
   "prerelease": true
 }
 JSON
-`
+)
 
 if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
   echo -e "Data for GitHub API https://developer.github.com/v3/repos/releases/#create-a-release\n$DATA"
@@ -280,19 +281,20 @@ else # production mode
   fi
 
   echo "Creating GitHub release $GITHUB_RELEASE_TAG..."
-  RELEASE_RESPONSE=`curl ${CANARY_EXTRA_CURL_OPTS} \
+  # shellcheck disable=SC2086
+  RELEASE_RESPONSE=$(curl ${CANARY_EXTRA_CURL_OPTS} \
                          -H "Content-Type: application/json" \
                          -H "Authorization: token $CANARY_REPO_TOKEN" \
                          -X POST \
                          --data "$DATA" \
-                         https://api.github.com/repos/cljs-oss/canary/releases`
+                         https://api.github.com/repos/cljs-oss/canary/releases)
 
   if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
     echo -e "GitHub API response:\n$RELEASE_RESPONSE"
   fi
 
   set +e
-  RELEASE_ERROR=`silent_json_val [\"errors\"][0][\"code\"] <<< "$RELEASE_RESPONSE" | sed -e 's/^"//' -e 's/"$//'`
+  RELEASE_ERROR=$(silent_json_val [\"errors\"][0][\"code\"] <<< "$RELEASE_RESPONSE" | sed -e 's/^"//' -e 's/"$//')
   set -e
 
   if [[ "$RELEASE_ERROR" == "already_exists" ]]; then
@@ -302,7 +304,7 @@ else # production mode
     echo "Download URL: $BUILD_DOWNLOAD_URL (assumed)"
   else
     set +e
-    UPLOAD_URL=`json_val [\"upload_url\"] <<< "$RELEASE_RESPONSE" | sed -e 's/^"//' -e 's/"$//'`
+    UPLOAD_URL=$(json_val [\"upload_url\"] <<< "$RELEASE_RESPONSE" | sed -e 's/^"//' -e 's/"$//')
     set -e
 
     if [[ "$UPLOAD_URL" =~ ^https://uploads\.github\.com/repos/cljs-oss/canary/releases/(.*)/assets.*$ ]]; then
@@ -319,19 +321,20 @@ else # production mode
     COMPLETE_UPLOAD_URL="$RAW_UPLOAD_URL?name=clojurescript-$BUILD_ID.jar"
 
     echo "Uploading ClojureScript jar as GitHub release asset..."
-    UPLOAD_RESPONSE=`curl ${CANARY_EXTRA_CURL_OPTS} \
+    # shellcheck disable=SC2086
+    UPLOAD_RESPONSE=$(curl ${CANARY_EXTRA_CURL_OPTS} \
                           -H "Content-Type: application/java-archive" \
                           -H "Authorization: token $CANARY_REPO_TOKEN" \
                           -X POST \
                           --data-binary "@$BUILD_JAR" \
-                          "$COMPLETE_UPLOAD_URL"`
+                          "$COMPLETE_UPLOAD_URL")
 
     if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
       echo -e "GitHub API response:\n$UPLOAD_RESPONSE"
     fi
 
     set +e
-    BUILD_DOWNLOAD_URL=`json_val [\"browser_download_url\"] <<< "$UPLOAD_RESPONSE" | sed -e 's/^"//' -e 's/"$//'`
+    BUILD_DOWNLOAD_URL=$(json_val [\"browser_download_url\"] <<< "$UPLOAD_RESPONSE" | sed -e 's/^"//' -e 's/"$//')
     set -e
 
     if [[ ! "$BUILD_DOWNLOAD_URL" =~ ^https://github\.com/cljs-oss/canary/releases/download.*$ ]]; then
@@ -356,7 +359,7 @@ if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
   echo -e "Copied result jar into '$RESULT_JAR_PATH'"
 fi
 
-RESULT=`cat <<EDN
+RESULT=$(cat <<EDN
 {
   :build-id "${BUILD_ID}"
   :build-version "${BUILD_VERSION}"
@@ -370,7 +373,7 @@ RESULT=`cat <<EDN
   :travis-build-url "${TRAVIS_BUILD_URL}"
 }
 EDN
-`
+)
 
 RESULT_EDN_PATH="$CANARY_RESULT_DIR/result.edn"
 mkdir -p "$CANARY_RESULT_DIR"
