@@ -12,3 +12,4 @@
 /rgen/target
 /rgen/.nrepl-port
 .canary-jobs-branch
+.idea/
