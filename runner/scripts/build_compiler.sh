@@ -35,11 +35,7 @@ travis_fold() {
 }
 
 json_val() {
-  python -c "import json,sys;sys.stdout.write(json.dumps(json.load(sys.stdin)$1))"
-}
-
-silent_json_val() {
-  python -c "import json,sys;sys.stdout.write(json.dumps(json.load(sys.stdin)$1))" 2> /dev/null;
+  jq --raw-output "$@"
 }
 
 string_encode() {
@@ -294,7 +290,7 @@ else # production mode
   fi
 
   set +e
-  RELEASE_ERROR=$(silent_json_val [\"errors\"][0][\"code\"] <<< "$RELEASE_RESPONSE" | sed -e 's/^"//' -e 's/"$//')
+  RELEASE_ERROR=$(json_val ".errors[0].code" <<< "$RELEASE_RESPONSE")
   set -e
 
   if [[ "$RELEASE_ERROR" == "already_exists" ]]; then
@@ -304,7 +300,7 @@ else # production mode
     echo "Download URL: $BUILD_DOWNLOAD_URL (assumed)"
   else
     set +e
-    UPLOAD_URL=$(json_val [\"upload_url\"] <<< "$RELEASE_RESPONSE" | sed -e 's/^"//' -e 's/"$//')
+    UPLOAD_URL=$(json_val ".upload_url" <<< "$RELEASE_RESPONSE")
     set -e
 
     if [[ "$UPLOAD_URL" =~ ^https://uploads\.github\.com/repos/cljs-oss/canary/releases/(.*)/assets.*$ ]]; then
@@ -334,7 +330,7 @@ else # production mode
     fi
 
     set +e
-    BUILD_DOWNLOAD_URL=$(json_val [\"browser_download_url\"] <<< "$UPLOAD_RESPONSE" | sed -e 's/^"//' -e 's/"$//')
+    BUILD_DOWNLOAD_URL=$(json_val ".browser_download_url" <<< "$UPLOAD_RESPONSE")
     set -e
 
     if [[ ! "$BUILD_DOWNLOAD_URL" =~ ^https://github\.com/cljs-oss/canary/releases/download.*$ ]]; then

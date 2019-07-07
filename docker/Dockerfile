@@ -21,8 +21,7 @@ RUN apt-get install -y --no-install-recommends maven && \
     mvn --version
 
 # for internal canary scripts
-RUN apt-get install -y --no-install-recommends python && \
-    python --version
+RUN apt-get install -y --no-install-recommends jq && jq --version
 
 # install latest lein
 ENV LEIN_ROOT 1
@@ -45,5 +44,5 @@ RUN echo "\n==============\nBuild summary:" && \
     java -version && \
     mvn --version && \
     lein --version && \
-    python --version && \
+    jq --version && \
     echo "==============\n"
