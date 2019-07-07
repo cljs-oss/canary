@@ -30,8 +30,8 @@ fi
 
 echo "Installing Canary support"
 
-JAR_PATH=`mktemp`
-TEMP_WORK_DIR=`mktemp -d`
+JAR_PATH=$(mktemp)
+TEMP_WORK_DIR=$(mktemp -d)
 
 function finish {
   rm "$JAR_PATH"

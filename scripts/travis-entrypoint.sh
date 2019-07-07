@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e -o pipefail
+
 source "$(dirname "${BASH_SOURCE[0]}")/_config.sh" || true || source _config.sh # this is here just for IntelliJ Bash support to understand our sourcing
 source "$(dirname "${BASH_SOURCE[0]}")/lib/travis.sh" || true || source lib/travis.sh # this is here just for IntelliJ Bash support to understand our sourcing
 
@@ -11,9 +13,9 @@ if [[ -z "$TRAVIS" ]]; then
   exit 77
 fi
 
-pushd "$ROOT"
+cd "$ROOT"
 
-MASTER_SHORT_REV=`git rev-parse --short HEAD`
+MASTER_SHORT_REV=$(git rev-parse --short HEAD)
 
 echo "Canary git revision $MASTER_SHORT_REV at '$(pwd)'"
 
@@ -33,5 +35,3 @@ echo "Building docker image"
 travis_fold end docker-build
 
 ./scripts/docker-run.sh ${JOB_ARGS} --job-id "$TRAVIS_BUILD_NUMBER" --production
-
-popd

@@ -5,7 +5,7 @@ pushd() {
 }
 
 popd() {
-    command popd "$@" > /dev/null
+    command popd > /dev/null
 }
 
 echo_err() {
