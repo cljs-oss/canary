@@ -21,8 +21,9 @@ OFFICIAL_COMPILER_REPO=${OFFICIAL_COMPILER_REPO:-"https://github.com/clojure/clo
 CLOJURESCRIPT_MAJOR=${CLOJURESCRIPT_MAJOR:-1}
 CLOJURESCRIPT_MINOR=${CLOJURESCRIPT_MINOR:-10}
 CLOJURESCRIPT_REVISION_REGEX=${CLOJURESCRIPT_REVISION_REGEX:-"v[0-9]*\.[0-9]*-([0-9]*)-.*"}
+CANARY_REPO=${CANARY_REPO:-cljs-oss/canary}
 
-CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
+CANARY_JOB_COMMIT_URL="https://github.com/${CANARY_REPO}/commit/${CANARY_JOB_COMMIT}"
 
 # -- functions --------------------------------------------------------------------------------------------------------------
 
@@ -233,7 +234,7 @@ fi
 # -- github release ---------------------------------------------------------------------------------------------------------
 
 if [[ -n "$TRAVIS_BUILD_ID" ]]; then
-  TRAVIS_BUILD_URL="https://travis-ci.org/cljs-oss/canary/builds/$TRAVIS_BUILD_ID"
+  TRAVIS_BUILD_URL="https://travis-ci.org/${CANARY_REPO}/builds/$TRAVIS_BUILD_ID"
   TRAVIS_BUILD_INFO="Travis log: $TRAVIS_BUILD_URL."
 else
   TRAVIS_BUILD_URL="n/a"
@@ -286,7 +287,7 @@ else # production mode
                          -H "Authorization: token $CANARY_REPO_TOKEN" \
                          -X POST \
                          --data "$DATA" \
-                         https://api.github.com/repos/cljs-oss/canary/releases)
+                         https://api.github.com/repos/${CANARY_REPO}/releases)
 
   if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
     echo -e "GitHub API response:\n$RELEASE_RESPONSE"
@@ -299,14 +300,14 @@ else # production mode
   if [[ "$RELEASE_ERROR" == "already_exists" ]]; then
     echo "GitHub release for ${BUILD_ID} already exists => skipping JAR upload (assuming it is the same)"
     # TODO: here we could query github api and get release assets and pick one
-    BUILD_DOWNLOAD_URL="https://github.com/cljs-oss/canary/releases/download/r${BUILD_ID}/clojurescript-${BUILD_ID}.jar"
+    BUILD_DOWNLOAD_URL="https://github.com/${CANARY_REPO}/releases/download/r${BUILD_ID}/clojurescript-${BUILD_ID}.jar"
     echo "Download URL: $BUILD_DOWNLOAD_URL (assumed)"
   else
     set +e
     UPLOAD_URL=$(json_val ".upload_url" <<< "$RELEASE_RESPONSE")
     set -e
 
-    if [[ "$UPLOAD_URL" =~ ^https://uploads\.github\.com/repos/cljs-oss/canary/releases/(.*)/assets.*$ ]]; then
+    if [[ "$UPLOAD_URL" =~ ^https://uploads\.github\.com/repos/.*/releases/(.*)/assets.*$ ]]; then
       GITHUB_RELEASE_ID="${BASH_REMATCH[1]}"
     else
       echo "ERROR!"
@@ -316,7 +317,7 @@ else # production mode
       exit 5
     fi
 
-    RAW_UPLOAD_URL="https://uploads.github.com/repos/cljs-oss/canary/releases/$GITHUB_RELEASE_ID/assets"
+    RAW_UPLOAD_URL="https://uploads.github.com/repos/${CANARY_REPO}/releases/$GITHUB_RELEASE_ID/assets"
     COMPLETE_UPLOAD_URL="$RAW_UPLOAD_URL?name=clojurescript-$BUILD_ID.jar"
 
     echo "Uploading ClojureScript jar as GitHub release asset..."
@@ -336,7 +337,7 @@ else # production mode
     BUILD_DOWNLOAD_URL=$(json_val ".browser_download_url" <<< "$UPLOAD_RESPONSE")
     set -e
 
-    if [[ ! "$BUILD_DOWNLOAD_URL" =~ ^https://github\.com/cljs-oss/canary/releases/download.*$ ]]; then
+    if [[ ! "$BUILD_DOWNLOAD_URL" =~ ^https://github\.com/.*/releases/download.*$ ]]; then
       echo "ERROR!"
       echo -e "Invalid browser_download_url returned from github api: '$BUILD_DOWNLOAD_URL'\n$UPLOAD_RESPONSE"
       mkdir -p "$CANARY_RESULT_DIR"
