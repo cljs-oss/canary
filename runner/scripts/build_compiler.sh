@@ -348,6 +348,28 @@ else # production mode
   fi
 fi # production mode
 
+# -- collect metadata about job commit --------------------------------------------------------------------------------------
+
+JOB_COMMIT_INFO_GITHUB_API_ENDPOINT="https://api.github.com/repos/${CANARY_REPO}/commits/${CANARY_JOB_COMMIT}"
+echo "Retrieving github info about job commit '${CANARY_JOB_COMMIT}' via ${JOB_COMMIT_INFO_GITHUB_API_ENDPOINT}"
+
+# shellcheck disable=SC2086
+JOB_COMMIT_INFO_RESPONSE=$(curl ${CANARY_EXTRA_CURL_OPTS} \
+                           -H "Content-Type: application/json" \
+                           -X GET \
+                           "${JOB_COMMIT_INFO_GITHUB_API_ENDPOINT}")
+
+if [[ "$CANARY_VERBOSITY" -gt 0 ]]; then
+  echo -e "GitHub API response:\n$JOB_COMMIT_INFO_RESPONSE"
+fi
+
+set +e
+CANARY_JOB_COMMIT_AUTHOR_LOGIN=$(json_val ".author.login" <<< "$JOB_COMMIT_INFO_RESPONSE")
+CANARY_JOB_COMMIT_AUTHOR_NAME=$(json_val ".commit.author.name" <<< "$JOB_COMMIT_INFO_RESPONSE")
+CANARY_JOB_COMMIT_AUTHOR_DATE=$(json_val ".commit.author.date" <<< "$JOB_COMMIT_INFO_RESPONSE")
+CANARY_JOB_COMMIT_AUTHOR_AVATAR_URL=$(json_val ".author.avatar_url" <<< "$JOB_COMMIT_INFO_RESPONSE")
+set -e
+
 # -- result preparation -----------------------------------------------------------------------------------------------------
 # we pass results to the caller by producing an edn file on agreed path in RESULT_DIR
 # we also copy compiled jar into RESULT_DIR and publish its path via :build-jar-path
@@ -369,7 +391,12 @@ RESULT=$(cat <<EDN
   :github-release-name "${GITHUB_RELEASE_NAME}"
   :github-release-tag "${GITHUB_RELEASE_TAG}"
   :compiler-rev-url "${COMPILER_REV_URL}"
+  :canary-job-commit "${CANARY_JOB_COMMIT}"
   :canary-job-commit-url "${CANARY_JOB_COMMIT_URL}"
+  :canary-job-commit-author-login "${CANARY_JOB_COMMIT_AUTHOR_LOGIN}"
+  :canary-job-commit-author-name "${CANARY_JOB_COMMIT_AUTHOR_NAME}"
+  :canary-job-commit-author-date "${CANARY_JOB_COMMIT_AUTHOR_DATE}"
+  :canary-job-commit-author-avatar-url "${CANARY_JOB_COMMIT_AUTHOR_AVATAR_URL}"
   :travis-build-url "${TRAVIS_BUILD_URL}"
 }
 EDN
