@@ -7,12 +7,14 @@
             [canary.rgen.i18n :as i18n]))
 
 (def task-edn-re #".*/reports/(\d+)/(\d+)/(\d+)/job-(\d+)-([0-9.]+)-([0-9a-f]+)/tasks.edn")
+(def avatar-size 20)
 
 (defn parse-task-info-from-file [file]
   (let [file-path (str file)]                                                                                                 ; is something like '/Users/darwin/temp/canary/reports/2017/07/19/job-000067-1.9.822-b3c7667/tasks.edn'
     (if-some [match (re-matches task-edn-re file-path)]
       (let [[year month day job-id compiler-version compiler-sha] (rest match)]
         {:tasks-edn-path   file-path
+         :options-edn-path (string/replace file-path #"tasks\.edn$" "options.edn")
          :date             (string/join "-" [year month day])
          :job-id           (utils/parse-int job-id)
          :compiler-version compiler-version
@@ -37,9 +39,12 @@
       nil)))
 
 (defn fetch-job-info-tasks-data [task-info]
-  (let [{:keys [tasks-edn-path]} task-info]
-    (if-some [tasks-edn (try-read-edn tasks-edn-path)]
-      (assoc task-info :tasks tasks-edn))))
+  (let [{:keys [tasks-edn-path options-edn-path]} task-info
+        tasks-edn (try-read-edn tasks-edn-path)
+        options-edn (try-read-edn options-edn-path)]
+    (cond-> task-info
+            (some? tasks-edn) (assoc :tasks tasks-edn)
+            (some? options-edn) (assoc :options options-edn))))
 
 (defn fetch-job-infos-tasks-data [task-infos]
   (keep fetch-job-info-tasks-data task-infos))
@@ -150,20 +155,36 @@
     (map * task-names status-matrix)))
 
 (defn prepare-job-title [job]
-  (let [{:keys [job-id date]} job]
-    (str "job #" job-id " finished on " date)))
+  (let [{:keys [job-id options]} job
+        {:keys [meta-job-args]} options
+        {:keys [canary-job-commit-author-date
+                canary-job-commit-author-name
+                canary-job-commit-author-login]} (:build-result options)
+        name-date (if canary-job-commit-author-name
+                    (str "&#xA;requested by " canary-job-commit-author-name " (@" canary-job-commit-author-login ")"
+                         (if canary-job-commit-author-date
+                           (str " on " canary-job-commit-author-date))))
+        args (if meta-job-args
+               (str "&#xA;&#xA;" meta-job-args "&#xA;"))]
+    (str "job #" job-id args name-date)))
 
-(defn render-job-link [jobs job-id]
+(defn prepare-job-avatar [job]
+  (if-let [avatar-url (get-in job [:options :build-result :canary-job-commit-author-avatar-url])]
+    (let [retina-avatar-resolution (* 3 avatar-size)]
+      (str "<br/><img width=" avatar-size " height=" avatar-size " src=\"" avatar-url "&s=" retina-avatar-resolution "\">"))))
+
+(defn render-job-header [jobs job-id]
   (let [selected-job (get-job-with-id jobs job-id)
+        avatar (prepare-job-avatar selected-job)
         link (prepare-job-report-link selected-job)
         title (prepare-job-title selected-job)]
-    (str "<a href=\"" link "\" title=\"" title "\">" job-id "</a>")))
+    (str "<a href=\"" link "\" title=\"" title "\">" job-id avatar "</a>")))
 
-(defn render-job-links [jobs job-ids]
-  (map (partial render-job-link jobs) job-ids))
+(defn render-job-headers [jobs job-ids]
+  (map (partial render-job-header jobs) job-ids))
 
 (defn generate-status-table-markup [jobs task-names all-tasks-metadata job-ids status-matrix options]
-  (let [header (concat ["task \\ job"] (render-job-links jobs job-ids))
+  (let [header (concat ["task \\ job"] (render-job-headers jobs job-ids))
         body (render-status-matrix-rows jobs job-ids task-names all-tasks-metadata status-matrix options)
         table (concat [header] body)]
     (table-to-markup table)))
