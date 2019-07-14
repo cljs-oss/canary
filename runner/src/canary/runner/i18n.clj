@@ -250,3 +250,5 @@
 (defn ^:dynamic verbosity-cli-desc []
   "Verbosity level; may be specified multiple times")
 
+(defn ^:dynamic meta-job-args-cli-desc []
+  "Optional job args to be presented in reports")

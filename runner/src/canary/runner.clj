@@ -25,6 +25,7 @@
    (normal-cli-option [nil "--except SUBSTR" (i18n/except-cli-desc)])
    (normal-cli-option [nil "--include REGEX" (i18n/include-cli-desc)])
    (normal-cli-option [nil "--exclude REGEX" (i18n/exclude-cli-desc)])
+   (normal-cli-option [nil "--meta-job-args TEXT" (i18n/meta-job-args-cli-desc)])
    (normal-cli-option [nil "--job-id ID" (i18n/job-id-cli-desc) :default "0"])
    (timeout-cli-option [nil "--polling-interval SECONDS" (i18n/polling-interval-cli-desc) :default defaults/polling-interval])
    (timeout-cli-option [nil "--timeout SECONDS" (i18n/timeout-cli-desc) :default defaults/timeout])
