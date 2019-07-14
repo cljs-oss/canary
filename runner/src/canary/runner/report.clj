@@ -80,12 +80,18 @@
                       "| [source](" compiler-rev-url ").")]]
       (string/join \newline (keep identity lines)))))
 
+(defn about-job-args [job-args]
+  (if job-args
+    (str "```" \newline job-args \newline "```" \newline)))
+
 (defn report-header [options]
   (let [job-sha (env/get "CANARY_JOB_COMMIT")
         job-id (:job-id options)
+        job-args (:meta-job-args options)
         build-result (:build-result options)
         canary-repo-commit-url "https://github.com/cljs-oss/canary/commit"
         lines [(str "## Report for job #" job-id)
+               (about-job-args job-args)
                (about-job job-id job-sha canary-repo-commit-url build-result)
                (about-compiler build-result)]]
     (string/join \newline (keep identity lines))))
