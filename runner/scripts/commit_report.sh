@@ -2,6 +2,10 @@
 
 set -e -o pipefail
 
+# we might be launched from leiningen env which contains CLASSPATH and nested lein instances complain with a warning
+# this is just a workaround, see https://github.com/technomancy/leiningen/issues/2361
+unset CLASSPATH
+
 # we assume cwd is a clean task's workdir, see shell-launcher in commit-report! (report.clj)
 
 # -- parameters -------------------------------------------------------------------------------------------------------------
