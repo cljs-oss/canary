@@ -19,9 +19,10 @@ CANARY_ROOT_DIR=${CANARY_ROOT_DIR}
 CANARY_REPORT_FILE=${CANARY_REPORT_FILE:-"$CANARY_RESULT_DIR/README.md"}
 CANARY_TASKS_FILE=${CANARY_TASKS_FILE:-"$CANARY_RESULT_DIR/tasks.edn"}
 CANARY_OPTIONS_FILE=${CANARY_OPTIONS_FILE:-"$CANARY_RESULT_DIR/options.edn"}
+CANARY_REPO=${CANARY_REPO:-cljs-oss/canary}
 WORK_DIR=$(pwd -P)
 
-CANARY_JOB_COMMIT_URL="https://github.com/cljs-oss/canary/commit/${CANARY_JOB_COMMIT}"
+CANARY_JOB_COMMIT_URL="https://github.com/${CANARY_REPO}/commit/${CANARY_JOB_COMMIT}"
 
 if [[ -z "$CANARY_ROOT_DIR" ]]; then
   echo "ERROR!"
@@ -48,20 +49,20 @@ if [[ "$CANARY_VERBOSITY" -gt 1 ]]; then
 fi
 
 if [[ -n "$TRAVIS_BUILD_ID" ]]; then
-  TRAVIS_BUILD_URL="https://travis-ci.org/cljs-oss/canary/builds/$TRAVIS_BUILD_ID"
+  TRAVIS_BUILD_URL="https://travis-ci.org/${CANARY_REPO}/builds/$TRAVIS_BUILD_ID"
 else
   TRAVIS_BUILD_URL="n/a"
 fi
 TRAVIS_BUILD_INFO="Travis: $TRAVIS_BUILD_URL"
 
-git clone --branch results https://github.com/cljs-oss/canary results
+git clone --depth 1 --branch results "https://github.com/${CANARY_REPO}" results
 cd results
 
 # configure repo
 git config user.email "canary-bot@users.noreply.github.com"
 git config user.name "Canary Bot"
 
-git remote add up "https://${CANARY_REPO_TOKEN}@github.com/cljs-oss/canary.git"
+git remote add up "https://${CANARY_REPO_TOKEN}@github.com/${CANARY_REPO}.git"
 
 # -- prepare content --------------------------------------------------------------------------------------------------------
 
