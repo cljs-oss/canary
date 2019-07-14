@@ -7,6 +7,8 @@ source "$(dirname "${BASH_SOURCE[0]}")/lib/travis.sh" || true || source lib/trav
 
 TRAVIS=${TRAVIS}
 TRAVIS_BUILD_NUMBER=${TRAVIS_BUILD_NUMBER:-?}
+CANARY_DRY_RUN=${CANARY_DRY_RUN}
+CANARY_OVERRIDE_JOB_ARGS=${CANARY_OVERRIDE_JOB_ARGS}
 
 if [[ -z "$TRAVIS" ]]; then
   echo_err "travis-entrypoint.sh should be launched only in the context of travis CI"
@@ -19,7 +21,11 @@ MASTER_SHORT_REV=$(git rev-parse --short HEAD)
 
 echo "Canary git revision $MASTER_SHORT_REV at '$(pwd)'"
 
-JOB_ARGS=$(git show -s --format=%B "jobs" | head -n 1)
+if [[ -z "$CANARY_OVERRIDE_JOB_ARGS" ]]; then
+  JOB_ARGS=$(git show -s --format=%B "jobs" | head -n 1)
+else
+  JOB_ARGS="$CANARY_OVERRIDE_JOB_ARGS"
+fi
 
 # TODO: do some better sanitation of JOB_ARGS
 if [[ ! ${JOB_ARGS} == job* ]]; then
@@ -34,4 +40,13 @@ echo "Building docker image"
 ./scripts/docker-build.sh
 travis_fold end docker-build
 
-./scripts/docker-run.sh ${JOB_ARGS} --job-id "$TRAVIS_BUILD_NUMBER" --production
+PRODUCTION_FLAG="--production"
+if [[ -n "$CANARY_DRY_RUN" ]]; then
+  PRODUCTION_FLAG=
+fi
+
+exec ./scripts/docker-run.sh ${JOB_ARGS}\
+ --job-id "$TRAVIS_BUILD_NUMBER"\
+ ${PRODUCTION_FLAG}\
+ --meta-job-args="$JOB_ARGS"\
+ "$@"
