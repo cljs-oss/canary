@@ -15,7 +15,7 @@ mkdir -p "$DOCKER_VOLUMES_DIR/root/.m2"
 # generate list of inherited env vars
 env | grep "^CANARY_" > "$DOCKER_ENV_FILE" || :
 
-docker run \
+exec docker run \
   --name "$DOCKER_CONTAINER_NAME" \
   --env-file "$DOCKER_ENV_FILE" \
   -e "CANARY_JOB_COMMIT=$TRAVIS_COMMIT" \

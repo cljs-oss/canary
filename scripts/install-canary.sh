@@ -51,7 +51,7 @@ echo "Installing $CANARY_CLOJURESCRIPT_JAR_URL into local maven repo"
 # note that recent version of maven install plugin support direct install respecting embedded pom
 #   https://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html
 # but we cannot rely on this feature because travis machines could have older versions installed by default
-mvn install:install-file \
+exec mvn install:install-file \
     --batch-mode \
     --quiet \
     -Dfile="$JAR_PATH" \

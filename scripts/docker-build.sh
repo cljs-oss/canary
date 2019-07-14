@@ -9,7 +9,7 @@ TRAVIS_COMMIT=${TRAVIS_COMMIT:-"local"}
 
 cd "$DOCKER_DIR"
 
-docker build \
+exec docker build \
   --cache-from "$DOCKER_CACHE_FROM" \
   -t "$DOCKER_IMAGE_NAME:latest" \
   -t "$DOCKER_IMAGE_NAME:$TRAVIS_COMMIT" \
