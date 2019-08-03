@@ -154,13 +154,20 @@
               (concat [task-title] task-statuses)))]
     (map * task-names status-matrix)))
 
+; :build-result might contain string "null" values, look for CANARY_JOB_COMMIT_AUTHOR_NAME in build_compiler.sh
+(defn sanitize-result-value [v]
+  (if-not (or (= v "null")
+              (string/blank? v)
+              (false? v))
+    v))
+
 (defn prepare-job-title [job]
   (let [{:keys [job-id options]} job
         {:keys [meta-job-args]} options
-        {:keys [canary-job-commit-author-date
-                canary-job-commit-author-name
-                canary-job-commit-author-login]} (:build-result options)
-        name-date (if canary-job-commit-author-name
+        {:keys [canary-job-commit-author-name
+                canary-job-commit-author-login
+                canary-job-commit-author-date]} (:build-result options)
+        name-date (if (sanitize-result-value canary-job-commit-author-name)
                     (str "&#xA;requested by " canary-job-commit-author-name " (@" canary-job-commit-author-login ")"
                          (if canary-job-commit-author-date
                            (str " on " canary-job-commit-author-date))))
@@ -168,8 +175,12 @@
                (str "&#xA;&#xA;" meta-job-args "&#xA;"))]
     (str "job #" job-id args name-date)))
 
+; see https://stackoverflow.com/a/14115340/84283
+(def blank-image-src "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=")
+
 (defn prepare-job-avatar [job]
-  (if-let [avatar-url (get-in job [:options :build-result :canary-job-commit-author-avatar-url])]
+  (let [avatar-url (or (sanitize-result-value (get-in job [:options :build-result :canary-job-commit-author-avatar-url]))
+                       blank-image-src)]                                                                                      ; we want to keep alignment even if avatar-url is not available
     (let [retina-avatar-resolution (* 3 avatar-size)]
       (str "<br/><img width=" avatar-size " height=" avatar-size " src=\"" avatar-url "&s=" retina-avatar-resolution "\">"))))
 
