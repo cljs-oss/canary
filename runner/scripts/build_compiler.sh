@@ -370,6 +370,14 @@ CANARY_JOB_COMMIT_AUTHOR_DATE=$(json_val ".commit.author.date" <<< "$JOB_COMMIT_
 CANARY_JOB_COMMIT_AUTHOR_AVATAR_URL=$(json_val ".author.avatar_url" <<< "$JOB_COMMIT_INFO_RESPONSE")
 set -e
 
+if [[ "$CANARY_JOB_COMMIT_AUTHOR_LOGIN" == "null" ||
+      "$CANARY_JOB_COMMIT_AUTHOR_NAME" == "null" ||
+      "$CANARY_JOB_COMMIT_AUTHOR_DATE" == "null" ||
+      "$CANARY_JOB_COMMIT_AUTHOR_AVATAR_URL" == "null" ]]; then
+  echo "Warning: Unable to collect metadata about job commit from '${JOB_COMMIT_INFO_GITHUB_API_ENDPOINT}'"
+  echo -e "response:\n$JOB_COMMIT_INFO_RESPONSE"
+fi
+
 # -- result preparation -----------------------------------------------------------------------------------------------------
 # we pass results to the caller by producing an edn file on agreed path in RESULT_DIR
 # we also copy compiled jar into RESULT_DIR and publish its path via :build-jar-path
