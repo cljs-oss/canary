@@ -356,6 +356,7 @@ echo "Retrieving github info about job commit '${CANARY_JOB_COMMIT}' via ${JOB_C
 # shellcheck disable=SC2086
 JOB_COMMIT_INFO_RESPONSE=$(curl ${CANARY_EXTRA_CURL_OPTS} \
                            -H "Content-Type: application/json" \
+                           -H "Authorization: token $CANARY_REPO_TOKEN" \
                            -X GET \
                            "${JOB_COMMIT_INFO_GITHUB_API_ENDPOINT}")
 
