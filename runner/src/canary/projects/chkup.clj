@@ -45,3 +45,6 @@
 
 (defn ^{:task true :homepage "clojure/core.logic"} core-logic [options]
   (travis/request-build! "chkup/core.logic" "CANARY_CHKUP_TRAVIS_TOKEN" options))
+
+(defn ^{:task true :homepage "andrewmcveigh/cljs-time"} cljs-time [options]
+  (travis/request-build! "chkup/cljs-time" "CANARY_CHKUP_TRAVIS_TOKEN" options))
