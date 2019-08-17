@@ -19,6 +19,7 @@ AUTO_JOB_CONFIG_FILE=~/.canary-auto-job-config.sh
 
 if [[ -f "${AUTO_JOB_CONFIG_FILE}" ]]; then
   echo "sourcing ${AUTO_JOB_CONFIG_FILE}..."
+  # shellcheck disable=SC1090
   source "${AUTO_JOB_CONFIG_FILE}"
 fi
 
@@ -34,7 +35,7 @@ else
   REPO_URL="https://${CANARY_AUTO_JOB_REPO_TOKEN}@github.com/cljs-oss/canary.git"
 fi
 
-if [[ ! -z "$CANARY_AUTO_JOB_COMMIT_AUTHOR" ]]; then
+if [[ -n "$CANARY_AUTO_JOB_COMMIT_AUTHOR" ]]; then
   GIT_COMMIT_AUTHOR="--author=\"${CANARY_AUTO_JOB_COMMIT_AUTHOR}\""
 fi
 
@@ -46,12 +47,12 @@ if [[ ! -d "$JOB_BRANCH_FOLDER" ]]; then
   git clone --branch jobs "${REPO_URL}" "${JOB_BRANCH_FOLDER}"
 fi
 
-cd ${JOB_BRANCH_FOLDER}
+cd "${JOB_BRANCH_FOLDER}"
 
-if [[ ! -z "${CANARY_AUTO_JOB_COMMITTER_NAME}" ]]; then
+if [[ -n "${CANARY_AUTO_JOB_COMMITTER_NAME}" ]]; then
   git config user.name "${CANARY_AUTO_JOB_COMMITTER_NAME}"
 fi
-if [[ ! -z "${CANARY_AUTO_JOB_COMMITTER_EMAIL}" ]]; then
+if [[ -n "${CANARY_AUTO_JOB_COMMITTER_EMAIL}" ]]; then
   git config user.email "${CANARY_AUTO_JOB_COMMITTER_EMAIL}"
 fi
 
@@ -59,7 +60,7 @@ git fetch
 git reset --hard origin/jobs
 # TODO: we could check if there were recent job requests and skip if hot
 # bash COMMIT_AUTHOR might contain spaces and bash escaping rules are crazy, have to branch
-if [[ ! -z "$GIT_COMMIT_AUTHOR" ]]; then
+if [[ -n "$GIT_COMMIT_AUTHOR" ]]; then
   git commit -m "${CANARY_AUTO_JOB_COMMAND}" --allow-empty "${GIT_COMMIT_AUTHOR}"
 else
   git commit -m "${CANARY_AUTO_JOB_COMMAND}" --allow-empty

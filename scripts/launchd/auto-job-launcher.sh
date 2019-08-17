@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e -o pipefail
+
 # ensure we start in canary's root folder
 cd "$(dirname "${BASH_SOURCE[0]}")/../..";
 

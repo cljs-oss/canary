@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e -o pipefail
+
 launchctl start com.binaryage.canary
 
 # note: you may want to
