@@ -94,9 +94,14 @@
         request-body (utils/deep-merge body (or (:travis-body options) {}))]
     (post-to-travis-api! api-endpoint token request-body options)))
 
-(defn polling-timeout [options]
+(defn warmup-time [options]
   (if (:production options)
-    defaults/travis-polling-timeout
+    defaults/travis-warmup-time
+    (utils/seconds-to-msec 1)))
+
+(defn polling-time [options]
+  (if (:production options)
+    defaults/travis-polling-time
     (utils/seconds-to-msec 1)))
 
 ; https://github.com/travis-ci/travis-api/blob/master/lib/travis/model/build/states.rb
@@ -188,13 +193,14 @@
     (into {} (for [build builds] [(get build "id") (get build "state")]))))
 
 (defn monitor-request-status! [slug request-id token options]
+  (Thread/sleep (warmup-time options))
   (loop [request-state :pending
          announced-builds {}
          report-data {}]
     (if (= request-state :done)
       report-data
       (do
-        (Thread/sleep (polling-timeout options))
+        (Thread/sleep (polling-time options))
         (let [request-response (poll-request-status! slug request-id token options)
               new-request-state (determine-request-state request-response)
               new-report-data (if (= new-request-state request-state)

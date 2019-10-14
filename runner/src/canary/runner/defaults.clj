@@ -27,7 +27,8 @@
 
 (def max-output-buffer 1000000)
 
-(def travis-polling-timeout (utils/seconds-to-msec 30))                                                                       ; TODO: make this configurable
+(def travis-warmup-time (utils/seconds-to-msec 60))                                                                           ; TODO: make this configurable
+(def travis-polling-time (utils/seconds-to-msec 30))                                                                          ; TODO: make this configurable
 
 (def passed-symbol "&#x2713;")
 (def failed-symbol "&#x2717;")
