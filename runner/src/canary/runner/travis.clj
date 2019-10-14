@@ -140,7 +140,7 @@
       ; see https://travis-ci.org/cljs-oss/canary/builds/357261287#L1017
       ("configured" "declined") (throw (utils/ex (i18n/travis-build-request-was-rejected (utils/pp request-response))))
       "finished" (determine-builds-state builds)                                                                              ; => :running or :done
-      (throw (utils/ex (i18n/received-unrecognized-travis-request-state travis-state))))))
+      (throw (utils/ex (i18n/received-unrecognized-travis-request-state travis-state request-response))))))
 
 (defn poll-request-status! [slug request-id token options]
   ; https://developer.travis-ci.com/resource/request#find

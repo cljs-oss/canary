@@ -178,8 +178,8 @@
 (defn ^:dynamic unable-to-mock-travis-api-msg [cmd args]
   (str "Unable to mock Travis API: " cmd " " (pr-str args)))
 
-(defn ^:dynamic received-unrecognized-travis-request-state [travis-state]
-  (str "Received unrecognized Travis request state '" travis-state "'"))
+(defn ^:dynamic received-unrecognized-travis-request-state [travis-state request-response]
+  (str "Received unrecognized Travis request state '" travis-state "'\n" (print/dump (utils/pp request-response))))
 
 (defn ^:dynamic travis-build-request-was-rejected [info]
   (str "Travis build request was rejected. Your travis account might be banned.\n" info))
