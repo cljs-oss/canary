@@ -1,0 +1,90 @@
+## Report for job #1160
+```
+job
+```
+
+
+Job: **#1160** | [jobs/f65f91a](https://github.com/cljs-oss/canary/commit/f65f91a4ab966237e39fc709920761341261fc9b) | [options](options.edn) | [tasks](tasks.edn) | [travis log](https://travis-ci.org/cljs-oss/canary/builds/609101328).
+
+Compiler: **ClojureScript 1.10.592-df183704** | [release page](https://github.com/cljs-oss/canary/releases/tag/r1.10.592-df183704) | [jar download](https://github.com/cljs-oss/canary/releases/download/r1.10.592-df183704/clojurescript-1.10.592-df183704.jar) | [source](https://github.com/clojure/clojurescript/commit/df1837048d01b157a04bb3dc7fedc58ee349a24a).
+
+### <b style='color:green'>☺ Summary</b>
+
+All tasks passed! Passed 25 / 25 (executed) of total 25 tasks.
+
+### Executed Tasks
+
+#### <b style='color:green'>&#x2713; chromex</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/chromex#1791](https://travis-ci.org/binaryage/chromex/builds/609102303)<br>
+
+#### <b style='color:green'>&#x2713; clara-rules</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/clara-rules#638](https://travis-ci.org/chkup/clara-rules/builds/609102307)<br>
+
+#### <b style='color:green'>&#x2713; cljs-bean</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/cljs-bean#495](https://travis-ci.org/mfikes/cljs-bean/builds/609102305)<br>
+
+#### <b style='color:green'>&#x2713; cljs-devtools</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-devtools#1344](https://travis-ci.org/binaryage/cljs-devtools/builds/609102314)<br>
+
+#### <b style='color:green'>&#x2713; cljs-oops</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-oops#1228](https://travis-ci.org/binaryage/cljs-oops/builds/609102315)<br>
+
+#### <b style='color:green'>&#x2713; cljs-time</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/cljs-time#96](https://travis-ci.org/chkup/cljs-time/builds/609102323)<br>
+
+#### <b style='color:green'>&#x2713; cljs-zones</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-zones#860](https://travis-ci.org/binaryage/cljs-zones/builds/609102332)<br>
+
+#### <b style='color:green'>&#x2713; coal-mine</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#2285](https://travis-ci.org/mfikes/coal-mine/builds/609102326)<br>
+
+#### <b style='color:green'>&#x2713; core-async</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/core.async#327](https://travis-ci.org/chkup/core.async/builds/609102334)<br>
+
+#### <b style='color:green'>&#x2713; core-logic</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/core.logic#326](https://travis-ci.org/chkup/core.logic/builds/609102340)<br>
+
+#### <b style='color:green'>&#x2713; core-match</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/core.match#323](https://travis-ci.org/chkup/core.match/builds/609102353)<br>
+
+#### <b style='color:green'>&#x2713; core-rrb-vector</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/core.rrb-vector#323](https://travis-ci.org/chkup/core.rrb-vector/builds/609102356)<br>
+
+#### <b style='color:green'>&#x2713; cuerdas</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/cuerdas#651](https://travis-ci.org/chkup/cuerdas/builds/609102360)<br>
+
+#### <b style='color:green'>&#x2713; fulcro</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/fulcro#640](https://travis-ci.org/chkup/fulcro/builds/609102628)<br>
+
+#### <b style='color:green'>&#x2713; garden</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/garden#649](https://travis-ci.org/chkup/garden/builds/609102642)<br>
+
+#### <b style='color:green'>&#x2713; hoplon</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/hoplon#638](https://travis-ci.org/chkup/hoplon/builds/609102374)<br>
+
+#### <b style='color:green'>&#x2713; ilk</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/ilk#399](https://travis-ci.org/mfikes/ilk/builds/609102465)<br>
+
+#### <b style='color:green'>&#x2713; om</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/om#648](https://travis-ci.org/chkup/om/builds/609102583)<br>
+
+#### <b style='color:green'>&#x2713; planck</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [planck-repl/planck#3655](https://travis-ci.org/planck-repl/planck/builds/609102630)<br>
+
+#### <b style='color:green'>&#x2713; re-frame</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/re-frame#669](https://travis-ci.org/chkup/re-frame/builds/609102606)<br>
+
+#### <b style='color:green'>&#x2713; reagent</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/reagent#642](https://travis-ci.org/chkup/reagent/builds/609102587)<br>
+
+#### <b style='color:green'>&#x2713; side-fx</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [cljsrn/side-fx#699](https://travis-ci.org/cljsrn/side-fx/builds/609102565)<br>
+
+#### <b style='color:green'>&#x2713; spec-tools</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/spec-tools#655](https://travis-ci.org/chkup/spec-tools/builds/609102621)<br>
+
+#### <b style='color:green'>&#x2713; specter</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/specter#654](https://travis-ci.org/chkup/specter/builds/609102567)<br>
+
+#### <b style='color:green'>&#x2713; test-check</b>
+&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/test.check#649](https://travis-ci.org/chkup/test.check/builds/609102657)<br>
