@@ -55,5 +55,5 @@ fi
 
 git fetch
 git reset --hard origin/jobs
-git commit "${GIT_CONFIG_USER_NAME_ARGS[@]}" "${GIT_CONFIG_USER_EMAIL_ARGS[@]}" --allow-empty -m "${CANARY_AUTO_JOB_COMMAND}"
+git "${GIT_CONFIG_USER_NAME_ARGS[@]}" "${GIT_CONFIG_USER_EMAIL_ARGS[@]}" commit --allow-empty -m "${CANARY_AUTO_JOB_COMMAND}"
 git push
