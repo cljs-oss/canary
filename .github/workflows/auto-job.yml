@@ -1,8 +1,6 @@
 name: auto-job
 
 on: 
-  push:
-    branches: [workflow-test]
   schedule:
     - cron: '0 11 * * *'
 
