@@ -1,0 +1,26 @@
+name: auto-job
+
+# we schedule this workflow to run repeatedly once a day
+# and for testing purposes each push to workflow-test branch should also trigger it
+on: 
+  schedule:
+    - cron: '0 11 * * *'
+  push:
+    branches: [workflow-test]
+
+
+jobs:
+  launch-auto-job:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with: 
+          ref: master
+      - name: Run auto job
+        env:
+          CANARY_AUTO_JOB_COMMITTER_NAME: BinaryAge Bot
+          CANARY_AUTO_JOB_COMMITTER_EMAIL: bot@binaryage.com
+          CANARY_AUTO_JOB_REPO_TOKEN: ${{ secrets.BABOT_PERSONAL_ACCESS_TOKEN }}
+        run: ./scripts/auto-job.sh
