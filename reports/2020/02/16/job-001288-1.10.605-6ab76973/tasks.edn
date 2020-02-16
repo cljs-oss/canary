@@ -1,0 +1,225 @@
+({:name "chromex",
+  :description "function chromex from canary/projects/binaryage.clj:7",
+  :meta {:homepage "https://github.com/binaryage/chromex"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/chromex#1988](https://travis-ci.org/binaryage/chromex/builds/651073013)<br>"}}
+ {:name "clara-rules",
+  :description "function clara-rules from canary/projects/chkup.clj:4",
+  :meta {:homepage "https://github.com/cerner/clara-rules"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/clara-rules#753](https://travis-ci.org/chkup/clara-rules/builds/651073015)<br>"}}
+ {:name "cljs-bean",
+  :description "function cljs-bean from canary/projects/mfikes.clj:27",
+  :meta {:homepage "https://github.com/mfikes/cljs-bean"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/cljs-bean#625](https://travis-ci.org/mfikes/cljs-bean/builds/651073017)<br>"}}
+ {:name "cljs-devtools",
+  :description "function cljs-devtools from canary/projects/binaryage.clj:4",
+  :meta {:homepage "https://github.com/binaryage/cljs-devtools"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-devtools#1483](https://travis-ci.org/binaryage/cljs-devtools/builds/651073021)<br>"}}
+ {:name "cljs-oops",
+  :description "function cljs-oops from canary/projects/binaryage.clj:10",
+  :meta {:homepage "https://github.com/binaryage/cljs-oops"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :failed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:red'>&#x2717;</b> Travis build [binaryage/cljs-oops#1358](https://travis-ci.org/binaryage/cljs-oops/builds/651073033)<br>"}}
+ {:name "cljs-time",
+  :description "function cljs-time from canary/projects/chkup.clj:49",
+  :meta {:homepage "https://github.com/andrewmcveigh/cljs-time"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/cljs-time#211](https://travis-ci.org/chkup/cljs-time/builds/651073037)<br>"}}
+ {:name "cljs-zones",
+  :description "function cljs-zones from canary/projects/binaryage.clj:13",
+  :meta {:homepage "https://github.com/binaryage/cljs-zones"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-zones#990](https://travis-ci.org/binaryage/cljs-zones/builds/651073048)<br>"}}
+ {:name "coal-mine",
+  :description "function coal-mine from canary/projects/mfikes.clj:4",
+  :meta {:homepage "https://github.com/mfikes/coal-mine"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#2415](https://travis-ci.org/mfikes/coal-mine/builds/651073050)<br>"}}
+ {:name "core-async",
+  :description "function core-async from canary/projects/chkup.clj:37",
+  :meta {:homepage "https://github.com/clojure/core.async"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/core.async#442](https://travis-ci.org/chkup/core.async/builds/651073056)<br>"}}
+ {:name "core-logic",
+  :description "function core-logic from canary/projects/chkup.clj:46",
+  :meta {:homepage "https://github.com/clojure/core.logic"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/core.logic#441](https://travis-ci.org/chkup/core.logic/builds/651073060)<br>"}}
+ {:name "core-match",
+  :description "function core-match from canary/projects/chkup.clj:43",
+  :meta {:homepage "https://github.com/clojure/core.match"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/core.match#438](https://travis-ci.org/chkup/core.match/builds/651073062)<br>"}}
+ {:name "core-rrb-vector",
+  :description "function core-rrb-vector from canary/projects/chkup.clj:40",
+  :meta {:homepage "https://github.com/clojure/core.rrb-vector"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/core.rrb-vector#438](https://travis-ci.org/chkup/core.rrb-vector/builds/651073064)<br>"}}
+ {:name "cuerdas",
+  :description "function cuerdas from canary/projects/chkup.clj:7",
+  :meta {:homepage "https://github.com/funcool/cuerdas"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/cuerdas#766](https://travis-ci.org/chkup/cuerdas/builds/651073068)<br>"}}
+ {:name "fulcro",
+  :description "function fulcro from canary/projects/chkup.clj:10",
+  :meta {:homepage "https://github.com/fulcrologic/fulcro"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/fulcro#755](https://travis-ci.org/chkup/fulcro/builds/651073224)<br>"}}
+ {:name "garden",
+  :description "function garden from canary/projects/chkup.clj:13",
+  :meta {:homepage "https://github.com/noprompt/garden"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/garden#764](https://travis-ci.org/chkup/garden/builds/651073168)<br>"}}
+ {:name "hoplon",
+  :description "function hoplon from canary/projects/chkup.clj:16",
+  :meta {:homepage "https://github.com/hoplon/hoplon"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/hoplon#753](https://travis-ci.org/chkup/hoplon/builds/651073090)<br>"}}
+ {:name "ilk",
+  :description "function ilk from canary/projects/mfikes.clj:24",
+  :meta {:homepage "https://github.com/mfikes/ilk"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/ilk#529](https://travis-ci.org/mfikes/ilk/builds/651073070)<br>"}}
+ {:name "om",
+  :description "function om from canary/projects/chkup.clj:19",
+  :meta {:homepage "https://github.com/omcljs/om"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/om#763](https://travis-ci.org/chkup/om/builds/651073197)<br>"}}
+ {:name "planck",
+  :description "function planck from canary/projects/planck_repl.clj:4",
+  :meta {:homepage "https://github.com/planck-repl/planck"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [planck-repl/planck#3774](https://travis-ci.org/planck-repl/planck/builds/651073203)<br>"}}
+ {:name "re-frame",
+  :description "function re-frame from canary/projects/chkup.clj:22",
+  :meta {:homepage "https://github.com/Day8/re-frame"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/re-frame#784](https://travis-ci.org/chkup/re-frame/builds/651073218)<br>"}}
+ {:name "reagent",
+  :description "function reagent from canary/projects/chkup.clj:25",
+  :meta {:homepage "https://github.com/reagent-project/reagent"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/reagent#757](https://travis-ci.org/chkup/reagent/builds/651073148)<br>"}}
+ {:name "side-fx",
+  :description "function side-fx from canary/projects/cljsrn.clj:4",
+  :meta {:homepage "https://github.com/cljsrn/side-fx"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [cljsrn/side-fx#814](https://travis-ci.org/cljsrn/side-fx/builds/651073178)<br>"}}
+ {:name "spec-tools",
+  :description "function spec-tools from canary/projects/chkup.clj:28",
+  :meta {:homepage "https://github.com/metosin/spec-tools"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/spec-tools#770](https://travis-ci.org/chkup/spec-tools/builds/651073188)<br>"}}
+ {:name "specter",
+  :description "function specter from canary/projects/chkup.clj:31",
+  :meta {:homepage "https://github.com/nathanmarz/specter"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/specter#769](https://travis-ci.org/chkup/specter/builds/651073260)<br>"}}
+ {:name "test-check",
+  :description "function test-check from canary/projects/chkup.clj:34",
+  :meta {:homepage "https://github.com/clojure/test.check"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/test.check#764](https://travis-ci.org/chkup/test.check/builds/651073248)<br>"}})
