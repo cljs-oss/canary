@@ -46,6 +46,7 @@ Options:
       --except SUBSTR                                    Disable tasks matching a substring (or any of space separated substrings)
       --include REGEX                                    Enable tasks matching a regex
       --exclude REGEX                                    Disable tasks matching a regex
+      --meta-job-args TEXT                               Optional job args to be presented in reports
       --job-id ID                 0                      Optional job id
       --polling-interval SECONDS  60000                  Polling interval for job status (in seconds)
       --timeout SECONDS           1800000                Total timeout for job to complete (in seconds)
