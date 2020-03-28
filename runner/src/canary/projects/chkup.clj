@@ -4,9 +4,6 @@
 (defn ^{:task true :homepage "cerner/clara-rules"} clara-rules [options]
   (travis/request-build! "chkup/clara-rules" "CANARY_CHKUP_TRAVIS_TOKEN" options))
 
-(defn ^{:task true :homepage "funcool/cuerdas"} cuerdas [options]
-  (travis/request-build! "chkup/cuerdas" "CANARY_CHKUP_TRAVIS_TOKEN" options))
-
 (defn ^{:task true :homepage "fulcrologic/fulcro"} fulcro [options]
   (travis/request-build! "chkup/fulcro" "CANARY_CHKUP_TRAVIS_TOKEN" options))
 
