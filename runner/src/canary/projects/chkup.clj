@@ -16,12 +16,6 @@
 (defn ^{:task true :homepage "omcljs/om"} om [options]
   (travis/request-build! "chkup/om" "CANARY_CHKUP_TRAVIS_TOKEN" options))
 
-(defn ^{:task true :homepage "Day8/re-frame"} re-frame [options]
-  (travis/request-build! "chkup/re-frame" "CANARY_CHKUP_TRAVIS_TOKEN" options))
-
-(defn ^{:task true :homepage "reagent-project/reagent"} reagent [options]
-  (travis/request-build! "chkup/reagent" "CANARY_CHKUP_TRAVIS_TOKEN" options))
-
 (defn ^{:task true :homepage "metosin/spec-tools"} spec-tools [options]
   (travis/request-build! "chkup/spec-tools" "CANARY_CHKUP_TRAVIS_TOKEN" options))
 
