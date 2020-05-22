@@ -3,7 +3,7 @@
   :url "https://github.com/cljs-oss/canary"
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.clojure/tools.cli "1.0.194"]
-                 [funcool/cuerdas "2.2.1"]
+                 [funcool/cuerdas "2020.03.26-3"]
                  [clansi "1.0.0"]
                  [me.raynes/fs "1.4.6"]]
   :source-paths ["src"]
