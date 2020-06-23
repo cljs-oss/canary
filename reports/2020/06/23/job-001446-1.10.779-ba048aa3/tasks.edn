@@ -1,0 +1,198 @@
+({:name "chromex",
+  :description "function chromex from canary/projects/binaryage.clj:7",
+  :meta {:homepage "https://github.com/binaryage/chromex"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/chromex#2164](https://travis-ci.org/binaryage/chromex/builds/701227825)<br>"}}
+ {:name "clara-rules",
+  :description "function clara-rules from canary/projects/chkup.clj:4",
+  :meta {:homepage "https://github.com/cerner/clara-rules"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state ''\n[30m{\"@type\" \"error\", \"error_type\" \"not_found\", \"error_message\" \"resource not found (or insufficient access)\"}[0m {}\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:67)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:64)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:148)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:138)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:205)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:195)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:236)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:233)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:251)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:246)\n\tat canary.projects.chkup$clara_rules.invokeStatic(chkup.clj:5)\n\tat canary.projects.chkup$clara_rules.invoke(chkup.clj:4)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:25)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:21)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:32)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:27)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__11075.invoke(jobs.clj:48)\n\tat canary.runner.threads$spawn_thread_fn$work__10915.invoke(threads.clj:19)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n\tat java.base/java.lang.Thread.run(Thread.java:834)\n---\n\n```"}}
+ {:name "cljs-bean",
+  :description "function cljs-bean from canary/projects/mfikes.clj:27",
+  :meta {:homepage "https://github.com/mfikes/cljs-bean"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/cljs-bean#766](https://travis-ci.org/mfikes/cljs-bean/builds/701227836)<br>"}}
+ {:name "cljs-devtools",
+  :description "function cljs-devtools from canary/projects/binaryage.clj:4",
+  :meta {:homepage "https://github.com/binaryage/cljs-devtools"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-devtools#1627](https://travis-ci.org/binaryage/cljs-devtools/builds/701227838)<br>"}}
+ {:name "cljs-oops",
+  :description "function cljs-oops from canary/projects/binaryage.clj:10",
+  :meta {:homepage "https://github.com/binaryage/cljs-oops"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-oops#1501](https://travis-ci.org/binaryage/cljs-oops/builds/701227840)<br>"}}
+ {:name "cljs-time",
+  :description "function cljs-time from canary/projects/chkup.clj:40",
+  :meta {:homepage "https://github.com/andrewmcveigh/cljs-time"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state ''\n[30m{\"@type\" \"error\", \"error_type\" \"not_found\", \"error_message\" \"resource not found (or insufficient access)\"}[0m {}\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:67)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:64)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:148)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:138)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:205)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:195)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:236)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:233)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:251)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:246)\n\tat canary.projects.chkup$cljs_time.invokeStatic(chkup.clj:41)\n\tat canary.projects.chkup$cljs_time.invoke(chkup.clj:40)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:25)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:21)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:32)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:27)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__11075.invoke(jobs.clj:48)\n\tat canary.runner.threads$spawn_thread_fn$work__10915.invoke(threads.clj:19)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n\tat java.base/java.lang.Thread.run(Thread.java:834)\n---\n\n```"}}
+ {:name "cljs-zones",
+  :description "function cljs-zones from canary/projects/binaryage.clj:13",
+  :meta {:homepage "https://github.com/binaryage/cljs-zones"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-zones#1129](https://travis-ci.org/binaryage/cljs-zones/builds/701227849)<br>"}}
+ {:name "coal-mine",
+  :description "function coal-mine from canary/projects/mfikes.clj:4",
+  :meta {:homepage "https://github.com/mfikes/coal-mine"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#2549](https://travis-ci.org/mfikes/coal-mine/builds/701227851)<br>"}}
+ {:name "core-async",
+  :description "function core-async from canary/projects/chkup.clj:28",
+  :meta {:homepage "https://github.com/clojure/core.async"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state ''\n[30m{\"@type\" \"error\", \"error_type\" \"not_found\", \"error_message\" \"resource not found (or insufficient access)\"}[0m {}\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:67)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:64)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:148)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:138)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:205)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:195)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:236)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:233)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:251)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:246)\n\tat canary.projects.chkup$core_async.invokeStatic(chkup.clj:29)\n\tat canary.projects.chkup$core_async.invoke(chkup.clj:28)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:25)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:21)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:32)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:27)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__11075.invoke(jobs.clj:48)\n\tat canary.runner.threads$spawn_thread_fn$work__10915.invoke(threads.clj:19)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n\tat java.base/java.lang.Thread.run(Thread.java:834)\n---\n\n```"}}
+ {:name "core-logic",
+  :description "function core-logic from canary/projects/chkup.clj:37",
+  :meta {:homepage "https://github.com/clojure/core.logic"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state ''\n[30m{\"@type\" \"error\", \"error_type\" \"not_found\", \"error_message\" \"resource not found (or insufficient access)\"}[0m {}\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:67)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:64)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:148)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:138)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:205)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:195)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:236)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:233)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:251)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:246)\n\tat canary.projects.chkup$core_logic.invokeStatic(chkup.clj:38)\n\tat canary.projects.chkup$core_logic.invoke(chkup.clj:37)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:25)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:21)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:32)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:27)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__11075.invoke(jobs.clj:48)\n\tat canary.runner.threads$spawn_thread_fn$work__10915.invoke(threads.clj:19)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n\tat java.base/java.lang.Thread.run(Thread.java:834)\n---\n\n```"}}
+ {:name "core-match",
+  :description "function core-match from canary/projects/chkup.clj:34",
+  :meta {:homepage "https://github.com/clojure/core.match"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state ''\n[30m{\"@type\" \"error\", \"error_type\" \"not_found\", \"error_message\" \"resource not found (or insufficient access)\"}[0m {}\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:67)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:64)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:148)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:138)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:205)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:195)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:236)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:233)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:251)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:246)\n\tat canary.projects.chkup$core_match.invokeStatic(chkup.clj:35)\n\tat canary.projects.chkup$core_match.invoke(chkup.clj:34)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:25)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:21)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:32)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:27)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__11075.invoke(jobs.clj:48)\n\tat canary.runner.threads$spawn_thread_fn$work__10915.invoke(threads.clj:19)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n\tat java.base/java.lang.Thread.run(Thread.java:834)\n---\n\n```"}}
+ {:name "core-rrb-vector",
+  :description "function core-rrb-vector from canary/projects/chkup.clj:31",
+  :meta {:homepage "https://github.com/clojure/core.rrb-vector"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state ''\n[30m{\"@type\" \"error\", \"error_type\" \"not_found\", \"error_message\" \"resource not found (or insufficient access)\"}[0m {}\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:67)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:64)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:148)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:138)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:205)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:195)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:236)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:233)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:251)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:246)\n\tat canary.projects.chkup$core_rrb_vector.invokeStatic(chkup.clj:32)\n\tat canary.projects.chkup$core_rrb_vector.invoke(chkup.clj:31)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:25)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:21)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:32)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:27)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__11075.invoke(jobs.clj:48)\n\tat canary.runner.threads$spawn_thread_fn$work__10915.invoke(threads.clj:19)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n\tat java.base/java.lang.Thread.run(Thread.java:834)\n---\n\n```"}}
+ {:name "fulcro",
+  :description "function fulcro from canary/projects/chkup.clj:7",
+  :meta {:homepage "https://github.com/fulcrologic/fulcro"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state ''\n[30m{\"@type\" \"error\", \"error_type\" \"not_found\", \"error_message\" \"resource not found (or insufficient access)\"}[0m {}\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:67)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:64)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:148)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:138)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:205)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:195)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:236)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:233)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:251)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:246)\n\tat canary.projects.chkup$fulcro.invokeStatic(chkup.clj:8)\n\tat canary.projects.chkup$fulcro.invoke(chkup.clj:7)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:25)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:21)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:32)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:27)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__11075.invoke(jobs.clj:48)\n\tat canary.runner.threads$spawn_thread_fn$work__10915.invoke(threads.clj:19)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n\tat java.base/java.lang.Thread.run(Thread.java:834)\n---\n\n```"}}
+ {:name "garden",
+  :description "function garden from canary/projects/chkup.clj:10",
+  :meta {:homepage "https://github.com/noprompt/garden"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state ''\n[30m{\"@type\" \"error\", \"error_type\" \"not_found\", \"error_message\" \"resource not found (or insufficient access)\"}[0m {}\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:67)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:64)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:148)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:138)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:205)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:195)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:236)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:233)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:251)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:246)\n\tat canary.projects.chkup$garden.invokeStatic(chkup.clj:11)\n\tat canary.projects.chkup$garden.invoke(chkup.clj:10)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:25)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:21)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:32)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:27)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__11075.invoke(jobs.clj:48)\n\tat canary.runner.threads$spawn_thread_fn$work__10915.invoke(threads.clj:19)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n\tat java.base/java.lang.Thread.run(Thread.java:834)\n---\n\n```"}}
+ {:name "hoplon",
+  :description "function hoplon from canary/projects/chkup.clj:13",
+  :meta {:homepage "https://github.com/hoplon/hoplon"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state ''\n[30m{\"@type\" \"error\", \"error_type\" \"not_found\", \"error_message\" \"resource not found (or insufficient access)\"}[0m {}\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:67)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:64)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:148)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:138)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:205)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:195)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:236)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:233)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:251)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:246)\n\tat canary.projects.chkup$hoplon.invokeStatic(chkup.clj:14)\n\tat canary.projects.chkup$hoplon.invoke(chkup.clj:13)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:25)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:21)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:32)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:27)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__11075.invoke(jobs.clj:48)\n\tat canary.runner.threads$spawn_thread_fn$work__10915.invoke(threads.clj:19)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n\tat java.base/java.lang.Thread.run(Thread.java:834)\n---\n\n```"}}
+ {:name "ilk",
+  :description "function ilk from canary/projects/mfikes.clj:24",
+  :meta {:homepage "https://github.com/mfikes/ilk"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :passed,
+   :report
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/ilk#663](https://travis-ci.org/mfikes/ilk/builds/701227911)<br>"}}
+ {:name "om",
+  :description "function om from canary/projects/chkup.clj:16",
+  :meta {:homepage "https://github.com/omcljs/om"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state ''\n[30m{\"@type\" \"error\", \"error_type\" \"not_found\", \"error_message\" \"resource not found (or insufficient access)\"}[0m {}\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:67)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:64)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:148)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:138)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:205)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:195)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:236)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:233)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:251)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:246)\n\tat canary.projects.chkup$om.invokeStatic(chkup.clj:17)\n\tat canary.projects.chkup$om.invoke(chkup.clj:16)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:25)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:21)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:32)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:27)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__11075.invoke(jobs.clj:48)\n\tat canary.runner.threads$spawn_thread_fn$work__10915.invoke(threads.clj:19)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n\tat java.base/java.lang.Thread.run(Thread.java:834)\n---\n\n```"}}
+ {:name "planck",
+  :description "function planck from canary/projects/planck_repl.clj:4",
+  :meta {:homepage "https://github.com/planck-repl/planck"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state ''\n[30m{\"@type\" \"error\", \"error_type\" \"not_found\", \"error_message\" \"resource not found (or insufficient access)\"}[0m {}\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:67)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:64)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:148)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:138)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:205)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:195)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:236)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:233)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:251)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:246)\n\tat canary.projects.planck_repl$planck.invokeStatic(planck_repl.clj:5)\n\tat canary.projects.planck_repl$planck.invoke(planck_repl.clj:4)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:25)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:21)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:32)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:27)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__11075.invoke(jobs.clj:48)\n\tat canary.runner.threads$spawn_thread_fn$work__10915.invoke(threads.clj:19)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n\tat java.base/java.lang.Thread.run(Thread.java:834)\n---\n\n```"}}
+ {:name "side-fx",
+  :description "function side-fx from canary/projects/cljsrn.clj:4",
+  :meta {:homepage "https://github.com/cljsrn/side-fx"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state ''\n[30m{\"@type\" \"error\", \"error_type\" \"not_found\", \"error_message\" \"resource not found (or insufficient access)\"}[0m {}\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:67)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:64)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:148)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:138)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:205)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:195)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:236)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:233)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:251)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:246)\n\tat canary.projects.cljsrn$side_fx.invokeStatic(cljsrn.clj:5)\n\tat canary.projects.cljsrn$side_fx.invoke(cljsrn.clj:4)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:25)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:21)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:32)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:27)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__11075.invoke(jobs.clj:48)\n\tat canary.runner.threads$spawn_thread_fn$work__10915.invoke(threads.clj:19)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n\tat java.base/java.lang.Thread.run(Thread.java:834)\n---\n\n```"}}
+ {:name "spec-tools",
+  :description "function spec-tools from canary/projects/chkup.clj:19",
+  :meta {:homepage "https://github.com/metosin/spec-tools"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state ''\n[30m{\"@type\" \"error\", \"error_type\" \"not_found\", \"error_message\" \"resource not found (or insufficient access)\"}[0m {}\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:67)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:64)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:148)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:138)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:205)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:195)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:236)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:233)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:251)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:246)\n\tat canary.projects.chkup$spec_tools.invokeStatic(chkup.clj:20)\n\tat canary.projects.chkup$spec_tools.invoke(chkup.clj:19)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:25)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:21)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:32)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:27)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__11075.invoke(jobs.clj:48)\n\tat canary.runner.threads$spawn_thread_fn$work__10915.invoke(threads.clj:19)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n\tat java.base/java.lang.Thread.run(Thread.java:834)\n---\n\n```"}}
+ {:name "specter",
+  :description "function specter from canary/projects/chkup.clj:22",
+  :meta {:homepage "https://github.com/nathanmarz/specter"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state ''\n[30m{\"@type\" \"error\", \"error_type\" \"not_found\", \"error_message\" \"resource not found (or insufficient access)\"}[0m {}\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:67)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:64)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:148)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:138)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:205)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:195)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:236)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:233)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:251)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:246)\n\tat canary.projects.chkup$specter.invokeStatic(chkup.clj:23)\n\tat canary.projects.chkup$specter.invoke(chkup.clj:22)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:25)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:21)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:32)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:27)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__11075.invoke(jobs.clj:48)\n\tat canary.runner.threads$spawn_thread_fn$work__10915.invoke(threads.clj:19)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n\tat java.base/java.lang.Thread.run(Thread.java:834)\n---\n\n```"}}
+ {:name "test-check",
+  :description "function test-check from canary/projects/chkup.clj:25",
+  :meta {:homepage "https://github.com/clojure/test.check"},
+  :enabled true,
+  :enabled-reason "enabled by default",
+  :result
+  {:status :exception,
+   :report
+   "```\nException: clojure.lang.ExceptionInfo: Received unrecognized Travis request state ''\n[30m{\"@type\" \"error\", \"error_type\" \"not_found\", \"error_message\" \"resource not found (or insufficient access)\"}[0m {}\n\tat canary.runner.utils$ex.invokeStatic(utils.clj:67)\n\tat canary.runner.utils$ex.doInvoke(utils.clj:64)\n\tat clojure.lang.RestFn.invoke(RestFn.java:410)\n\tat canary.runner.travis$determine_request_state.invokeStatic(travis.clj:148)\n\tat canary.runner.travis$determine_request_state.invoke(travis.clj:138)\n\tat canary.runner.travis$monitor_request_status_BANG_.invokeStatic(travis.clj:205)\n\tat canary.runner.travis$monitor_request_status_BANG_.invoke(travis.clj:195)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invokeStatic(travis.clj:236)\n\tat canary.runner.travis$request_build_and_wait_for_results_BANG_.invoke(travis.clj:233)\n\tat canary.runner.travis$request_build_BANG_.invokeStatic(travis.clj:251)\n\tat canary.runner.travis$request_build_BANG_.invoke(travis.clj:246)\n\tat canary.projects.chkup$test_check.invokeStatic(chkup.clj:26)\n\tat canary.projects.chkup$test_check.invoke(chkup.clj:25)\n\tat canary.runner.jobs$execute_task_BANG_.invokeStatic(jobs.clj:25)\n\tat canary.runner.jobs$execute_task_BANG_.invoke(jobs.clj:21)\n\tat canary.runner.jobs$try_execute_task_BANG_.invokeStatic(jobs.clj:32)\n\tat canary.runner.jobs$try_execute_task_BANG_.invoke(jobs.clj:27)\n\tat canary.runner.jobs$spawn_task_BANG_$fn__11075.invoke(jobs.clj:48)\n\tat canary.runner.threads$spawn_thread_fn$work__10915.invoke(threads.clj:19)\n\tat clojure.lang.AFn.run(AFn.java:22)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n\tat java.base/java.lang.Thread.run(Thread.java:834)\n---\n\n```"}})
