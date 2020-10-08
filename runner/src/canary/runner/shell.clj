@@ -80,6 +80,10 @@
       :out (sh/stream-to-string rewind-proc :out)
       :err (sh/stream-to-string rewind-proc :err))))
 
+(defn safe-env [env]
+  ; remove nil values from env map
+  (into {} (filter (fn [[_k v]] (some? v)) env)))
+
 ; -- main api ---------------------------------------------------------------------------------------------------------------
 
 (defn make-shell-launcher [file & [env]]
@@ -88,7 +92,7 @@
     (fn [options]
       (let [task (meta options)]
         (let [workdir (prepare-workdir! task options)
-              proc (sh/proc path :verbose false :dir workdir :env env)]
+              proc (sh/proc path :verbose false :dir workdir :env (safe-env env))]
           (mark-proc-output! proc)
           (wait-and-stream-proc-output-via-decorated-printing! proc options)                                                  ; blocking!
           (let [status (sh/exit-code proc)]
