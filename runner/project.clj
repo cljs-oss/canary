@@ -2,7 +2,7 @@
   :description "A tool for smoke-testing ClojureScript projects with a pinned ClojureScript version."
   :url "https://github.com/cljs-oss/canary"
   :dependencies [[org.clojure/clojure "1.10.1"]
-                 [org.clojure/core.async "1.2.603"]
+                 [org.clojure/core.async "1.3.610"]
                  [org.clojure/tools.cli "1.0.194"]
                  [org.clojure/tools.namespace "1.0.0"]
                  [org.clojure/data.json "1.0.0"]
