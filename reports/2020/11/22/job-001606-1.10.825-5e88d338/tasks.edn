@@ -6,7 +6,7 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/chromex#2358](https://travis-ci.org/binaryage/chromex/builds/745200145)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/chromex#2359](https://travis-ci.org/binaryage/chromex/builds/745201907)<br>"}}
  {:name "clara-rules",
   :description "function clara-rules from canary/projects/chkup.clj:4",
   :meta {:homepage "https://github.com/cerner/clara-rules"},
@@ -15,7 +15,7 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/clara-rules#945](https://travis-ci.org/chkup/clara-rules/builds/745200147)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/clara-rules#946](https://travis-ci.org/chkup/clara-rules/builds/745201909)<br>"}}
  {:name "cljs-bean",
   :description "function cljs-bean from canary/projects/mfikes.clj:27",
   :meta {:homepage "https://github.com/mfikes/cljs-bean"},
@@ -24,7 +24,7 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/cljs-bean#921](https://travis-ci.org/mfikes/cljs-bean/builds/745200151)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/cljs-bean#922](https://travis-ci.org/mfikes/cljs-bean/builds/745201911)<br>"}}
  {:name "cljs-devtools",
   :description "function cljs-devtools from canary/projects/binaryage.clj:4",
   :meta {:homepage "https://github.com/binaryage/cljs-devtools"},
@@ -33,7 +33,7 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-devtools#1779](https://travis-ci.org/binaryage/cljs-devtools/builds/745200153)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-devtools#1780](https://travis-ci.org/binaryage/cljs-devtools/builds/745201913)<br>"}}
  {:name "cljs-oops",
   :description "function cljs-oops from canary/projects/binaryage.clj:10",
   :meta {:homepage "https://github.com/binaryage/cljs-oops"},
@@ -42,7 +42,7 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-oops#1652](https://travis-ci.org/binaryage/cljs-oops/builds/745200155)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-oops#1653](https://travis-ci.org/binaryage/cljs-oops/builds/745201917)<br>"}}
  {:name "cljs-time",
   :description "function cljs-time from canary/projects/chkup.clj:40",
   :meta {:homepage "https://github.com/andrewmcveigh/cljs-time"},
@@ -51,7 +51,7 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/cljs-time#404](https://travis-ci.org/chkup/cljs-time/builds/745200164)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/cljs-time#405](https://travis-ci.org/chkup/cljs-time/builds/745201919)<br>"}}
  {:name "cljs-zones",
   :description "function cljs-zones from canary/projects/binaryage.clj:13",
   :meta {:homepage "https://github.com/binaryage/cljs-zones"},
@@ -60,7 +60,7 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-zones#1280](https://travis-ci.org/binaryage/cljs-zones/builds/745200189)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [binaryage/cljs-zones#1281](https://travis-ci.org/binaryage/cljs-zones/builds/745201924)<br>"}}
  {:name "coal-mine",
   :description "function coal-mine from canary/projects/mfikes.clj:4",
   :meta {:homepage "https://github.com/mfikes/coal-mine"},
@@ -69,7 +69,7 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#2704](https://travis-ci.org/mfikes/coal-mine/builds/745200191)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/coal-mine#2705](https://travis-ci.org/mfikes/coal-mine/builds/745201928)<br>"}}
  {:name "core-async",
   :description "function core-async from canary/projects/chkup.clj:28",
   :meta {:homepage "https://github.com/clojure/core.async"},
@@ -78,7 +78,7 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/core.async#636](https://travis-ci.org/chkup/core.async/builds/745200197)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/core.async#637](https://travis-ci.org/chkup/core.async/builds/745201934)<br>"}}
  {:name "core-logic",
   :description "function core-logic from canary/projects/chkup.clj:37",
   :meta {:homepage "https://github.com/clojure/core.logic"},
@@ -87,7 +87,7 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/core.logic#632](https://travis-ci.org/chkup/core.logic/builds/745200199)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/core.logic#633](https://travis-ci.org/chkup/core.logic/builds/745201936)<br>"}}
  {:name "core-match",
   :description "function core-match from canary/projects/chkup.clj:34",
   :meta {:homepage "https://github.com/clojure/core.match"},
@@ -96,7 +96,7 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/core.match#629](https://travis-ci.org/chkup/core.match/builds/745200201)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/core.match#630](https://travis-ci.org/chkup/core.match/builds/745201938)<br>"}}
  {:name "core-rrb-vector",
   :description "function core-rrb-vector from canary/projects/chkup.clj:31",
   :meta {:homepage "https://github.com/clojure/core.rrb-vector"},
@@ -105,7 +105,7 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/core.rrb-vector#629](https://travis-ci.org/chkup/core.rrb-vector/builds/745200203)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/core.rrb-vector#630](https://travis-ci.org/chkup/core.rrb-vector/builds/745201940)<br>"}}
  {:name "fulcro",
   :description "function fulcro from canary/projects/chkup.clj:7",
   :meta {:homepage "https://github.com/fulcrologic/fulcro"},
@@ -114,16 +114,16 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/fulcro#945](https://travis-ci.org/chkup/fulcro/builds/745200207)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/fulcro#946](https://travis-ci.org/chkup/fulcro/builds/745201942)<br>"}}
  {:name "garden",
   :description "function garden from canary/projects/chkup.clj:10",
   :meta {:homepage "https://github.com/noprompt/garden"},
   :enabled true,
   :enabled-reason "enabled by default",
   :result
-  {:status :failed,
+  {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:red'>&#x2717;</b> Travis build [chkup/garden#955](https://travis-ci.org/chkup/garden/builds/745200246)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/garden#956](https://travis-ci.org/chkup/garden/builds/745201946)<br>"}}
  {:name "hoplon",
   :description "function hoplon from canary/projects/chkup.clj:13",
   :meta {:homepage "https://github.com/hoplon/hoplon"},
@@ -132,7 +132,7 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/hoplon#944](https://travis-ci.org/chkup/hoplon/builds/745200209)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/hoplon#945](https://travis-ci.org/chkup/hoplon/builds/745202039)<br>"}}
  {:name "ilk",
   :description "function ilk from canary/projects/mfikes.clj:24",
   :meta {:homepage "https://github.com/mfikes/ilk"},
@@ -141,7 +141,7 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/ilk#816](https://travis-ci.org/mfikes/ilk/builds/745200250)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [mfikes/ilk#817](https://travis-ci.org/mfikes/ilk/builds/745201948)<br>"}}
  {:name "om",
   :description "function om from canary/projects/chkup.clj:16",
   :meta {:homepage "https://github.com/omcljs/om"},
@@ -150,7 +150,7 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/om#954](https://travis-ci.org/chkup/om/builds/745200248)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/om#955](https://travis-ci.org/chkup/om/builds/745202018)<br>"}}
  {:name "planck",
   :description "function planck from canary/projects/planck_repl.clj:4",
   :meta {:homepage "https://github.com/planck-repl/planck"},
@@ -165,7 +165,7 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [cljsrn/side-fx#1005](https://travis-ci.org/cljsrn/side-fx/builds/745200252)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [cljsrn/side-fx#1006](https://travis-ci.org/cljsrn/side-fx/builds/745201998)<br>"}}
  {:name "spec-tools",
   :description "function spec-tools from canary/projects/chkup.clj:19",
   :meta {:homepage "https://github.com/metosin/spec-tools"},
@@ -174,7 +174,7 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/spec-tools#961](https://travis-ci.org/chkup/spec-tools/builds/745200218)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/spec-tools#962](https://travis-ci.org/chkup/spec-tools/builds/745201992)<br>"}}
  {:name "specter",
   :description "function specter from canary/projects/chkup.clj:22",
   :meta {:homepage "https://github.com/nathanmarz/specter"},
@@ -183,7 +183,7 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/specter#959](https://travis-ci.org/chkup/specter/builds/745200227)<br>"}}
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/specter#960](https://travis-ci.org/chkup/specter/builds/745201964)<br>"}}
  {:name "test-check",
   :description "function test-check from canary/projects/chkup.clj:25",
   :meta {:homepage "https://github.com/clojure/test.check"},
@@ -192,4 +192,4 @@
   :result
   {:status :passed,
    :report
-   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/test.check#957](https://travis-ci.org/chkup/test.check/builds/745200254)<br>"}})
+   "&nbsp;&nbsp;&nbsp;&nbsp;<b style='color:green'>&#x2713;</b> Travis build [chkup/test.check#958](https://travis-ci.org/chkup/test.check/builds/745201981)<br>"}})
