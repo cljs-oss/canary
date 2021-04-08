@@ -4,14 +4,8 @@
 (defn ^{:task true :homepage "cerner/clara-rules"} clara-rules [options]
   (travis/request-build! "chkup/clara-rules" "CANARY_CHKUP_TRAVIS_TOKEN" options))
 
-(defn ^{:task true :homepage "fulcrologic/fulcro"} fulcro [options]
-  (travis/request-build! "chkup/fulcro" "CANARY_CHKUP_TRAVIS_TOKEN" options))
-
 (defn ^{:task true :homepage "noprompt/garden"} garden [options]
   (travis/request-build! "chkup/garden" "CANARY_CHKUP_TRAVIS_TOKEN" options))
-
-(defn ^{:task true :homepage "hoplon/hoplon"} hoplon [options]
-  (travis/request-build! "chkup/hoplon" "CANARY_CHKUP_TRAVIS_TOKEN" options))
 
 (defn ^{:task true :homepage "omcljs/om"} om [options]
   (travis/request-build! "chkup/om" "CANARY_CHKUP_TRAVIS_TOKEN" options))
