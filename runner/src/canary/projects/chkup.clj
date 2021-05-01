@@ -13,9 +13,6 @@
 (defn ^{:task true :homepage "metosin/spec-tools"} spec-tools [options]
   (travis/request-build! "chkup/spec-tools" "CANARY_CHKUP_TRAVIS_TOKEN" options))
 
-(defn ^{:task true :homepage "nathanmarz/specter"} specter [options]
-  (travis/request-build! "chkup/specter" "CANARY_CHKUP_TRAVIS_TOKEN" options))
-
 (defn ^{:task true :homepage "clojure/test.check"} test-check [options]
   (travis/request-build! "chkup/test.check" "CANARY_CHKUP_TRAVIS_TOKEN" options))
 
