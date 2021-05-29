@@ -21,8 +21,5 @@
 #_(defn ^{:task true :homepage "mfikes/closurelib"} closurelib [options]
   (travis/request-build! "mfikes/closurelib" "CANARY_CLOSURELATEST_TRAVIS_TOKEN" options))
 
-(defn ^{:task true :homepage "mfikes/ilk"} ilk [options]
-  (travis/request-build! "mfikes/ilk" "CANARY_ILK_TRAVIS_TOKEN" options))
-
 (defn ^{:task true :homepage "mfikes/cljs-bean"} cljs-bean [options]
   (travis/request-build! "mfikes/cljs-bean" "CANARY_CLJS_BEAN_TRAVIS_TOKEN" options))
