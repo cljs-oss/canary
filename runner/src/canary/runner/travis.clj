@@ -79,17 +79,11 @@
      "CANARY_CLOJURESCRIPT_JAR_URL" build-download-url
      "CANARY_TRAVIS_BUILD_URL"      travis-build-url}))
 
-(def default-travis-api-endpoint "api.travis-ci.com")
-
-(defn resolve-travis-api-endpoint [options]
-  (or (:travis-api-endpoint options)
-      default-travis-api-endpoint))
-
 (defn trigger-build! [slug token options]
   ; https://docs.travis-ci.com/user/triggering-builds/
   ; https://developer.travis-ci.com/resource/requests#Requests
   (let [api-slug (utils/url-encode slug)
-        api-endpoint (str "https://" (resolve-travis-api-endpoint options) "/repo/" api-slug "/requests")
+        api-endpoint (str "https://api.travis-ci.org/repo/" api-slug "/requests")
         build-result (:build-result options)
         config {:merge_mode "deep_merge"
                 :env        {:global (prepare-build-env options)}}                                                            ; https://docs.travis-ci.com/user/environment-variables/#Global-Variables
