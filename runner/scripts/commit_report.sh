@@ -53,7 +53,7 @@ if [[ "$CANARY_VERBOSITY" -gt 1 ]]; then
 fi
 
 if [[ -n "$TRAVIS_BUILD_ID" ]]; then
-  TRAVIS_BUILD_URL="https://travis-ci.org/${CANARY_REPO}/builds/$TRAVIS_BUILD_ID"
+  TRAVIS_BUILD_URL="https://travis-ci.com/${CANARY_REPO}/builds/$TRAVIS_BUILD_ID"
 else
   TRAVIS_BUILD_URL="n/a"
 fi

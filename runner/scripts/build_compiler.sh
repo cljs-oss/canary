@@ -234,7 +234,7 @@ fi
 # -- github release ---------------------------------------------------------------------------------------------------------
 
 if [[ -n "$TRAVIS_BUILD_ID" ]]; then
-  TRAVIS_BUILD_URL="https://travis-ci.org/${CANARY_REPO}/builds/$TRAVIS_BUILD_ID"
+  TRAVIS_BUILD_URL="https://travis-ci.com/${CANARY_REPO}/builds/$TRAVIS_BUILD_ID"
   TRAVIS_BUILD_INFO="Travis log: $TRAVIS_BUILD_URL."
 else
   TRAVIS_BUILD_URL="n/a"
