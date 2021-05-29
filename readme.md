@@ -20,13 +20,13 @@ If you are using Travis for CI, participating in Canary builds involves a few si
     [org.clojure/clojurescript ~(or (System/getenv "CANARY_CLOJURESCRIPT_VERSION") "1.9.946")]
     ```
 
-3. Exchange a Github Token for a Travis Access token, you will need [boot](https://github.com/boot-clj) installed:
+3. Obtain Travis Access token:
 
-    ```
-    ./scripts/github-to-travis-token -u your-github-user -p your-github-password
-    ```
+    Probably the easiest way is to copy it from your Travis UI web interface (look under `Settings/Settings/API authentication`).
 
     Note that an alternative way to obtain a [Travis Access token](https://blog.travis-ci.com/2013-01-28-token-token-token) is by doing `gem install travis && travis login && travis token`.
+    See their [api reference](https://developer.travis-ci.com/authentication) for updated info on how to retrieve access tokens.
+
 
 4. Set up Canary with a Travis access token. Replace `YOUR_PROJECT` with the name of your project and `deadbeef` below with your Travis Token obtained above.
 
@@ -40,7 +40,7 @@ If you are using Travis for CI, participating in Canary builds involves a few si
     ```
 
     Warning: Please make sure that you run `travis encrypt` inside your canary checkout of the jobs branch as shown above. 
-    Running it outside seems to produce some encrypted value but the result is corrupted when actually used by travis.
+    Running it outside seems to produce some encrypted value, but the result is corrupted when actually used by travis.
 
 5. Add a Canary task to trigger CI builds of your project. This is done by adding a `^:task` to a namespace in the `master` branch under `runner/src/canary/projects`, like this (replacing `github-yourname`, `your-project` and `YOUR_PROJECT`):
 
