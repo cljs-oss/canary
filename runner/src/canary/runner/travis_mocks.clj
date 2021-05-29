@@ -78,8 +78,8 @@
 (defn mock-travis-response [cmd args]
   (let [api-endpoint (last args)]
     (cond
-      (re-matches #"^https://api.travis-ci.org/repo/.*/requests$" api-endpoint) (mock-travis-requests-response args)
-      (re-matches #"^https://api.travis-ci.org/repo/.*/request/0$" api-endpoint) (mock-travis-request-info-response args)
+      (re-matches #"^https://api.travis-ci.com/repo/.*/requests$" api-endpoint) (mock-travis-requests-response args)
+      (re-matches #"^https://api.travis-ci.com/repo/.*/request/0$" api-endpoint) (mock-travis-request-info-response args)
       :else (throw (utils/ex (i18n/unable-to-mock-travis-api-msg cmd args))))))
 
 ; ---------------------------------------------------------------------------------------------------------------------------

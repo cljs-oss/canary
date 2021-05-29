@@ -83,7 +83,7 @@
   ; https://docs.travis-ci.com/user/triggering-builds/
   ; https://developer.travis-ci.com/resource/requests#Requests
   (let [api-slug (utils/url-encode slug)
-        api-endpoint (str "https://api.travis-ci.org/repo/" api-slug "/requests")
+        api-endpoint (str "https://api.travis-ci.com/repo/" api-slug "/requests")
         build-result (:build-result options)
         config {:merge_mode "deep_merge"
                 :env        {:global (prepare-build-env options)}}                                                            ; https://docs.travis-ci.com/user/environment-variables/#Global-Variables
@@ -125,7 +125,7 @@
   (get-in request ["repository" "slug"]))
 
 (defn travis-build-url [slug build-id]
-  (str "https://travis-ci.org/" slug "/builds/" build-id))
+  (str "https://travis-ci.com/" slug "/builds/" build-id))
 
 (defn determine-builds-state [builds]
   ; https://developer.travis-ci.com/resource/builds#Builds
@@ -151,7 +151,7 @@
   ; https://developer.travis-ci.com/resource/request#find
   (announce (i18n/polling-travis-api-for-request-info-msg slug request-id) 2 options)
   (let [api-slug (utils/url-encode slug)
-        api-endpoint (str "https://api.travis-ci.org/repo/" api-slug "/request/" request-id)]
+        api-endpoint (str "https://api.travis-ci.com/repo/" api-slug "/request/" request-id)]
     (get-from-travis-api! api-endpoint token options)))
 
 (defn transit-to-running-state! [report-data request-response options]
