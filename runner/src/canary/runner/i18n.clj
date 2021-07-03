@@ -184,6 +184,9 @@
 (defn ^:dynamic travis-build-request-was-rejected [info]
   (str "Travis build request was rejected. Your travis account might be banned.\n" info))
 
+(defn ^:dynamic travis-build-request-was-not-approved [message info]
+  (str "Travis build request was not approved.\n" message "\nPlease check your Travis credentials.\n" info))
+
 ; -- cli --------------------------------------------------------------------------------------------------------------------
 
 (defn ^:dynamic cli-usage-msg [options-summary]

@@ -144,6 +144,8 @@
       ; "configured" state was this weird response when my account got banned for abuse
       ; see https://travis-ci.org/cljs-oss/canary/builds/357261287#L1017
       ("configured" "declined") (throw (utils/ex (i18n/travis-build-request-was-rejected (utils/pp request-response))))
+      "approved" (throw (utils/ex (i18n/travis-build-request-was-not-approved (get request-response "message")
+                                                                              (utils/pp request-response))))
       "finished" (determine-builds-state builds)                                                                              ; => :running or :done
       (throw (utils/ex (i18n/received-unrecognized-travis-request-state travis-state request-response))))))
 
